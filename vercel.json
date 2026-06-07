@@ -160,11 +160,6 @@
       "source": "/worldwide-domestic-courier-service.html",
       "destination": "https://www.airpak-express.site/worldwide-domestic-courier-service",
       "permanent": true
-    },
-    {
-      "source": "/media?name=omnichannel-fulfilment-checklist-for-international-shipping.html",
-      "destination": "https://www.airpak-express.site/media?name=omnichannel-fulfilment-checklist-for-international-shipping",
-      "permanent": true
     }
   ],
   "rewrites": [
