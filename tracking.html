@@ -350,7 +350,11 @@
     </div>
 
     <script>
-        // Track shipment function - connects to shipnow.airpak-express.site API
+        // Supabase configuration
+        const SUPABASE_URL = 'https://zygoqqsgzhgpvlpttfbk.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp5b3FxcXNnemhncHZsdHB0ZmJrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk4MTYzMTAsImV4cCI6MjA2NTM5MjMxMH0.placeholder';
+
+        // Track shipment function - connects to Supabase backend
         async function trackShipment(event) {
             event.preventDefault();
 
@@ -365,27 +369,52 @@
             loadingState.style.display = 'block';
 
             try {
-                // Try to fetch from shipnow API
-                const response = await fetch(`https://shipnow.airpak-express.site/api/tracking/${trackingNumber}`, {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                });
+                // Try Supabase first
+                const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+                const { data, error } = await supabase
+                    .from('shipments')
+                    .select('*')
+                    .eq('tracking_number', trackingNumber)
+                    .single();
 
-                if (response.ok) {
-                    const data = await response.json();
+                if (error) {
+                    throw error;
+                }
+
+                if (data) {
                     displayTrackingResult(data);
                 } else {
-                    // If API not available, show demo tracking
+                    // Try shipnow API as fallback
+                    await tryShipnowAPI(trackingNumber);
+                }
+            } catch (supabaseError) {
+                // Try shipnow API as fallback
+                try {
+                    await tryShipnowAPI(trackingNumber);
+                } catch (apiError) {
+                    // If all fails, show demo tracking
                     displayDemoTracking(trackingNumber);
                 }
-            } catch (error) {
-                // If API fails, show demo tracking
-                displayDemoTracking(trackingNumber);
             }
 
             loadingState.style.display = 'none';
+        }
+
+        async function tryShipnowAPI(trackingNumber) {
+            const response = await fetch(`https://shipnow.airpak-express.site/api/tracking/${trackingNumber}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                displayTrackingResult(data);
+            } else {
+                // Show demo tracking if API not available
+                displayDemoTracking(trackingNumber);
+            }
         }
 
         function displayTrackingResult(data) {
@@ -396,10 +425,19 @@
             const resultDestination = document.getElementById('resultDestination');
             const timeline = document.getElementById('timeline');
 
-            resultTrackingNumber.textContent = data.trackingNumber || '-';
+            resultTrackingNumber.textContent = data.tracking_number || data.trackingNumber || '-';
             resultStatus.textContent = data.status || 'In Transit';
-            resultOrigin.textContent = data.origin || 'Singapore';
+            resultOrigin.textContent = data.origin || 'Warehouse';
             resultDestination.textContent = data.destination || '-';
+
+            // Status badge styling
+            if (data.status === 'Delivered') {
+                resultStatus.className = 'status-badge status-delivered';
+            } else if (data.status === 'Pending') {
+                resultStatus.className = 'status-badge status-pending';
+            } else {
+                resultStatus.className = 'status-badge status-transit';
+            }
 
             // Generate timeline
             let timelineHTML = '';
@@ -433,8 +471,8 @@
             resultTrackingNumber.textContent = trackingNumber;
             resultStatus.textContent = 'In Transit';
             resultStatus.className = 'status-badge status-transit';
-            resultOrigin.textContent = 'Singapore';
-            resultDestination.textContent = 'Kuala Lumpur';
+            resultOrigin.textContent = 'Warehouse';
+            resultDestination.textContent = 'Destination';
 
             const events = generateDemoEvents();
             let timelineHTML = '';
@@ -460,27 +498,24 @@
             const now = new Date();
             const events = [];
 
-            // Shipment picked up
             const pickupDate = new Date(now);
             pickupDate.setDate(pickupDate.getDate() - 3);
             events.push({
                 date: pickupDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
                 time: '09:30 AM',
                 title: 'Shipment Picked Up',
-                location: 'Singapore Warehouse'
+                location: 'Warehouse'
             });
 
-            // In transit
             const transitDate = new Date(now);
             transitDate.setDate(transitDate.getDate() - 2);
             events.push({
                 date: transitDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
                 time: '02:15 PM',
                 title: 'In Transit to Destination',
-                location: 'Singapore Sorting Center'
+                location: 'Sorting Center'
             });
 
-            // Customs clearance
             const customsDate = new Date(now);
             customsDate.setDate(customsDate.getDate() - 1);
             events.push({
@@ -490,12 +525,11 @@
                 location: 'Border Crossing'
             });
 
-            // Out for delivery
             events.push({
                 date: now.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
                 time: '08:00 AM',
                 title: 'Out for Delivery',
-                location: 'Kuala Lumpur Distribution Center'
+                location: 'Distribution Center'
             });
 
             return events;
@@ -509,7 +543,5 @@
             trackShipment({ preventDefault: () => {} });
         }
     </script>
-    <!-- Supabase Tracking Script -->
-    <script src="js/supabase-tracking.js"></script>
 </body>
 </html>
