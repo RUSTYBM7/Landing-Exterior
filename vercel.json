@@ -1,0 +1,121 @@
+{
+  "redirects": [
+    {
+      "source": "/",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/about-us",
+      "destination": "/aboutus.html"
+    },
+    {
+      "source": "/aboutus",
+      "destination": "/aboutus.html"
+    },
+    {
+      "source": "/contact",
+      "destination": "/contact.html"
+    },
+    {
+      "source": "/tracking",
+      "destination": "/tracking.html"
+    },
+    {
+      "source": "/careers",
+      "destination": "/careers.html"
+    },
+    {
+      "source": "/services/domestic",
+      "destination": "/service-domestic-worldwide-deliveries.html"
+    },
+    {
+      "source": "/services/warehousing",
+      "destination": "/service-warehousing.html"
+    },
+    {
+      "source": "/services/international",
+      "destination": "/service-international-crossborder.html"
+    },
+    {
+      "source": "/services/freight",
+      "destination": "/service-worldwideforwarding.html"
+    },
+    {
+      "source": "/international-shipping",
+      "destination": "/international-shipping.html"
+    },
+    {
+      "source": "/logistics-partner",
+      "destination": "/logistics-partner-singapore.html"
+    },
+    {
+      "source": "/media",
+      "destination": "/media-listing.html"
+    },
+    {
+      "source": "/privacy-policy",
+      "destination": "/privacypolicy.html"
+    },
+    {
+      "source": "/terms-of-service",
+      "destination": "/termsofservice.html"
+    },
+    {
+      "source": "/standard-conditions",
+      "destination": "/standardconditionsofcarriage.html"
+    },
+    {
+      "source": "/fuel-surcharge",
+      "destination": "/fuelsurcharge.html"
+    },
+    {
+      "source": "/worldwide-domestic",
+      "destination": "/worldwide-domestic-courier-service.html"
+    },
+    {
+      "source": "/coming-soon",
+      "destination": "/comingsoon.html"
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/api/:path*",
+      "destination": "https://shipnow.airpak-express.site/api/:path*"
+    },
+    {
+      "source": "/rest/:path*",
+      "destination": "https://zygoqqsgzhgpvlpttfbk.supabase.co/rest/:path*"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        },
+        {
+          "key": "X-XSS-Protection",
+          "value": "1; mode=block"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        },
+        {
+          "key": "Content-Security-Policy",
+          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://zygoqqsgzhgpvlpttfbk.supabase.co https://shipnow.airpak-express.site"
+        }
+      ]
+    }
+  ],
+  "env": {
+    "VITE_SUPABASE_URL": "https://zygoqqsgzhgpvlpttfbk.supabase.co",
+    "VITE_SUPABASE_ANON_KEY": "YOUR_SUPABASE_ANON_KEY"
+  }
+}

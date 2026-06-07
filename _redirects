@@ -1,0 +1,23 @@
+# Netlify-style redirects for airpak-express.site
+/                       /index.html
+/about-us               /aboutus.html
+/aboutus                /aboutus.html
+/contact                /contact.html
+/tracking               /tracking.html
+/careers                /careers.html
+/services/domestic      /service-domestic-worldwide-deliveries.html
+/services/warehousing   /service-warehousing.html
+/services/international /service-international-crossborder.html
+/services/freight       /service-worldwideforwarding.html
+/international-shipping /international-shipping.html
+/logistics-partner      /logistics-partner-singapore.html
+/media                  /media-listing.html
+/privacy-policy         /privacypolicy.html
+/terms-of-service       /termsofservice.html
+/standard-conditions    /standardconditionsofcarriage.html
+/fuel-surcharge         /fuelsurcharge.html
+/worldwide-domestic     /worldwide-domestic-courier-service.html
+/coming-soon            /comingsoon.html
+
+# API proxy to shipnow
+/api/*  https://shipnow.airpak-express.site/api/:splat  200
