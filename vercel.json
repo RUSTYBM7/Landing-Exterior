@@ -5,16 +5,6 @@
       "destination": "/index.html"
     },
     {
-      "source": "https://airpak-express.site",
-      "destination": "https://www.airpak-express.site",
-      "permanent": true
-    },
-    {
-      "source": "https://airpak-express.site/",
-      "destination": "https://www.airpak-express.site/",
-      "permanent": true
-    },
-    {
       "source": "/about-us",
       "destination": "/aboutus.html"
     },
