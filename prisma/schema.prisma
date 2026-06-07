@@ -1,0 +1,44 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+// Shipment model for tracking
+model Shipment {
+  id             BigInt   @id @default(autoincrement())
+  trackingNumber String   @unique @map("tracking_number")
+  status         String   @default("Pending")
+  origin         String   @default("Singapore")
+  destination    String
+  senderName     String?  @map("sender_name")
+  senderAddress  String?  @map("sender_address")
+  receiverName   String?  @map("receiver_name")
+  receiverAddress String? @map("receiver_address")
+  weight         Decimal? @db.Decimal(10, 2)
+  dimensions     String?
+  serviceType    String?  @map("service_type")
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt @map("updated_at")
+  events         TrackingEvent[]
+
+  @@map("shipments")
+}
+
+// Tracking events model
+model TrackingEvent {
+  id          BigInt   @id @default(autoincrement())
+  shipmentId  BigInt   @map("shipment_id")
+  title       String
+  location    String?
+  eventDate   DateTime? @map("event_date")
+  notes       String?
+  createdAt   DateTime @default(now()) @map("created_at")
+  shipment    Shipment @relation(fields: [shipmentId], references: [id], onDelete: Cascade)
+
+  @@map("tracking_events")
+}
