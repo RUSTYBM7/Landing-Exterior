@@ -5,6 +5,16 @@
       "destination": "/index.html"
     },
     {
+      "source": "https://airpak-express.site",
+      "destination": "https://www.airpak-express.site",
+      "status": 301
+    },
+    {
+      "source": "https://airpak-express.site/",
+      "destination": "https://www.airpak-express.site/",
+      "status": 301
+    },
+    {
       "source": "/about-us",
       "destination": "/aboutus.html"
     },
@@ -75,6 +85,96 @@
     {
       "source": "/coming-soon",
       "destination": "/comingsoon.html"
+    },
+    {
+      "source": "/aboutus.html",
+      "destination": "https://www.airpak-express.site/about-us",
+      "status": 301
+    },
+    {
+      "source": "/careers.html",
+      "destination": "https://www.airpak-express.site/careers",
+      "status": 301
+    },
+    {
+      "source": "/comingsoon.html",
+      "destination": "https://www.airpak-express.site/coming-soon",
+      "status": 301
+    },
+    {
+      "source": "/contact.html",
+      "destination": "https://www.airpak-express.site/contact",
+      "status": 301
+    },
+    {
+      "source": "/fuelsurcharge.html",
+      "destination": "https://www.airpak-express.site/fuel-surcharge",
+      "status": 301
+    },
+    {
+      "source": "/international-shipping.html",
+      "destination": "https://www.airpak-express.site/international-shipping",
+      "status": 301
+    },
+    {
+      "source": "/logistics-partner-singapore.html",
+      "destination": "https://www.airpak-express.site/logistics-partner-singapore",
+      "status": 301
+    },
+    {
+      "source": "/media-listing.html",
+      "destination": "https://www.airpak-express.site/media-listing",
+      "status": 301
+    },
+    {
+      "source": "/privacypolicy.html",
+      "destination": "https://www.airpak-express.site/privacy-policy",
+      "status": 301
+    },
+    {
+      "source": "/service-domestic-worldwide-deliveries.html",
+      "destination": "https://www.airpak-express.site/service/domestic-worldwide-deliveries",
+      "status": 301
+    },
+    {
+      "source": "/service-international-crossborder.html",
+      "destination": "https://www.airpak-express.site/service/international-crossborder",
+      "status": 301
+    },
+    {
+      "source": "/service-warehousing.html",
+      "destination": "https://www.airpak-express.site/service/warehousing",
+      "status": 301
+    },
+    {
+      "source": "/service-worldwideforwarding.html",
+      "destination": "https://www.airpak-express.site/service/worldwide-forwarding",
+      "status": 301
+    },
+    {
+      "source": "/standardconditionsofcarriage.html",
+      "destination": "https://www.airpak-express.site/standard-conditions-of-carriage",
+      "status": 301
+    },
+    {
+      "source": "/termsofservice.html",
+      "destination": "https://www.airpak-express.site/terms-of-service",
+      "status": 301
+    },
+    {
+      "source": "/tracking.html",
+      "destination": "https://www.airpak-express.site/tracking",
+      "status": 301
+    },
+    {
+      "source": "/worldwide-domestic-courier-service.html",
+      "destination": "https://www.airpak-express.site/worldwide-domestic-courier-service",
+      "status": 301
+    },
+    {
+      "source": "/media?name=omnichannel-fulfilment-checklist-for-international-shipping.html",
+      "destination": "https://www.airpak-express.site/media?name=omnichannel-fulfilment-checklist-for-international-shipping",
+      "status": 301
     }
   ],
   "rewrites": [

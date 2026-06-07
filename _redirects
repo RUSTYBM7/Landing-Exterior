@@ -1,4 +1,28 @@
-# Netlify-style redirects for airpak-express.site
+# Main redirects to www.airpak-express.site
+/aboutus.html https://www.airpak-express.site/about-us 301
+/careers.html https://www.airpak-express.site/careers 301
+/comingsoon.html https://www.airpak-express.site/coming-soon 301
+/contact.html https://www.airpak-express.site/contact 301
+/fuelsurcharge.html https://www.airpak-express.site/fuel-surcharge 301
+/international-shipping.html https://www.airpak-express.site/international-shipping 301
+/logistics-partner-singapore.html https://www.airpak-express.site/logistics-partner-singapore 301
+/media-listing.html https://www.airpak-express.site/media-listing 301
+/privacypolicy.html https://www.airpak-express.site/privacy-policy 301
+/service-domestic-worldwide-deliveries.html https://www.airpak-express.site/service/domestic-worldwide-deliveries 301
+/service-international-crossborder.html https://www.airpak-express.site/service/international-crossborder 301
+/service-warehousing.html https://www.airpak-express.site/service/warehousing 301
+/service-worldwideforwarding.html https://www.airpak-express.site/service/worldwide-forwarding 301
+/standardconditionsofcarriage.html https://www.airpak-express.site/standard-conditions-of-carriage 301
+/termsofservice.html https://www.airpak-express.site/terms-of-service 301
+/tracking.html https://www.airpak-express.site/tracking 301
+/worldwide-domestic-courier-service.html https://www.airpak-express.site/worldwide-domestic-courier-service 301
+/media?name=omnichannel-fulfilment-checklist-for-international-shipping.html https://www.airpak-express.site/media?name=omnichannel-fulfilment-checklist-for-international-shipping 301
+
+# Root domain to www redirect
+https://airpak-express.site/* https://www.airpak-express.site/:splat 301
+http://airpak-express.site/* https://www.airpak-express.site/:splat 301
+
+# Internal rewrites
 /                       /index.html
 /about-us               /aboutus.html
 /aboutus                /aboutus.html

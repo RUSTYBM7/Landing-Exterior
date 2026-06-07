@@ -38,3 +38,5 @@ prisma/migrations/
 
 # Misc
 *.local
+.vercel
+.env*
