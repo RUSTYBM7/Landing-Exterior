@@ -34,7 +34,33 @@
 <link href="https://fonts.googleapis.com/css2?family=Caveat+Brush&family=Inter&family=Poppins:wght@400;600&family=Sarabun:wght@100;400&display=swap" rel="stylesheet" />
         
         <style type="text/css">
-            
+
+            /* Mobile menu submenu hidden by default */
+            @media (max-width: 991px) {
+                .mobile-menu .dropdown {
+                    display: none;
+                    padding-left: 15px;
+                }
+                .mobile-menu .menu-item-has-children.active > .dropdown {
+                    display: block;
+                }
+                .mobile-menu .menu-item-has-children > a::after {
+                    content: '\f107';
+                    font-family: 'FontAwesome';
+                    float: right;
+                    margin-left: 5px;
+                }
+                .mobile-menu .menu-item-has-children.active > a::after {
+                    content: '\f106';
+                }
+            }
+
+            /* Scroll to top button */
+            #scroll-to-top:hover {
+                background: #b01f1f;
+                transform: translateY(-2px);
+            }
+
             .enquireform{
                 background-color:#F3F4F8;padding:20px;border-radius:10px;
             }
@@ -1075,6 +1101,60 @@ a{color:#CD2727;}
         $(".mobile-menu-active").removeClass("mobile-menu-active");
         $('#signup').modal('show');
     }
+
+    // Mobile menu fixes
+    $(document).ready(function() {
+        // Mobile menu close button (X)
+        $('.mobile-menu-close').on('click', function() {
+            $('.mobile-header-active').removeClass('sidebar-visible');
+            $('body').removeClass('mobile-menu-active');
+        });
+
+        // Mobile submenu toggle - click to expand/collapse
+        $('.mobile-menu .menu-item-has-children > a').on('click', function(e) {
+            e.preventDefault();
+            var $parent = $(this).parent();
+            var $dropdown = $parent.find('> ul.dropdown');
+
+            if ($dropdown.length) {
+                if ($dropdown.is(':visible')) {
+                    $dropdown.slideUp(200);
+                    $parent.removeClass('active');
+                } else {
+                    // Close other open submenus first
+                    $('.mobile-menu .menu-item-has-children ul.dropdown').slideUp(200);
+                    $('.mobile-menu .menu-item-has-children').removeClass('active');
+                    $dropdown.slideDown(200);
+                    $parent.addClass('active');
+                }
+            }
+        });
+
+        // Close mobile menu when clicking outside
+        $(document).on('click', function(e) {
+            if (!$(e.target).closest('.mobile-header-active').length &&
+                !$(e.target).closest('.header-action-icon-2').length) {
+                $('.mobile-header-active').removeClass('sidebar-visible');
+                $('body').removeClass('mobile-menu-active');
+            }
+        });
+
+        // Scroll to top button
+        $('body').append('<button id="scroll-to-top" style="display:none;position:fixed;bottom:30px;right:30px;width:50px;height:50px;border-radius:50%;background:#CD2727;color:#fff;border:none;font-size:20px;cursor:pointer;z-index:9999;box-shadow:0 4px 15px rgba(0,0,0,0.3);"><i class="fa fa-arrow-up"></i></button>');
+
+        $(window).scroll(function() {
+            if ($(this).scrollTop() > 300) {
+                $('#scroll-to-top').fadeIn(300);
+            } else {
+                $('#scroll-to-top').fadeOut(300);
+            }
+        });
+
+        $('#scroll-to-top').on('click', function() {
+            $('html, body').animate({scrollTop: 0}, 400);
+            return false;
+        });
+    });
 </script>
 <div id="notifications"></div>	
 <div class="modal fade" id="notification-window">
