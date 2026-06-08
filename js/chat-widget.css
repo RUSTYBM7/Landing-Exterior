@@ -1,6 +1,6 @@
 /**
  * Airpak Express - Advanced AI Chat Widget
- * Dark Mode Style with Home, Messages, Help tabs
+ * Dark Mode Style - Chat on LEFT, Scroll-to-top on RIGHT
  */
 
 :root {
@@ -17,16 +17,16 @@
     --chat-radius: 16px;
 }
 
-/* Main Widget Container */
+/* Main Widget Container - LEFT SIDE for Chat */
 #airpak-chat-widget {
     position: fixed;
     bottom: 24px;
-    right: 24px;
+    left: 24px;
     z-index: 999999;
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
-/* Toggle Button */
+/* Toggle Button - Chat Icon */
 #airpak-chat-toggle {
     width: 64px;
     height: 64px;
@@ -52,11 +52,12 @@
     fill: white;
 }
 
-/* Chat Window - Full AI Agent Style */
+/* Chat Window - Position from LEFT */
 #airpak-chat-window {
     position: absolute;
     bottom: 80px;
-    right: 0;
+    left: 0;
+    right: auto;
     width: 380px;
     max-width: calc(100vw - 48px);
     height: 580px;
@@ -580,13 +581,13 @@
 @media (max-width: 480px) {
     #airpak-chat-widget {
         bottom: 16px;
-        right: 16px;
+        left: 16px;
     }
 
     #airpak-chat-window {
         width: calc(100vw - 32px);
         height: calc(100vh - 100px);
         bottom: 76px;
-        right: -8px;
+        left: -8px;
     }
 }
