@@ -543,9 +543,13 @@ a{color:#CD2727;}
 </style>
        <section id="home" class="home-banner" style="padding-top:140px;position:relative;">
            <div class="videoplay" style="position:absolute;top:0px;left:0px;width:100%;">
-            <div style="margin-left:auto;margin-right:auto;max-width:1600px;"><video width="400"  autoplay muted loop playsinline src="apps/airpak/img/homepage_small.mp4">
+            <div style="margin-left:auto;margin-right:auto;max-width:1600px;"><video width="400" autoplay muted loop playsinline controls="false" oncontextmenu="return false;" ontouchstart="return true;" id="homeVideo" style="pointer-events:none;">
     <source src="apps/airpak/img/homepage_small.mp4" type="video/mp4">
-</video></div>
+</video>
+<script>
+document.getElementById('homeVideo').addEventListener('pause', function() { this.play(); });
+document.getElementById('homeVideo').addEventListener('ended', function() { this.play(); });
+</script></div>
                </div>
            <div class="container">
                <div class="row">
