@@ -1144,11 +1144,16 @@ a{color:#CD2727;}
             }
         });
 
-        // Scroll to top button
-        $('body').append('<button id="scroll-to-top" style="display:none;position:fixed;bottom:30px;right:30px;width:50px;height:50px;border-radius:50%;background:#CD2727;color:#fff;border:none;font-size:20px;cursor:pointer;z-index:9999;box-shadow:0 4px 15px rgba(0,0,0,0.3);"><i class="fa fa-arrow-up"></i></button>');
+        // Scroll to top button - thin black circle with white arrow
+        $('body').append('<button id="scroll-to-top" style="display:none;position:fixed;bottom:24px;right:90px;width:40px;height:40px;border-radius:50%;background:#fff;border:1.5px solid #333;cursor:pointer;z-index:9998;opacity:0.9;transition:opacity 0.3s;"><svg viewBox="0 0 24 24" width="16" height="16" style="fill:#333;margin-top:10px;"><path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"/></svg></button>');
 
         $(window).scroll(function() {
-            if ($(this).scrollTop() > 300) {
+            var scrollTop = $(this).scrollTop();
+            var docHeight = $(document).height();
+            var winHeight = $(window).height();
+            // Show when scrolled past 80% of page (near footer)
+            var triggerPoint = docHeight * 0.8;
+            if (scrollTop > triggerPoint) {
                 $('#scroll-to-top').fadeIn(300);
             } else {
                 $('#scroll-to-top').fadeOut(300);
@@ -1172,12 +1177,12 @@ a{color:#CD2727;}
     });
 </script>
 
-<!-- Support Chat Widget -->
+<!-- Support Chat Widget - Red button right side -->
 <style>
-.chat-widget-btn{position:fixed;bottom:24px;left:24px;width:56px;height:56px;border-radius:50%;background:#fff;border:1.5px solid #ddd;box-shadow:0 4px 12px rgba(0,0,0,0.15);cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:9998;transition:all 0.3s ease;}
-.chat-widget-btn:hover{transform:scale(1.05);box-shadow:0 6px 16px rgba(0,0,0,0.2);}
-.chat-widget-btn svg{width:28px;height:28px;fill:#333;}
-.chat-popup{position:fixed;bottom:100px;left:24px;width:380px;max-width:calc(100vw - 48px);height:550px;max-height:calc(100vh - 140px);background:#fff;border-radius:12px;box-shadow:0 10px 40px rgba(0,0,0,0.2);z-index:9997;display:none;flex-direction:column;overflow:hidden;font-family:'Inter',sans-serif;}
+.chat-widget-btn{position:fixed;bottom:24px;right:24px;width:56px;height:56px;border-radius:50%;background:#CD2727;border:none;box-shadow:0 4px 12px rgba(205,39,39,0.4);cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:9998;transition:all 0.3s ease;}
+.chat-widget-btn:hover{transform:scale(1.05);box-shadow:0 6px 16px rgba(205,39,39,0.5);}
+.chat-widget-btn svg{width:28px;height:28px;fill:#fff;}
+.chat-popup{position:fixed;bottom:100px;right:24px;width:380px;max-width:calc(100vw - 48px);height:550px;max-height:calc(100vh - 140px);background:#fff;border-radius:12px;box-shadow:0 10px 40px rgba(0,0,0,0.2);z-index:9997;display:none;flex-direction:column;overflow:hidden;font-family:'Inter',sans-serif;}
 .chat-popup.active{display:flex;animation:slideUp 0.3s ease;}
 @keyframes slideUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
 .chat-header{background:#CD2727;color:#fff;padding:16px 20px;display:flex;align-items:center;justify-content:space-between;}
@@ -1201,7 +1206,7 @@ a{color:#CD2727;}
 .faq-item::before{content:'Q: ';font-weight:600;color:#CD2727;}
 .privacy-content{padding:20px;font-size:13px;color:#555;line-height:1.6;}
 .privacy-content h5{margin:16px 0 8px;color:#333;font-size:14px;}
-@media(max-width:480px){.chat-popup{left:10px;right:10px;width:auto;bottom:90px;}.chat-widget-btn{bottom:20px;left:20px;}}
+@media(max-width:480px){.chat-popup{left:10px;right:10px;width:auto;bottom:90px;}.chat-widget-btn{bottom:20px;right:20px;}}
 </style>
 
 <div class="chat-widget-btn" onclick="toggleChat()" title="Chat with us">
