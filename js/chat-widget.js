@@ -127,23 +127,114 @@
         }
     }
 
-    // Process user message
+    // Process user message with AI-like intelligence
     async function processUserMessage(content) {
         const lowerContent = content.toLowerCase();
 
-        if (lowerContent.includes('tracking') || lowerContent.includes('track')) {
-            await sendBotMessage('To track your shipment, please visit our tracking page or provide your tracking number.');
-        } else if (lowerContent.includes('price') || lowerContent.includes('rate') || lowerContent.includes('cost')) {
-            await sendBotMessage('For shipping rates, please provide:\n- Origin country\n- Destination country\n- Package weight & dimensions\n\nOur team will get back to you with a quote.');
-        } else if (lowerContent.includes('contact') || lowerContent.includes('phone') || lowerContent.includes('email')) {
-            await sendBotMessage('Contact us:\n- Phone: +65 XXXX XXXX\n- Email: support@airpak-express.com');
-        } else if (lowerContent.includes('hello') || lowerContent.includes('hi') || lowerContent.includes('hey')) {
-            await sendBotMessage('Hello! Welcome to Airpak Express. How can I assist you today?');
-        } else if (lowerContent.includes('help')) {
-            await sendBotMessage('I can help you with:\n\n- Shipping & Tracking\n- Rates & Quotes\n- Pickup & Delivery\n- General Inquiries\n\nWhat would you like to know?');
-        } else {
-            await sendBotMessage('Thanks for your message! A support agent will respond shortly. For immediate assistance, you can reach us via Telegram.');
+        // Greetings
+        if (/\b(hi|hello|hey|good morning|good afternoon|good evening|howdy|greetings)\b/.test(lowerContent)) {
+            const greetings = [
+                "Hello! Welcome to Airpak Express. I'm here to help you with all your shipping needs. What can I assist you with today?",
+                "Hi there! Thanks for reaching out to Airpak Express. How may I help you today?",
+                "Hey! Great to hear from you. I'm your Airpak Express assistant. What would you like to know?"
+            ];
+            await sendBotMessage(greetings[Math.floor(Math.random() * greetings.length)]);
+            return;
         }
+
+        // Tracking related
+        if (/\b(track|tracking|where is|status|delivery|shipment|parcel|package)\b/.test(lowerContent)) {
+            if (/\d{6,}/.test(content)) {
+                await sendBotMessage('I found a tracking number in your message! You can track your shipment at: https://tracking.airpak-express.com\n\nAlternatively, visit our tracking page and enter your tracking number for real-time updates on your delivery status.');
+            } else {
+                await sendBotMessage('To track your shipment, please visit our tracking page at: https://tracking.airpak-express.com\n\nOr provide your tracking number and I can help guide you through the process.');
+            }
+            return;
+        }
+
+        // Pricing/Rates
+        if (/\b(price|cost|rate|quote|charge|fee|amount|pay|price|how much)\b/.test(lowerContent)) {
+            if (/\b(singapore|malaysia|thailand|indonesia|usa|uk|europe|asia)\b/.test(lowerContent)) {
+                await sendBotMessage('Great question! I can help you with international shipping rates. For the most accurate quote, please:\n\n1. Visit: https://shipnow.airpak-express.com\n2. Or provide your exact origin, destination, package weight, and dimensions.\n\nOur rates are competitive and we offer express delivery options as well.');
+            } else {
+                await sendBotMessage('For shipping rates, I\'ll need a few details:\n\n• Origin country\n• Destination country  \n• Package weight & dimensions\n• Service type (Express/Standard)\n\nVisit https://shipnow.airpak-express.com for instant quotes, or share these details and I\'ll connect you with our team.');
+            }
+            return;
+        }
+
+        // Contact information
+        if (/\b(contact|phone|call|email|reach|speak|human|agent|real person|live)\b/.test(lowerContent)) {
+            await sendBotMessage('You can reach us through:\n\n📞 Phone: +65 XXXX XXXX\n📧 Email: support@airpak-express.com\n💬 Telegram: @AirpakExpress\n\nOr continue chatting here and an agent will respond shortly!');
+            return;
+        }
+
+        // Delivery times
+        if (/\b(deliver|delivery|days|how long|time|when|eta|arrive|arrival)\b/.test(lowerContent)) {
+            await sendBotMessage('Delivery times vary by destination and service:\n\n✈️ Express: 2-5 business days\n🚢 Standard: 7-14 business days\n\nFor exact estimates, visit https://shipnow.airpak-express.com with your route details.');
+            return;
+        }
+
+        // Pickup service
+        if (/\b(pickup|pick-up|collect|collection|doorstep|home pickup)\b/.test(lowerContent)) {
+            await sendBotMessage('Yes, we offer door-to-door pickup service!\n\nTo schedule a pickup:\n1. Login at https://shipnow.airpak-express.com\n2. Create a shipment order\n3. Select pickup date & time\n\nOur courier will collect your package from your specified address.');
+            return;
+        }
+
+        // Customs/Import
+        if (/\b(customs|import|duty|tax|clearance|prohibited|restricted)\b/.test(lowerContent)) {
+            await sendBotMessage('For customs information, please note:\n\n• Each country has different import regulations\n• Some items may require permits or are prohibited\n• Duties and taxes may apply at destination\n\nCheck our shipping guidelines or contact us for specific destination requirements.');
+            return;
+        }
+
+        // Packaging
+        if (/\b(pack|package|box|envelope|wrap|bubble|fragile)\b/.test(lowerContent)) {
+            await sendBotMessage('Proper packaging tips:\n\n• Use a sturdy box appropriate for contents\n• Wrap fragile items with bubble wrap\n• Seal all edges securely\n• Label packages clearly\n• Include sender/receiver info inside & outside\n\nWe also offer packing supplies if needed!');
+            return;
+        }
+
+        // Signup/Login
+        if (/\b(sign up|register|create account|signup|signin|login|log in)\b/.test(lowerContent)) {
+            await sendBotMessage('Get started with Airpak Express:\n\n📦 New user? Sign up at: https://shipnow.airpak-express.site/signup\n\n🔐 Existing user? Login at: https://shipnow.airpak-express.site/\n\nFor enterprise solutions, visit: https://admin.airpak-express.site');
+            return;
+        }
+
+        // Insurance
+        if (/\b(insurance|insured|coverage|protect|claim|compensation)\b/.test(lowerContent)) {
+            await sendBotMessage('We offer cargo insurance for your peace of mind:\n\n• Coverage available for declared value\n• Protects against loss or damage\n• Affordable rates based on shipment value\n\nContact our team for insurance options on your specific shipment.');
+            return;
+        }
+
+        // Services
+        if (/\b(service|services|express|standard|economy|same day|next day|freight|cargo)\b/.test(lowerContent)) {
+            await sendBotMessage('Our services include:\n\n✈️ International Express Courier\n🚢 Sea & Air Freight\n📦 Warehousing & Fulfilment\n🚚 Domestic Delivery\n🌍 Customs Clearance\n\nVisit our services page or contact us for details on which option suits your needs best!');
+            return;
+        }
+
+        // Working hours
+        if (/\b(hour|open|close|time|available|operation)\b/.test(lowerContent)) {
+            await sendBotMessage('Airpak Express operating hours:\n\n🕐 Customer Support: Mon-Fri, 9AM-6PM SGT\n📦 Pickup: Mon-Sat, 9AM-6PM\n🌐 Online: 24/7 at shipnow.airpak-express.com\n\nFor urgent matters outside hours, use our chat and we\'ll respond ASAP.');
+            return;
+        }
+
+        // Thank you / Goodbye
+        if (/\b(thanks|thank you|thx|appreciate|bye|goodbye|see you|take care)\b/.test(lowerContent)) {
+            await sendBotMessage("You're welcome! It was my pleasure assisting you. Don't hesitate to reach out if you have any more questions. Have a great day!");
+            return;
+        }
+
+        // Help command
+        if (/\b(help|what can you do|commands|menu|options)\b/.test(lowerContent)) {
+            await sendBotMessage('I can help you with:\n\n📦 Tracking - Check shipment status\n💰 Pricing - Get shipping quotes\n🚚 Delivery - Delivery times & options\n📋 Services - Learn about our services\n📞 Contact - Reach our team\n📦 Pickup - Schedule door-to-door collection\n📝 Signup - Create an account\n❓ General - Any other questions\n\nJust type your question!');
+            return;
+        }
+
+        // Default response with escalation
+        const defaultResponses = [
+            "Thanks for your message! I've forwarded it to our support team and someone will get back to you shortly.",
+            "I appreciate your question. Our team will review and respond as soon as possible.",
+            "Great question! I've noted it down and an agent will provide detailed assistance shortly."
+        ];
+        await sendBotMessage(defaultResponses[Math.floor(Math.random() * defaultResponses.length)] + '\n\nFor immediate assistance, contact us at support@airpak-express.com or visit our FAQ page.');
     }
 
     // Add message to UI
@@ -269,7 +360,7 @@
 <div class="airpak-quick-actions">\
 <button class="airpak-quick-btn" onclick="window.open(\'https://tracking.airpak-express.com\', \'_blank\')"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>Track Shipment</button>\
 <button class="airpak-quick-btn" onclick="window.open(\'/contact.html\', \'_blank\')"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>Contact Us</button>\
-<button class="airpak-quick-btn" onclick="window.open(\'https://shipnow.airpak-express.com\', \'_blank\')"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 3c1.93 0 3.5 1.57 3.5 3.5S13.93 13 12 13s-3.5-1.57-3.5-3.5S10.07 6 12 6zm7 13H5v-.23c0-.62.28-1.2.76-1.58C7.47 15.82 9.64 15 12 15s4.53.82 6.24 2.19c.48.38.76.97.76 1.58V19z"/></svg>Get Quote</button>\
+<button class="airpak-quick-btn" onclick="window.open(\'https://shipnow.airpak-express.site\', \'_blank\')"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 3c1.93 0 3.5 1.57 3.5 3.5S13.93 13 12 13s-3.5-1.57-3.5-3.5S10.07 6 12 6zm7 13H5v-.23c0-.62.28-1.2.76-1.58C7.47 15.82 9.64 15 12 15s4.53.82 6.24 2.19c.48.38.76.97.76 1.58V19z"/></svg>Get Quote</button>\
 </div>\
 <div class="airpak-messages" id="airpakMessages"></div>\
 <div class="airpak-input-area">\
