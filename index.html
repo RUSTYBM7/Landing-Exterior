@@ -1177,55 +1177,63 @@ a{color:#CD2727;}
     });
 </script>
 
-<!-- Support Chat Widget - Red button right side -->
+<!-- Freshchat Widget - Horizontal pill style -->
 <style>
-.chat-widget-btn{position:fixed;bottom:24px;right:24px;width:56px;height:56px;border-radius:50%;background:#CD2727;border:none;box-shadow:0 4px 12px rgba(205,39,39,0.4);cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:9998;transition:all 0.3s ease;}
-.chat-widget-btn:hover{transform:scale(1.05);box-shadow:0 6px 16px rgba(205,39,39,0.5);}
-.chat-widget-btn svg{width:28px;height:28px;fill:#fff;}
-.chat-popup{position:fixed;bottom:100px;right:24px;width:380px;max-width:calc(100vw - 48px);height:550px;max-height:calc(100vh - 140px);background:#fff;border-radius:12px;box-shadow:0 10px 40px rgba(0,0,0,0.2);z-index:9997;display:none;flex-direction:column;overflow:hidden;font-family:'Inter',sans-serif;}
-.chat-popup.active{display:flex;animation:slideUp 0.3s ease;}
-@keyframes slideUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
-.chat-header{background:#CD2727;color:#fff;padding:16px 20px;display:flex;align-items:center;justify-content:space-between;}
-.chat-header h4{margin:0;font-size:16px;font-weight:600;}
-.chat-header-close{background:none;border:none;color:#fff;font-size:24px;cursor:pointer;padding:0;line-height:1;}
-.chat-tabs{display:flex;border-bottom:1px solid #eee;}
-.chat-tab{flex:1;padding:12px;text-align:center;cursor:pointer;font-size:13px;color:#666;border-bottom:2px solid transparent;transition:all 0.2s;}
-.chat-tab:hover,.chat-tab.active{color:#CD2727;border-bottom-color:#CD2727;}
-.chat-content{flex:1;overflow-y:auto;padding:16px;}
-.chat-messages{display:flex;flex-direction:column;gap:12px;}
-.chat-message{max-width:80%;padding:10px 14px;border-radius:12px;font-size:14px;line-height:1.4;}
-.chat-message.bot{background:#f5f5f5;color:#333;align-self:flex-start;border-bottom-left-radius:4px;}
-.chat-message.user{background:#CD2727;color:#fff;align-self:flex-end;border-bottom-right-radius:4px;}
-.chat-input-area{padding:12px 16px;border-top:1px solid #eee;display:flex;gap:8px;}
-.chat-input{flex:1;padding:10px 14px;border:1px solid #ddd;border-radius:20px;font-size:14px;outline:none;}
-.chat-input:focus{border-color:#CD2727;}
-.chat-send-btn{width:40px;height:40px;border-radius:50%;background:#CD2727;border:none;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;}
-.faq-list{display:flex;flex-direction:column;gap:8px;}
-.faq-item{padding:12px 16px;background:#f9f9f9;border-radius:8px;cursor:pointer;font-size:14px;color:#333;transition:background 0.2s;}
-.faq-item:hover{background:#f0f0f0;}
-.faq-item::before{content:'Q: ';font-weight:600;color:#CD2727;}
-.privacy-content{padding:20px;font-size:13px;color:#555;line-height:1.6;}
-.privacy-content h5{margin:16px 0 8px;color:#333;font-size:14px;}
-@media(max-width:480px){.chat-popup{left:10px;right:10px;width:auto;bottom:90px;}.chat-widget-btn{bottom:20px;right:20px;}}
+.fc-widget-btn{position:fixed;bottom:24px;left:24px;z-index:9998;cursor:pointer;transition:transform 0.3s;}
+.fc-widget-btn:hover{transform:scale(1.02);}
+.fc-launcher{height:48px;padding:0 24px;background:#CD2727;border-radius:24px;display:flex;align-items:center;box-shadow:0 4px 16px rgba(205,39,39,0.4);gap:12px;}
+.fc-launcher .fc-icon{width:28px;height:28px;border:2px solid #fff;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:14px;font-weight:bold;}
+.fc-launcher .fc-text{color:#fff;font-size:14px;font-weight:600;white-space:nowrap;}
+.fc-popup{position:fixed;bottom:90px;left:24px;width:340px;max-width:calc(100vw - 48px);background:#fff;border-radius:16px;box-shadow:0 12px 48px rgba(0,0,0,0.25);z-index:9997;display:none;overflow:hidden;font-family:'Inter',sans-serif;}
+.fc-popup.active{display:block;animation:fcSlideUp 0.3s ease;}
+@keyframes fcSlideUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+.fc-popup-header{background:#fff;padding:20px;border-bottom:1px solid #eee;display:flex;align-items:center;justify-content:space-between;}
+.fc-popup-header h4{margin:0;font-size:16px;color:#333;font-weight:600;}
+.fc-popup-close{width:32px;height:32px;border-radius:50%;background:#f5f5f5;border:none;color:#666;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.fc-popup-body{padding:16px;}
+.fc-option{display:flex;align-items:center;gap:16px;padding:16px;background:#f9f9f9;border-radius:12px;margin-bottom:8px;cursor:pointer;transition:background 0.2s;}
+.fc-option:hover{background:#f0f0f0;}
+.fc-option:last-child{margin-bottom:0;}
+.fc-option-icon{width:44px;height:44px;background:#E8745A;border-radius:10px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:18px;font-weight:bold;flex-shrink:0;}
+.fc-option-text h5{margin:0 0 4px;font-size:15px;color:#333;font-weight:600;}
+.fc-option-text p{margin:0;font-size:12px;color:#999;}
+.fc-popup-footer{padding:12px;text-align:center;border-top:1px solid #eee;background:#fafafa;}
+.fc-powered{font-size:11px;color:#999;}
+.fc-powered span{color:#4CAF50;font-weight:600;}
+@media(max-width:480px){.fc-widget-btn{bottom:16px;left:16px;}.fc-popup{left:16px;right:16px;width:auto;bottom:80px;}}
 </style>
 
-<div class="chat-widget-btn" onclick="toggleChat()" title="Chat with us">
-<svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H6l-2 2V4h16v12z"/></svg>
+<div class="fc-widget-btn" onclick="toggleFreshchat()">
+<div class="fc-launcher">
+<span class="fc-icon">?</span>
+<span class="fc-text">CHAT WITH US</span>
+</div>
 </div>
 
-<div class="chat-popup" id="chatPopup">
-<div class="chat-header"><h4>Airpak Express Support</h4><button class="chat-header-close" onclick="toggleChat()">&times;</button></div>
-<div class="chat-tabs">
-<div class="chat-tab active" onclick="switchChatTab('chat',this)">Chat</div>
-<div class="chat-tab" onclick="switchChatTab('faq',this)">FAQs</div>
-<div class="chat-tab" onclick="switchChatTab('privacy',this)">Privacy</div>
+<div class="fc-popup" id="fcPopup">
+<div class="fc-popup-header">
+<h4>Welcome to Airpak Express</h4>
+<button class="fc-popup-close" onclick="toggleFreshchat()">&times;</button>
 </div>
-<div class="chat-content" id="chatContent"><div class="chat-messages" id="chatMessages"><div class="chat-message bot">Hello! How can we help you today?</div></div></div>
-<div class="chat-input-area" id="chatInputArea">
-<input type="text" class="chat-input" id="chatInput" placeholder="Type your message..." onkeypress="if(event.key==='Enter')sendMessage()">
-<button class="chat-send-btn" onclick="sendMessage()"><i class="fa fa-paper-plane"></i></button>
+<div class="fc-popup-body">
+<div class="fc-option" onclick="startFreshchat()">
+<div class="fc-option-icon">C</div>
+<div class="fc-option-text"><h5>Chat with us</h5><p>Hello there! Need help? Reach us now.</p></div>
+</div>
+<div class="fc-option" onclick="startFreshchat()">
+<div class="fc-option-icon">S</div>
+<div class="fc-option-text"><h5>Support</h5><p>Hi there! How can we help you?</p></div>
 </div>
 </div>
+<div class="fc-popup-footer">
+<div class="fc-powered">Powered by <span>Freshchat</span></div>
+</div>
+</div>
+
+<script>
+function toggleFreshchat(){document.getElementById('fcPopup').classList.toggle('active');}
+function startFreshchat(){alert('Live chat would open here. Connect to Freshchat API for full functionality.');}
+</script>
 
 <script>
 function toggleChat(){var p=document.getElementById('chatPopup');p.classList.toggle('active');if(p.classList.contains('active')){document.getElementById('chatInput').focus();}}

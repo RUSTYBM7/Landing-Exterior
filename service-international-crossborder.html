@@ -1209,6 +1209,63 @@ src="https://www.facebook.com/tr?id=503153045757252&ev=PageView&noscript=1"
 /></noscript>
 <!-- End Meta Pixel Code -->
 
+<!-- Freshchat Widget - Horizontal pill style -->
+<style>
+.fc-widget-btn{position:fixed;bottom:24px;left:24px;z-index:9998;cursor:pointer;transition:transform 0.3s;}
+.fc-widget-btn:hover{transform:scale(1.02);}
+.fc-launcher{height:48px;padding:0 24px;background:#CD2727;border-radius:24px;display:flex;align-items:center;box-shadow:0 4px 16px rgba(205,39,39,0.4);gap:12px;}
+.fc-launcher .fc-icon{width:28px;height:28px;border:2px solid #fff;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:14px;font-weight:bold;}
+.fc-launcher .fc-text{color:#fff;font-size:14px;font-weight:600;white-space:nowrap;}
+.fc-popup{position:fixed;bottom:90px;left:24px;width:340px;max-width:calc(100vw - 48px);background:#fff;border-radius:16px;box-shadow:0 12px 48px rgba(0,0,0,0.25);z-index:9997;display:none;overflow:hidden;font-family:'Inter',sans-serif;}
+.fc-popup.active{display:block;animation:fcSlideUp 0.3s ease;}
+@keyframes fcSlideUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+.fc-popup-header{background:#fff;padding:20px;border-bottom:1px solid #eee;display:flex;align-items:center;justify-content:space-between;}
+.fc-popup-header h4{margin:0;font-size:16px;color:#333;font-weight:600;}
+.fc-popup-close{width:32px;height:32px;border-radius:50%;background:#f5f5f5;border:none;color:#666;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.fc-popup-body{padding:16px;}
+.fc-option{display:flex;align-items:center;gap:16px;padding:16px;background:#f9f9f9;border-radius:12px;margin-bottom:8px;cursor:pointer;transition:background 0.2s;}
+.fc-option:hover{background:#f0f0f0;}
+.fc-option:last-child{margin-bottom:0;}
+.fc-option-icon{width:44px;height:44px;background:#E8745A;border-radius:10px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:18px;font-weight:bold;flex-shrink:0;}
+.fc-option-text h5{margin:0 0 4px;font-size:15px;color:#333;font-weight:600;}
+.fc-option-text p{margin:0;font-size:12px;color:#999;}
+.fc-popup-footer{padding:12px;text-align:center;border-top:1px solid #eee;background:#fafafa;}
+.fc-powered{font-size:11px;color:#999;}
+.fc-powered span{color:#4CAF50;font-weight:600;}
+@media(max-width:480px){.fc-widget-btn{bottom:16px;left:16px;}.fc-popup{left:16px;right:16px;width:auto;bottom:80px;}}
+</style>
+
+<div class="fc-widget-btn" onclick="toggleFreshchat()">
+<div class="fc-launcher">
+<span class="fc-icon">?</span>
+<span class="fc-text">CHAT WITH US</span>
+</div>
+</div>
+
+<div class="fc-popup" id="fcPopup">
+<div class="fc-popup-header">
+<h4>Welcome to Airpak Express</h4>
+<button class="fc-popup-close" onclick="toggleFreshchat()">&times;</button>
+</div>
+<div class="fc-popup-body">
+<div class="fc-option" onclick="startFreshchat()">
+<div class="fc-option-icon">C</div>
+<div class="fc-option-text"><h5>Chat with us</h5><p>Hello there! Need help? Reach us now.</p></div>
+</div>
+<div class="fc-option" onclick="startFreshchat()">
+<div class="fc-option-icon">S</div>
+<div class="fc-option-text"><h5>Support</h5><p>Hi there! How can we help you?</p></div>
+</div>
+</div>
+<div class="fc-popup-footer">
+<div class="fc-powered">Powered by <span>Freshchat</span></div>
+</div>
+</div>
+
+<script>
+function toggleFreshchat(){document.getElementById('fcPopup').classList.toggle('active');}
+function startFreshchat(){alert('Live chat would open here. Connect to Freshchat API for full functionality.');}
+</script>
 
 </body>
 
