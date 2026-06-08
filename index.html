@@ -623,14 +623,15 @@ a{color:#CD2727;}
            </div>
        </section>
 <style>
-    .scrollingdiv .col-lg-3{overflow:hidden;background-color:#CD2727;padding:0px !important;position:relative;}
+    .scrollingdiv .col-lg-3{overflow:hidden;background-color:#CD2727;padding:0px !important;position:relative;cursor:pointer;}
     .scrollingdiv .bnimg1{width:100%;}
     .service4box{position:absolute;bottom:30px;left:30px;}
     .service4box .abh3{margin-top:20px;font-weight:bold;}
-    .serviceboxhidden {position:absolute;left:0px;top:0px;height:100%;}
+    .serviceboxhidden {position:absolute;left:0px;top:0px;height:100%;width:100%;z-index:10;}
     .serviceboxhidden img{margin-top:10px;margin-bottom:10px;}
-    .serviceboxhidden{display:none;}
-    
+    .serviceboxhidden{display:none;background-color:#2464E3;}
+    .serviceboxhidden.active{display:block !important;}
+    .serviceboxhidden .close-service{position:absolute;top:10px;right:10px;background:rgba(0,0,0,0.5);color:#fff;border:none;border-radius:50%;width:30px;height:30px;cursor:pointer;font-size:18px;z-index:20;}
 </style>
 
 <section id="" class="redbg internationalex scrollingdiv" style="background-color:#F3F4F8;padding:0px !important;">
@@ -645,6 +646,7 @@ a{color:#CD2727;}
                        </div>
                        
                        <div class="ap-darkbrown serviceboxhidden">
+                           <button class="close-service" onclick="event.stopPropagation(); jQuery(this).closest('.serviceboxhidden').removeClass('active');">&times;</button>
                            <div style="padding:20px;" class="internationalexcontent ap-darkbrown">
                             <img loading="lazy" src="apps/airpak/img/tab/icon_international.png" />
                            <h3 class="title">Worldwide Freight Forwarding</h3>
@@ -664,6 +666,7 @@ a{color:#CD2727;}
                        </div>
                        
                        <div class="ap-darkbrown serviceboxhidden">
+                           <button class="close-service" onclick="event.stopPropagation(); jQuery(this).closest('.serviceboxhidden').removeClass('active');">&times;</button>
                            <div style="padding:20px;" class="internationalexcontent ap-darkbrown">
                            <img loading="lazy" src="apps/airpak/img/tab/icon_omnichannel.png" />
                            <h3 class="title">Warehousing & Fulfillment</h3>
@@ -684,6 +687,7 @@ a{color:#CD2727;}
                        </div>
                        
                        <div class="ap-darkbrown serviceboxhidden">
+                           <button class="close-service" onclick="event.stopPropagation(); jQuery(this).closest('.serviceboxhidden').removeClass('active');">&times;</button>
                            <div style="padding:20px;" class="internationalexcontent ap-darkbrown">
                             <img loading="lazy" src="apps/airpak/img/tab/icon_domestic.png" />
                            <h3 class="title">Worldwide Express & Domestic Express</h3>
@@ -703,6 +707,7 @@ a{color:#CD2727;}
                        </div>
                        
                        <div class="ap-darkbrown serviceboxhidden">
+                           <button class="close-service" onclick="event.stopPropagation(); jQuery(this).closest('.serviceboxhidden').removeClass('active');">&times;</button>
                            <div style="padding:20px;" class="internationalexcontent ap-darkbrown">
                             <img loading="lazy" src="apps/airpak/img/tab/icon_airfreight.png" />
                            <h3 class="title">International Logistics Solutions</h3>
@@ -1154,7 +1159,74 @@ a{color:#CD2727;}
             $('html, body').animate({scrollTop: 0}, 400);
             return false;
         });
+
+        // Service image click to show details
+        $('.scrollingdiv .col-lg-3').on('click', function() {
+            var $box = $(this);
+            var $hidden = $box.find('.serviceboxhidden');
+            if ($hidden.length && !$hidden.hasClass('active')) {
+                $('.serviceboxhidden').removeClass('active');
+                $hidden.addClass('active');
+            }
+        });
     });
+</script>
+
+<!-- Support Chat Widget -->
+<style>
+.chat-widget-btn{position:fixed;bottom:24px;left:24px;width:56px;height:56px;border-radius:50%;background:#fff;border:1.5px solid #ddd;box-shadow:0 4px 12px rgba(0,0,0,0.15);cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:9998;transition:all 0.3s ease;}
+.chat-widget-btn:hover{transform:scale(1.05);box-shadow:0 6px 16px rgba(0,0,0,0.2);}
+.chat-widget-btn svg{width:28px;height:28px;fill:#333;}
+.chat-popup{position:fixed;bottom:100px;left:24px;width:380px;max-width:calc(100vw - 48px);height:550px;max-height:calc(100vh - 140px);background:#fff;border-radius:12px;box-shadow:0 10px 40px rgba(0,0,0,0.2);z-index:9997;display:none;flex-direction:column;overflow:hidden;font-family:'Inter',sans-serif;}
+.chat-popup.active{display:flex;animation:slideUp 0.3s ease;}
+@keyframes slideUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+.chat-header{background:#CD2727;color:#fff;padding:16px 20px;display:flex;align-items:center;justify-content:space-between;}
+.chat-header h4{margin:0;font-size:16px;font-weight:600;}
+.chat-header-close{background:none;border:none;color:#fff;font-size:24px;cursor:pointer;padding:0;line-height:1;}
+.chat-tabs{display:flex;border-bottom:1px solid #eee;}
+.chat-tab{flex:1;padding:12px;text-align:center;cursor:pointer;font-size:13px;color:#666;border-bottom:2px solid transparent;transition:all 0.2s;}
+.chat-tab:hover,.chat-tab.active{color:#CD2727;border-bottom-color:#CD2727;}
+.chat-content{flex:1;overflow-y:auto;padding:16px;}
+.chat-messages{display:flex;flex-direction:column;gap:12px;}
+.chat-message{max-width:80%;padding:10px 14px;border-radius:12px;font-size:14px;line-height:1.4;}
+.chat-message.bot{background:#f5f5f5;color:#333;align-self:flex-start;border-bottom-left-radius:4px;}
+.chat-message.user{background:#CD2727;color:#fff;align-self:flex-end;border-bottom-right-radius:4px;}
+.chat-input-area{padding:12px 16px;border-top:1px solid #eee;display:flex;gap:8px;}
+.chat-input{flex:1;padding:10px 14px;border:1px solid #ddd;border-radius:20px;font-size:14px;outline:none;}
+.chat-input:focus{border-color:#CD2727;}
+.chat-send-btn{width:40px;height:40px;border-radius:50%;background:#CD2727;border:none;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.faq-list{display:flex;flex-direction:column;gap:8px;}
+.faq-item{padding:12px 16px;background:#f9f9f9;border-radius:8px;cursor:pointer;font-size:14px;color:#333;transition:background 0.2s;}
+.faq-item:hover{background:#f0f0f0;}
+.faq-item::before{content:'Q: ';font-weight:600;color:#CD2727;}
+.privacy-content{padding:20px;font-size:13px;color:#555;line-height:1.6;}
+.privacy-content h5{margin:16px 0 8px;color:#333;font-size:14px;}
+@media(max-width:480px){.chat-popup{left:10px;right:10px;width:auto;bottom:90px;}.chat-widget-btn{bottom:20px;left:20px;}}
+</style>
+
+<div class="chat-widget-btn" onclick="toggleChat()" title="Chat with us">
+<svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H6l-2 2V4h16v12z"/></svg>
+</div>
+
+<div class="chat-popup" id="chatPopup">
+<div class="chat-header"><h4>Airpak Express Support</h4><button class="chat-header-close" onclick="toggleChat()">&times;</button></div>
+<div class="chat-tabs">
+<div class="chat-tab active" onclick="switchChatTab('chat',this)">Chat</div>
+<div class="chat-tab" onclick="switchChatTab('faq',this)">FAQs</div>
+<div class="chat-tab" onclick="switchChatTab('privacy',this)">Privacy</div>
+</div>
+<div class="chat-content" id="chatContent"><div class="chat-messages" id="chatMessages"><div class="chat-message bot">Hello! How can we help you today?</div></div></div>
+<div class="chat-input-area" id="chatInputArea">
+<input type="text" class="chat-input" id="chatInput" placeholder="Type your message..." onkeypress="if(event.key==='Enter')sendMessage()">
+<button class="chat-send-btn" onclick="sendMessage()"><i class="fa fa-paper-plane"></i></button>
+</div>
+</div>
+
+<script>
+function toggleChat(){var p=document.getElementById('chatPopup');p.classList.toggle('active');if(p.classList.contains('active')){document.getElementById('chatInput').focus();}}
+function switchChatTab(tab,el){document.querySelectorAll('.chat-tab').forEach(function(t){t.classList.remove('active');});el.classList.add('active');var c=document.getElementById('chatContent');var ia=document.getElementById('chatInputArea');if(tab==='chat'){ia.style.display='flex';c.innerHTML='<div class="chat-messages" id="chatMessages"><div class="chat-message bot">Hello! How can we help you today?</div></div>';}else if(tab==='faq'){ia.style.display='none';c.innerHTML='<div class="faq-list"><div class="faq-item" onclick="showFaqAnswer(this)">How do I track my shipment?</div><div class="faq-item" onclick="showFaqAnswer(this)">What are your delivery timeframes?</div><div class="faq-item" onclick="showFaqAnswer(this)">How do I schedule a pickup?</div><div class="faq-item" onclick="showFaqAnswer(this)">What areas do you cover?</div><div class="faq-item" onclick="showFaqAnswer(this)">How do I change my delivery address?</div><div class="faq-item" onclick="showFaqAnswer(this)">What is your return policy?</div></div>';}else if(tab==='privacy'){ia.style.display='none';c.innerHTML='<div class="privacy-content"><h5>Data Collection</h5><p>We collect personal information to provide delivery services including name, address, phone, and email.</p><h5>Data Usage</h5><p>Your data is used solely for shipping, customer support, and service improvements.</p><h5>Data Protection</h5><p>We implement industry-standard security measures to protect your information.</p><h5>Third Parties</h5><p>We do not sell your data. Only trusted partners for delivery are used.</p><h5>Your Rights</h5><p>You may request access, correction, or deletion of your personal data at any time.</p></div>';}}
+function showFaqAnswer(el){var answers={"How do I track my shipment?":"Go to our Tracking page and enter your tracking number.","What are your delivery timeframes?":"Delivery times: Express (1-2 days), Standard (3-5 days), International (5-10 days).","How do I schedule a pickup?":"Log in to your account, go to Ship Now, and select Schedule Pickup.","What areas do you cover?":"We deliver worldwide with presence in UK, USA, and 220+ countries.","How do I change my delivery address?":"Contact support immediately. Address changes only possible before dispatch.","What is your return policy?":"Returns accepted within 14 days for unused items."};var q=el.textContent;var a=answers[q]||"Please contact support.";var m=document.getElementById('chatMessages');m.innerHTML+='<div class="chat-message user">'+q+'</div><div class="chat-message bot">'+a+'</div>';m.scrollTop=m.scrollHeight;document.querySelectorAll('.chat-tab')[0].click();}
+function sendMessage(){var i=document.getElementById('chatInput');var msg=i.value.trim();if(!msg)return;var m=document.getElementById('chatMessages');m.innerHTML+='<div class="chat-message user">'+msg+'</div>';i.value='';m.scrollTop=m.scrollHeight;setTimeout(function(){m.innerHTML+='<div class="chat-message bot">Thank you! Our team will respond shortly. Call us at +44 20 7946 0958.</div>';m.scrollTop=m.scrollHeight;},1000);}
 </script>
 <div id="notifications"></div>	
 <div class="modal fade" id="notification-window">
