@@ -13,6 +13,9 @@
             <span class="chat-text">Chat With Us</span>
         </div>
         <div id="airpak-chat-window">
+            <button id="airpak-chat-close">
+                <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+            </button>
             <div id="airpak-chat-header">
                 <div class="chat-header-top">
                     <div class="chat-avatar">A</div>
@@ -214,6 +217,7 @@
     // Elements
     const toggle = document.getElementById('airpak-chat-toggle');
     const window = document.getElementById('airpak-chat-window');
+    const closeBtn = document.getElementById('airpak-chat-close');
     const navItems = document.querySelectorAll('.nav-item');
     const tabContents = document.querySelectorAll('.chat-tab-content');
     const searchInput = document.getElementById('chat-search-input');
@@ -227,6 +231,12 @@
     toggle.addEventListener('click', function() {
         isOpen = !isOpen;
         window.style.display = isOpen ? 'flex' : 'none';
+    });
+
+    // Close button
+    closeBtn.addEventListener('click', function() {
+        isOpen = false;
+        window.style.display = 'none';
     });
 
     // Tab navigation
@@ -348,9 +358,9 @@
         if (e.key === 'Enter') sendMessage();
     });
 
-    // Close on outside click
+    // Close on outside click (only for toggle button area)
     document.addEventListener('click', function(e) {
-        if (isOpen && !widget.contains(e.target)) {
+        if (isOpen && !window.contains(e.target) && e.target !== toggle && !toggle.contains(e.target)) {
             isOpen = false;
             window.style.display = 'none';
         }
