@@ -160,6 +160,19 @@
       "source": "/worldwide-domestic-courier-service.html",
       "destination": "https://www.airpak-express.site/worldwide-domestic-courier-service",
       "permanent": true
+    },
+    {
+      "source": "/enterprise-tools",
+      "destination": "/enterprise-tools.html"
+    },
+    {
+      "source": "/enterprise-tools.html",
+      "destination": "https://www.airpak-express.site/enterprise-tools",
+      "permanent": true
+    },
+    {
+      "source": "/get-online",
+      "destination": "/enterprise-tools.html"
     }
   ],
   "rewrites": [

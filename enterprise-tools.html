@@ -1,0 +1,976 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://airpak-express.site/enterprise-tools.html" />
+    <meta name="description" content="Page description - update this with relevant content.">
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Enterprise Logistics Platform | Airpak Express</title>
+<link rel="shortcut icon" type="image/x-icon" href="/apps/airpak/images/icon.png"/>
+<link class="main-stylesheet" href="/pages/css/themes/modern.css?v=4" rel="stylesheet"/>
+<link rel="stylesheet" href="/apps/airpak/assets/css/main.css?v=3.7"/>
+<link rel="stylesheet" href="/apps/airpak/skincare/css/style.css"/>
+<link rel="stylesheet" href="/apps/airpak/skincare/css/custom.css"/>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<style>
+/* ---- Reset enterprise page from admin template height issues ---- */
+html, body { height: auto !important; overflow-y: auto !important; }
+
+/* ---- Brand tokens ---- */
+:root {
+  --red: #CD2727;
+  --red-dark: #9b1a1a;
+  --dark: #1a1a1a;
+  --grey: #F3F4F8;
+  --border: #e5e5e5;
+  --text: #444;
+  --radius: 12px;
+}
+
+/* ---- Page layout ---- */
+.ent-page { font-family: 'Work Sans', sans-serif; color: var(--dark); background: #fafafa; }
+
+/* ---- Hero ---- */
+.ent-hero {
+  background: linear-gradient(135deg, #1a1a1a 0%, #2d0a0a 60%, #CD2727 100%);
+  color: #fff;
+  padding: 80px 0 60px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.ent-hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+.ent-hero .back-link { position: absolute; top: 24px; left: 30px; color: rgba(255,255,255,.7); font-size: 14px; text-decoration: none; display: flex; align-items: center; gap: 6px; transition: color .2s; }
+.ent-hero .back-link:hover { color: #fff; }
+.ent-hero h1 { font-size: 3rem; font-weight: 800; margin-bottom: 14px; line-height: 1.1; }
+.ent-hero h1 span { color: #ff6b6b; }
+.ent-hero p { font-size: 17px; opacity: .85; max-width: 560px; margin: 0 auto 32px; line-height: 1.7; }
+.ent-hero-stats { display: flex; justify-content: center; gap: 40px; flex-wrap: wrap; margin-top: 40px; }
+.ent-stat { text-align: center; }
+.ent-stat .num { font-size: 2.4rem; font-weight: 800; color: #fff; }
+.ent-stat .lbl { font-size: 12px; opacity: .7; text-transform: uppercase; letter-spacing: 1px; }
+
+/* ---- Nav tabs ---- */
+.ent-nav { background: #fff; border-bottom: 2px solid var(--border); position: sticky; top: 0; z-index: 100; }
+.ent-nav-inner { display: flex; gap: 0; overflow-x: auto; max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+.ent-nav-inner::-webkit-scrollbar { display: none; }
+.ent-nav-tab { padding: 16px 20px; font-size: 13px; font-weight: 600; color: #666; border-bottom: 3px solid transparent; white-space: nowrap; cursor: pointer; transition: all .2s; margin-bottom: -2px; border-top: none; border-left: none; border-right: none; background: none; }
+.ent-nav-tab:hover { color: var(--red); }
+.ent-nav-tab.active { color: var(--red); border-bottom-color: var(--red); }
+
+/* ---- Sections ---- */
+.ent-section { display: none; padding: 50px 0 70px; }
+.ent-section.active { display: block; }
+.ent-container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+.ent-section-title { font-size: 1.7rem; font-weight: 800; color: var(--dark); margin-bottom: 6px; }
+.ent-section-sub { color: #888; font-size: 15px; margin-bottom: 36px; }
+
+/* ---- Tool cards grid ---- */
+.tools-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); gap: 20px; }
+.tool-card {
+  background: #fff;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  cursor: pointer;
+  transition: all .25s;
+  position: relative;
+  overflow: hidden;
+}
+.tool-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--red), #ff9999); transform: scaleX(0); transform-origin: left; transition: transform .3s; }
+.tool-card:hover { border-color: var(--red); box-shadow: 0 8px 32px rgba(205,39,39,.12); transform: translateY(-3px); }
+.tool-card:hover::before { transform: scaleX(1); }
+.tool-card .tc-icon { font-size: 2rem; margin-bottom: 14px; }
+.tool-card h3 { font-size: 15px; font-weight: 700; margin-bottom: 8px; color: var(--dark); }
+.tool-card p { font-size: 13px; color: #777; line-height: 1.6; margin: 0; }
+.tool-card .tc-badge { display: inline-block; background: #fdf0f0; color: var(--red); font-size: 10px; font-weight: 700; padding: 3px 10px; border-radius: 20px; margin-top: 12px; text-transform: uppercase; letter-spacing: .5px; }
+.tool-card .tc-badge.live { background: #f0fdf4; color: #16a34a; }
+.tool-card .tc-badge.ai { background: #faf0ff; color: #7c3aed; }
+
+/* ---- Map section ---- */
+#map-panel { height: 480px; border-radius: var(--radius); overflow: hidden; border: 1.5px solid var(--border); }
+.map-controls { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 16px; }
+.map-btn { padding: 8px 18px; border-radius: 8px; border: 1.5px solid var(--border); background: #fff; font-size: 13px; font-weight: 600; cursor: pointer; transition: all .2s; color: #444; }
+.map-btn:hover, .map-btn.active { background: var(--red); color: #fff; border-color: var(--red); }
+.map-legend { display: flex; gap: 20px; margin-top: 14px; flex-wrap: wrap; }
+.map-legend-item { display: flex; align-items: center; gap: 6px; font-size: 12px; color: #666; }
+.map-legend-dot { width: 10px; height: 10px; border-radius: 50%; }
+
+/* ---- Analytics ---- */
+.analytics-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; margin-bottom: 32px; }
+.kpi-card { background: #fff; border: 1.5px solid var(--border); border-radius: var(--radius); padding: 24px; text-align: center; }
+.kpi-card .kpi-val { font-size: 2.2rem; font-weight: 800; color: var(--red); }
+.kpi-card .kpi-lbl { font-size: 13px; color: #888; margin-top: 4px; }
+.kpi-card .kpi-change { font-size: 12px; margin-top: 8px; font-weight: 600; }
+.kpi-card .kpi-change.up { color: #16a34a; }
+.kpi-card .kpi-change.down { color: var(--red); }
+
+.chart-box { background: #fff; border: 1.5px solid var(--border); border-radius: var(--radius); padding: 28px; margin-bottom: 24px; }
+.chart-box h4 { font-size: 15px; font-weight: 700; margin-bottom: 20px; color: var(--dark); }
+.bar-chart { display: flex; align-items: flex-end; gap: 12px; height: 160px; }
+.bar-wrap { display: flex; flex-direction: column; align-items: center; flex: 1; }
+.bar { background: linear-gradient(180deg, var(--red) 0%, #ff9999 100%); border-radius: 6px 6px 0 0; width: 100%; transition: opacity .2s; cursor: default; }
+.bar:hover { opacity: .8; }
+.bar-lbl { font-size: 11px; color: #888; margin-top: 6px; }
+
+.sparkline-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+@media (max-width: 700px) { .sparkline-row { grid-template-columns: 1fr; } }
+
+/* ---- Shipment estimator ---- */
+.est-form { background: #fff; border: 1.5px solid var(--border); border-radius: var(--radius); padding: 32px; max-width: 680px; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+@media (max-width: 600px) { .form-row { grid-template-columns: 1fr; } }
+.ent-label { font-size: 13px; font-weight: 600; color: #444; margin-bottom: 6px; display: block; }
+.ent-input { width: 100%; padding: 10px 14px; border: 1.5px solid var(--border); border-radius: 8px; font-size: 14px; outline: none; transition: border-color .2s; box-sizing: border-box; }
+.ent-input:focus { border-color: var(--red); }
+.ent-select { width: 100%; padding: 10px 14px; border: 1.5px solid var(--border); border-radius: 8px; font-size: 14px; background: #fff; outline: none; box-sizing: border-box; }
+.ent-btn { background: linear-gradient(135deg, var(--red), var(--red-dark)); color: #fff; border: none; padding: 12px 32px; border-radius: 8px; font-weight: 700; font-size: 15px; cursor: pointer; transition: all .2s; margin-top: 8px; }
+.ent-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(205,39,39,.3); }
+.est-result { background: var(--grey); border-radius: var(--radius); padding: 24px; margin-top: 20px; display: none; }
+.est-result h4 { font-size: 1.1rem; font-weight: 700; margin-bottom: 16px; }
+.est-line { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #e0e0e0; font-size: 14px; }
+.est-line:last-child { border: none; font-weight: 700; font-size: 15px; }
+.est-line .price { color: var(--red); font-weight: 700; }
+
+/* ---- SLA / Fleet table ---- */
+.ent-table { width: 100%; border-collapse: collapse; background: #fff; border-radius: var(--radius); overflow: hidden; border: 1.5px solid var(--border); }
+.ent-table th { background: #1a1a1a; color: #fff; padding: 12px 16px; font-size: 12px; text-transform: uppercase; letter-spacing: .5px; text-align: left; }
+.ent-table td { padding: 12px 16px; font-size: 13px; border-bottom: 1px solid #f0f0f0; }
+.ent-table tr:hover td { background: #fdf8f8; }
+.status-badge { display: inline-block; padding: 3px 12px; border-radius: 20px; font-size: 11px; font-weight: 700; }
+.status-badge.on-time { background: #f0fdf4; color: #16a34a; }
+.status-badge.delayed { background: #fdf0f0; color: var(--red); }
+.status-badge.transit { background: #fef9e7; color: #d97706; }
+.status-badge.delivered { background: #f0f8ff; color: #2563eb; }
+
+/* ---- AI panel ---- */
+.ai-panel { background: linear-gradient(135deg, #0f0f1a 0%, #1a0a2e 100%); border-radius: var(--radius); padding: 32px; color: #fff; margin-bottom: 24px; }
+.ai-panel h3 { font-size: 1.3rem; font-weight: 700; margin-bottom: 8px; }
+.ai-panel p { opacity: .75; font-size: 14px; margin-bottom: 24px; }
+.ai-alerts { display: flex; flex-direction: column; gap: 12px; }
+.ai-alert { background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.12); border-radius: 10px; padding: 16px 20px; display: flex; gap: 14px; align-items: flex-start; }
+.ai-alert .alert-icon { font-size: 1.4rem; flex-shrink: 0; margin-top: 2px; }
+.ai-alert .alert-body h5 { font-size: 14px; font-weight: 700; margin-bottom: 4px; color: #fff; }
+.ai-alert .alert-body p { font-size: 12px; opacity: .7; margin: 0; }
+.ai-alert.warning { border-color: rgba(255,165,0,.3); }
+.ai-alert.danger { border-color: rgba(205,39,39,.4); }
+.ai-alert.ok { border-color: rgba(22,163,74,.3); }
+.ai-chat { background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.1); border-radius: 10px; margin-top: 20px; overflow: hidden; }
+.ai-chat-messages { padding: 20px; max-height: 220px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; }
+.ai-msg { display: flex; gap: 10px; }
+.ai-msg.user { justify-content: flex-end; }
+.ai-msg .bubble { padding: 10px 14px; border-radius: 10px; font-size: 13px; max-width: 80%; }
+.ai-msg.bot .bubble { background: rgba(255,255,255,.1); }
+.ai-msg.user .bubble { background: var(--red); }
+.ai-chat-input { display: flex; border-top: 1px solid rgba(255,255,255,.1); }
+.ai-chat-input input { flex: 1; background: transparent; border: none; padding: 12px 16px; color: #fff; font-size: 13px; outline: none; }
+.ai-chat-input input::placeholder { color: rgba(255,255,255,.4); }
+.ai-chat-input button { background: var(--red); border: none; padding: 12px 20px; color: #fff; font-weight: 700; cursor: pointer; font-size: 13px; }
+
+/* ---- Customs calculator ---- */
+.customs-result { background: #fff; border: 1.5px solid var(--border); border-radius: var(--radius); padding: 24px; margin-top: 20px; display: none; }
+.customs-result h4 { font-weight: 700; margin-bottom: 16px; }
+.customs-breakdown { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.cb-item { background: var(--grey); border-radius: 8px; padding: 14px; }
+.cb-item .cb-lbl { font-size: 11px; color: #888; text-transform: uppercase; letter-spacing: .5px; margin-bottom: 4px; }
+.cb-item .cb-val { font-size: 1.2rem; font-weight: 700; color: var(--dark); }
+
+/* ---- Responsive ---- */
+@media (max-width: 768px) {
+  .ent-hero h1 { font-size: 2rem; }
+  .ent-hero-stats { gap: 20px; }
+  .ent-stat .num { font-size: 1.8rem; }
+  .tools-grid { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 480px) {
+  .tools-grid { grid-template-columns: 1fr; }
+  .analytics-grid { grid-template-columns: 1fr 1fr; }
+}
+
+/* === PRELOADER === */
+.ap-preloader{position:fixed;top:0;left:0;right:0;bottom:0;background:linear-gradient(135deg,#CD2727 0%,#9b1a1a 100%);z-index:99999;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity .6s ease,visibility .6s ease}
+.ap-preloader.hidden{opacity:0;visibility:hidden;pointer-events:none}
+.ap-preloader-logo{width:80px;height:80px;margin-bottom:24px;animation:preLogoPulse 1.5s ease-in-out infinite}
+.ap-preloader-title{font-family:"Sarabun",sans-serif;font-size:32px;font-weight:800;color:#fff;margin-bottom:8px}
+.ap-preloader-sub{font-family:"Inter",sans-serif;font-size:14px;color:rgba(255,255,255,.7);margin-bottom:40px;letter-spacing:.5px}
+.ap-preloader-bar-wrap{width:280px;height:4px;background:rgba(255,255,255,.2);border-radius:4px;overflow:hidden;margin-bottom:16px}
+.ap-preloader-bar{height:100%;background:#fff;border-radius:4px;animation:preBar 1.8s ease-in-out infinite;width:0}
+.ap-preloader-dots{display:flex;gap:8px}
+.ap-preloader-dot{width:8px;height:8px;background:rgba(255,255,255,.4);border-radius:50%;animation:preDot 1.2s ease-in-out infinite}
+.ap-preloader-dot:nth-child(2){animation-delay:.2s}
+.ap-preloader-dot:nth-child(3){animation-delay:.4s}
+@keyframes preLogoPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+@keyframes preBar{0%{width:0}50%{width:70%}100%{width:100%}}
+@keyframes preDot{0%,100%{opacity:.4;transform:scale(1)}50%{opacity:1;transform:scale(1.3)}}
+
+</style>
+  <link rel="stylesheet" href="/apps/airpak/css/ap-lang.css">
+  <link rel="stylesheet" href="/apps/airpak/css/ap-chat.css">
+
+<!-- Chat Widget -->
+<link rel="stylesheet" href="/js/chat-widget.css">
+<script src="/js/chat-widget.js" defer></script>
+</head>
+<body class="ent-page">
+
+<!-- HERO -->
+<div class="ent-hero">
+  <a href="/" class="back-link">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5m7-7-7 7 7 7"/></svg>
+    Back to Airpak Express
+  </a>
+  <div style="position:relative;z-index:1">
+    <div style="margin-bottom:16px;">
+      <a href="/"><img src="/apps/airpak/img/logo.png" style="max-height:50px;filter:brightness(10);" alt="Logo" /></a alt="Logo">
+    </div>
+    <h1>Enterprise <span>Logistics</span> Platform</h1>
+    <p>20 powerful tools for global freight management — live tracking, AI prediction, customs automation, and real-time analytics.</p>
+    <div class="ent-hero-stats">
+      <div class="ent-stat"><div class="num">220+</div><div class="lbl">Countries</div></div>
+      <div class="ent-stat"><div class="num">98.4%</div><div class="lbl">On-time Rate</div></div>
+      <div class="ent-stat"><div class="num">2.1M</div><div class="lbl">Shipments/yr</div></div>
+      <div class="ent-stat"><div class="num">30+</div><div class="lbl">Years Experience</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- STICKY NAV -->
+<div class="ent-nav">
+  <div class="ent-nav-inner">
+    <button class="ent-nav-tab active" onclick="showTab('tools')">&#128295; All Tools</button>
+    <button class="ent-nav-tab" onclick="showTab('map')">&#128507; Live Map</button>
+    <button class="ent-nav-tab" onclick="showTab('analytics')">&#128200; Analytics</button>
+    <button class="ent-nav-tab" onclick="showTab('estimator')">&#128179; Estimator</button>
+    <button class="ent-nav-tab" onclick="showTab('customs')">&#128203; Customs</button>
+    <button class="ent-nav-tab" onclick="showTab('fleet')">&#128665; Fleet</button>
+    <button class="ent-nav-tab" onclick="showTab('sla')">&#9200; SLA Tracker</button>
+    <button class="ent-nav-tab" onclick="showTab('ai')">&#129302; AI Manager</button>
+  </div>
+</div>
+
+<!-- ========== ALL TOOLS ========== -->
+<div class="ent-section active" id="sec-tools">
+  <div class="ent-container">
+    <div class="ent-section-title">All Enterprise Tools</div>
+    <div class="ent-section-sub">Click any tool to open it directly</div>
+    <div class="tools-grid">
+
+      <div class="tool-card" onclick="showTab('estimator')">
+        <div class="tc-icon">&#128179;</div>
+        <h3>Shipment Estimator</h3>
+        <p>Instant quotes for air, sea, and road freight across 220+ destinations.</p>
+        <span class="tc-badge live">Live</span>
+      </div>
+
+      <div class="tool-card" onclick="showTab('map')">
+        <div class="tc-icon">&#128507;</div>
+        <h3>Live Tracking Map</h3>
+        <p>Real-time global shipment visualization with route playback and geofencing.</p>
+        <span class="tc-badge live">Live</span>
+      </div>
+
+      <div class="tool-card" onclick="showTab('ai')">
+        <div class="tc-icon">&#129302;</div>
+        <h3>AI Delay Predictor</h3>
+        <p>Machine learning model predicts delays 48h ahead with 94% accuracy.</p>
+        <span class="tc-badge ai">AI</span>
+      </div>
+
+      <div class="tool-card" onclick="showTab('map')">
+        <div class="tc-icon">&#128205;</div>
+        <h3>Route Optimizer</h3>
+        <p>Multi-stop route planning optimized for cost, speed, and carbon footprint.</p>
+        <span class="tc-badge ai">AI</span>
+      </div>
+
+      <div class="tool-card" onclick="showTab('customs')">
+        <div class="tc-icon">&#128203;</div>
+        <h3>Customs Calculator</h3>
+        <p>HS code lookup, duties, VAT, and import tax estimation for 200+ countries.</p>
+        <span class="tc-badge live">Live</span>
+      </div>
+
+      <div class="tool-card" onclick="showTab('fleet')">
+        <div class="tc-icon">&#128665;</div>
+        <h3>Fleet Monitor</h3>
+        <p>Real-time vehicle telemetry, driver performance, and fuel efficiency tracking.</p>
+        <span class="tc-badge live">Live</span>
+      </div>
+
+      <div class="tool-card" onclick="showTab('sla')">
+        <div class="tc-icon">&#9200;</div>
+        <h3>SLA Tracker</h3>
+        <p>Monitor service-level agreements across all shipments with breach alerts.</p>
+        <span class="tc-badge live">Live</span>
+      </div>
+
+      <div class="tool-card" onclick="showTab('analytics')">
+        <div class="tc-icon">&#128190;</div>
+        <h3>Invoice Automation</h3>
+        <p>Auto-generate, send, and reconcile invoices across your entire shipment fleet.</p>
+        <span class="tc-badge">Enterprise</span>
+      </div>
+
+      <div class="tool-card" onclick="showTab('analytics')">
+        <div class="tc-icon">&#128272;</div>
+        <h3>Compliance Scanner</h3>
+        <p>Cross-reference shipments against embargo, sanctions, and export control lists.</p>
+        <span class="tc-badge ai">AI</span>
+      </div>
+
+      <div class="tool-card" onclick="showTab('customs')">
+        <div class="tc-icon">&#128230;</div>
+        <h3>Cargo Classifier</h3>
+        <p>AI-powered HS code suggestion from product description or image upload.</p>
+        <span class="tc-badge ai">AI</span>
+      </div>
+
+      <div class="tool-card" onclick="showTab('fleet')">
+        <div class="tc-icon">&#128197;</div>
+        <h3>Dispatch Scheduler</h3>
+        <p>Intelligent pickup and dispatch planning with driver assignment and load balancing.</p>
+        <span class="tc-badge ai">AI</span>
+      </div>
+
+      <div class="tool-card" onclick="showTab('map')">
+        <div class="tc-icon">&#127919;</div>
+        <h3>Route Heatmap</h3>
+        <p>Volume and delay heatmaps across global trade lanes to spot bottlenecks.</p>
+        <span class="tc-badge live">Live</span>
+      </div>
+
+      <div class="tool-card" onclick="showTab('analytics')">
+        <div class="tc-icon">&#128101;</div>
+        <h3>Logistics CRM</h3>
+        <p>Track client accounts, shipment history, and relationship performance scores.</p>
+        <span class="tc-badge">Enterprise</span>
+      </div>
+
+      <div class="tool-card" onclick="showTab('customs')">
+        <div class="tc-icon">&#128196;</div>
+        <h3>Customs Automation</h3>
+        <p>Pre-clear declarations and file paperwork electronically for faster clearance.</p>
+        <span class="tc-badge">Enterprise</span>
+      </div>
+
+      <div class="tool-card" onclick="showTab('estimator')">
+        <div class="tc-icon">&#128218;</div>
+        <h3>Bulk Shipment Manager</h3>
+        <p>Upload manifests, batch-book shipments, and manage multi-parcel consignments.</p>
+        <span class="tc-badge">Enterprise</span>
+      </div>
+
+      <div class="tool-card" onclick="showTab('sla')">
+        <div class="tc-icon">&#128100;</div>
+        <h3>Client Portal</h3>
+        <p>White-label tracking portal and shipment dashboard for your enterprise customers.</p>
+        <span class="tc-badge">Enterprise</span>
+      </div>
+
+      <div class="tool-card" onclick="showTab('analytics')">
+        <div class="tc-icon">&#128202;</div>
+        <h3>Shipment Forecasting</h3>
+        <p>Predictive volume forecasting using 3 years of historical shipping data.</p>
+        <span class="tc-badge ai">AI</span>
+      </div>
+
+      <div class="tool-card" onclick="showTab('ai')">
+        <div class="tc-icon">&#9888;</div>
+        <h3>Risk Detection</h3>
+        <p>Flag high-risk shipments for fraud, damage probability, and customs holds.</p>
+        <span class="tc-badge ai">AI</span>
+      </div>
+
+      <div class="tool-card" onclick="showTab('ai')">
+        <div class="tc-icon">&#9889;</div>
+        <h3>Smart Dispatch AI</h3>
+        <p>Autonomous carrier selection and dispatch optimization based on real-time data.</p>
+        <span class="tc-badge ai">AI</span>
+      </div>
+
+      <div class="tool-card" onclick="showTab('fleet')">
+        <div class="tc-icon">&#127968;</div>
+        <h3>Warehouse Load Balancer</h3>
+        <p>Optimize inventory distribution and labor allocation across your warehouse network.</p>
+        <span class="tc-badge ai">AI</span>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ========== LIVE MAP ========== -->
+<div class="ent-section" id="sec-map">
+  <div class="ent-container">
+    <div class="ent-section-title">&#128507; Live Shipment Tracking Map</div>
+    <div class="ent-section-sub">Real-time visualization of active shipments across global trade lanes</div>
+    <div class="map-controls">
+      <button class="map-btn active" onclick="filterMap('all',this)">All Shipments</button>
+      <button class="map-btn" onclick="filterMap('air',this)">&#9992; Air Freight</button>
+      <button class="map-btn" onclick="filterMap('sea',this)">&#128674; Sea Freight</button>
+      <button class="map-btn" onclick="filterMap('road',this)">&#128665; Road</button>
+      <button class="map-btn" onclick="filterMap('delayed',this)">&#9888; Delayed</button>
+    </div>
+    <div id="map-panel"></div>
+    <div class="map-legend">
+      <div class="map-legend-item"><div class="map-legend-dot" style="background:#16a34a"></div> In Transit — On Time</div>
+      <div class="map-legend-item"><div class="map-legend-dot" style="background:#CD2727"></div> Delayed</div>
+      <div class="map-legend-item"><div class="map-legend-dot" style="background:#2563eb"></div> Air Freight</div>
+      <div class="map-legend-item"><div class="map-legend-dot" style="background:#7c3aed"></div> Sea Freight</div>
+      <div class="map-legend-item"><div class="map-legend-dot" style="background:#d97706"></div> Out for Delivery</div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== ANALYTICS ========== -->
+<div class="ent-section" id="sec-analytics">
+  <div class="ent-container">
+    <div class="ent-section-title">&#128200; Analytics Dashboard</div>
+    <div class="ent-section-sub">Revenue intelligence, shipment velocity, fleet performance & KPI forecasting</div>
+
+    <div class="analytics-grid">
+      <div class="kpi-card">
+        <div class="kpi-val" id="kpi-shipments">0</div>
+        <div class="kpi-lbl">Shipments This Month</div>
+        <div class="kpi-change up">&#8593; 12.4% vs last month</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-val" id="kpi-revenue">$0</div>
+        <div class="kpi-lbl">Revenue (GBP)</div>
+        <div class="kpi-change up">&#8593; 8.7% growth</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-val" id="kpi-ontime">0%</div>
+        <div class="kpi-lbl">On-Time Delivery Rate</div>
+        <div class="kpi-change up">&#8593; 1.2pp improvement</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-val" id="kpi-delayed">0</div>
+        <div class="kpi-lbl">Active Delays</div>
+        <div class="kpi-change down">&#8595; 3 fewer than yesterday</div>
+      </div>
+    </div>
+
+    <div class="chart-box">
+      <h4>Shipment Volume — Last 8 Months</h4>
+      <div class="bar-chart" id="bar-chart"></div>
+    </div>
+
+    <div class="sparkline-row">
+      <div class="chart-box">
+        <h4>Revenue by Service Type</h4>
+        <div id="pie-chart" style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
+          <div style="display:flex;flex-direction:column;gap:8px;min-width:160px;">
+            <div style="display:flex;justify-content:space-between;font-size:13px;"><span>&#9992; Air Freight</span><strong style="color:var(--red)">42%</strong></div>
+            <div style="background:#f0f0f0;height:8px;border-radius:4px;"><div style="background:var(--red);width:42%;height:100%;border-radius:4px;"></div></div>
+            <div style="display:flex;justify-content:space-between;font-size:13px;"><span>&#128674; Sea Freight</span><strong style="color:#2563eb">31%</strong></div>
+            <div style="background:#f0f0f0;height:8px;border-radius:4px;"><div style="background:#2563eb;width:31%;height:100%;border-radius:4px;"></div></div>
+            <div style="display:flex;justify-content:space-between;font-size:13px;"><span>&#128665; Road</span><strong style="color:#d97706">16%</strong></div>
+            <div style="background:#f0f0f0;height:8px;border-radius:4px;"><div style="background:#d97706;width:16%;height:100%;border-radius:4px;"></div></div>
+            <div style="display:flex;justify-content:space-between;font-size:13px;"><span>&#128230; Express</span><strong style="color:#16a34a">11%</strong></div>
+            <div style="background:#f0f0f0;height:8px;border-radius:4px;"><div style="background:#16a34a;width:11%;height:100%;border-radius:4px;"></div></div>
+          </div>
+        </div>
+      </div>
+      <div class="chart-box">
+        <h4>Top Destinations</h4>
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <div style="display:flex;align-items:center;gap:10px;font-size:13px;"><span style="min-width:80px">🇺🇸 USA</span><div style="flex:1;background:#f0f0f0;height:10px;border-radius:4px;"><div style="background:var(--red);width:78%;height:100%;border-radius:4px;"></div></div><strong>78k</strong></div>
+          <div style="display:flex;align-items:center;gap:10px;font-size:13px;"><span style="min-width:80px">🇨🇳 China</span><div style="flex:1;background:#f0f0f0;height:10px;border-radius:4px;"><div style="background:var(--red);width:65%;height:100%;border-radius:4px;"></div></div><strong>65k</strong></div>
+          <div style="display:flex;align-items:center;gap:10px;font-size:13px;"><span style="min-width:80px">🇬🇧 UK</span><div style="flex:1;background:#f0f0f0;height:10px;border-radius:4px;"><div style="background:var(--red);width:52%;height:100%;border-radius:4px;"></div></div><strong>52k</strong></div>
+          <div style="display:flex;align-items:center;gap:10px;font-size:13px;"><span style="min-width:80px">🇦🇺 Australia</span><div style="flex:1;background:#f0f0f0;height:10px;border-radius:4px;"><div style="background:var(--red);width:44%;height:100%;border-radius:4px;"></div></div><strong>44k</strong></div>
+          <div style="display:flex;align-items:center;gap:10px;font-size:13px;"><span style="min-width:80px">🇩🇪 Germany</span><div style="flex:1;background:#f0f0f0;height:10px;border-radius:4px;"><div style="background:var(--red);width:38%;height:100%;border-radius:4px;"></div></div><strong>38k</strong></div>
+          <div style="display:flex;align-items:center;gap:10px;font-size:13px;"><span style="min-width:80px">🇯🇵 Japan</span><div style="flex:1;background:#f0f0f0;height:10px;border-radius:4px;"><div style="background:var(--red);width:31%;height:100%;border-radius:4px;"></div></div><strong>31k</strong></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== ESTIMATOR ========== -->
+<div class="ent-section" id="sec-estimator">
+  <div class="ent-container">
+    <div class="ent-section-title">&#128179; Shipment Estimator</div>
+    <div class="ent-section-sub">Get instant freight quotes across all service types</div>
+    <div class="est-form">
+      <div class="form-row">
+        <div>
+          <label class="ent-label">Origin Country</label>
+          <select class="ent-select" id="est-origin">
+            <option>United Kingdom</option><option>Malaysia</option><option>USA</option><option>China</option><option>UK</option><option>Australia</option><option>Japan</option><option>Germany</option><option>India</option><option>UAE</option>
+          </select>
+        </div>
+        <div>
+          <label class="ent-label">Destination Country</label>
+          <select class="ent-select" id="est-dest">
+            <option>USA</option><option>UK</option><option>Australia</option><option>China</option><option>Japan</option><option>Germany</option><option>United Kingdom</option><option>Malaysia</option><option>India</option><option>UAE</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div>
+          <label class="ent-label">Weight (kg)</label>
+          <input class="ent-input" type="number" id="est-weight" placeholder="e.g. 5.0" min="0.1" step="0.1" value="5"/>
+        </div>
+        <div>
+          <label class="ent-label">Service Type</label>
+          <select class="ent-select" id="est-service">
+            <option value="express">Worldwide Express</option>
+            <option value="air">Air Freight</option>
+            <option value="sea">Sea Freight</option>
+            <option value="road">Road Freight</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div>
+          <label class="ent-label">Length (cm)</label>
+          <input class="ent-input" type="number" id="est-l" placeholder="30" value="30"/>
+        </div>
+        <div>
+          <label class="ent-label">Width (cm)</label>
+          <input class="ent-input" type="number" id="est-w" placeholder="20" value="20"/>
+        </div>
+      </div>
+      <div class="form-row">
+        <div>
+          <label class="ent-label">Height (cm)</label>
+          <input class="ent-input" type="number" id="est-h" placeholder="15" value="15"/>
+        </div>
+        <div>
+          <label class="ent-label">Declared Value (USD)</label>
+          <input class="ent-input" type="number" id="est-value" placeholder="100" value="100"/>
+        </div>
+      </div>
+      <button class="ent-btn" onclick="calcEstimate()">Calculate Estimate</button>
+
+      <div class="est-result" id="est-result">
+        <h4>Shipping Quote</h4>
+        <div class="est-line"><span>Base Freight Rate</span><span class="price" id="er-base">—</span></div>
+        <div class="est-line"><span>Fuel Surcharge (18%)</span><span class="price" id="er-fuel">—</span></div>
+        <div class="est-line"><span>Remote Area Surcharge</span><span class="price" id="er-remote">—</span></div>
+        <div class="est-line"><span>GST (9%)</span><span class="price" id="er-gst">—</span></div>
+        <div class="est-line"><span><strong>Estimated Total</strong></span><span class="price" id="er-total">—</span></div>
+        <p style="font-size:12px;color:#888;margin-top:12px;">* Indicative rate. Final quote subject to confirmation. Transit time: <span id="er-days"></span></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== CUSTOMS ========== -->
+<div class="ent-section" id="sec-customs">
+  <div class="ent-container">
+    <div class="ent-section-title">&#128203; Customs & Duties Calculator</div>
+    <div class="ent-section-sub">Estimate import duties, VAT, and customs fees for 200+ countries</div>
+    <div class="est-form">
+      <div class="form-row">
+        <div>
+          <label class="ent-label">Import Country</label>
+          <select class="ent-select" id="cust-country">
+            <option value="us">USA (15-25% avg)</option>
+            <option value="uk">UK (20% VAT + duties)</option>
+            <option value="au">Australia (10% GST)</option>
+            <option value="de">Germany / EU (21% VAT)</option>
+            <option value="jp">Japan (10% consumption tax)</option>
+            <option value="in">India (18% GST + BCD)</option>
+            <option value="sg">United Kingdom (9% GST)</option>
+          </select>
+        </div>
+        <div>
+          <label class="ent-label">Product Category</label>
+          <select class="ent-select" id="cust-category">
+            <option value="electronics">Electronics</option>
+            <option value="clothing">Clothing & Apparel</option>
+            <option value="food">Food & Beverages</option>
+            <option value="cosmetics">Cosmetics</option>
+            <option value="machinery">Machinery</option>
+            <option value="toys">Toys</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div>
+          <label class="ent-label">Declared Value (USD)</label>
+          <input class="ent-input" type="number" id="cust-value" placeholder="500" value="500"/>
+        </div>
+        <div>
+          <label class="ent-label">Freight Cost (USD)</label>
+          <input class="ent-input" type="number" id="cust-freight" placeholder="80" value="80"/>
+        </div>
+      </div>
+      <button class="ent-btn" onclick="calcCustoms()">Calculate Duties</button>
+      <div class="customs-result" id="cust-result">
+        <h4>Customs Duty Breakdown</h4>
+        <div class="customs-breakdown">
+          <div class="cb-item"><div class="cb-lbl">CIF Value</div><div class="cb-val" id="cr-cif">—</div></div>
+          <div class="cb-item"><div class="cb-lbl">Import Duty</div><div class="cb-val" id="cr-duty">—</div></div>
+          <div class="cb-item"><div class="cb-lbl">VAT / GST</div><div class="cb-val" id="cr-vat">—</div></div>
+          <div class="cb-item" style="background:#fdf0f0;"><div class="cb-lbl" style="color:var(--red)">Total Landed Cost</div><div class="cb-val" id="cr-total" style="color:var(--red)">—</div></div>
+        </div>
+        <p style="font-size:12px;color:#888;margin-top:14px;">* Estimate only. Actual duties depend on HS code and customs officer assessment.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== FLEET ========== -->
+<div class="ent-section" id="sec-fleet">
+  <div class="ent-container">
+    <div class="ent-section-title">&#128665; Fleet Monitor</div>
+    <div class="ent-section-sub">Real-time vehicle telemetry and performance tracking</div>
+    <table class="ent-table">
+      <thead><tr><th>Vehicle ID</th><th>Driver</th><th>Route</th><th>Status</th><th>Speed</th><th>ETA</th><th>Fuel</th></tr></thead>
+      <tbody>
+        <tr><td><strong>VH-001</strong></td><td>Ahmad R.</td><td>SIN → JB</td><td><span class="status-badge on-time">On Route</span></td><td>82 km/h</td><td>14:30</td><td>68%</td></tr>
+        <tr><td><strong>VH-002</strong></td><td>Chen W.</td><td>SIN → Batam</td><td><span class="status-badge delayed">Delayed</span></td><td>0 km/h</td><td>16:00</td><td>45%</td></tr>
+        <tr><td><strong>VH-003</strong></td><td>Raj P.</td><td>SIN Hub</td><td><span class="status-badge delivered">Loading</span></td><td>0 km/h</td><td>—</td><td>92%</td></tr>
+        <tr><td><strong>VH-004</strong></td><td>Lee S.</td><td>Changi → Jurong</td><td><span class="status-badge on-time">On Route</span></td><td>61 km/h</td><td>15:15</td><td>71%</td></tr>
+        <tr><td><strong>VH-005</strong></td><td>Muthu K.</td><td>SIN → KL</td><td><span class="status-badge transit">Border Check</span></td><td>0 km/h</td><td>18:45</td><td>55%</td></tr>
+        <tr><td><strong>VH-006</strong></td><td>Tan H.</td><td>SIN → Penang</td><td><span class="status-badge on-time">On Route</span></td><td>94 km/h</td><td>Tomorrow 09:00</td><td>38%</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ========== SLA ========== -->
+<div class="ent-section" id="sec-sla">
+  <div class="ent-container">
+    <div class="ent-section-title">&#9200; SLA Tracker</div>
+    <div class="ent-section-sub">Monitor service-level agreement compliance across all active shipments</div>
+    <table class="ent-table">
+      <thead><tr><th>AWB Number</th><th>Client</th><th>Service</th><th>SLA Target</th><th>Current Status</th><th>SLA Status</th></tr></thead>
+      <tbody>
+        <tr><td><strong>AP-2024-88102</strong></td><td>Samsung SG</td><td>Express 3-day</td><td>May 15</td><td><span class="status-badge transit">In Transit</span></td><td><span class="status-badge on-time">On Track</span></td></tr>
+        <tr><td><strong>AP-2024-88097</strong></td><td>Apple Asia</td><td>Express 2-day</td><td>May 14</td><td><span class="status-badge delayed">Customs Hold</span></td><td><span class="status-badge delayed">AT RISK</span></td></tr>
+        <tr><td><strong>AP-2024-88091</strong></td><td>Walmart SG</td><td>Economy 7-day</td><td>May 19</td><td><span class="status-badge transit">In Transit</span></td><td><span class="status-badge on-time">On Track</span></td></tr>
+        <tr><td><strong>AP-2024-88085</strong></td><td>Microsoft</td><td>Priority 1-day</td><td>May 13</td><td><span class="status-badge delivered">Delivered</span></td><td><span class="status-badge on-time">MET</span></td></tr>
+        <tr><td><strong>AP-2024-88079</strong></td><td>Google APAC</td><td>Express 3-day</td><td>May 15</td><td><span class="status-badge transit">In Transit</span></td><td><span class="status-badge on-time">On Track</span></td></tr>
+        <tr><td><strong>AP-2024-88071</strong></td><td>Tesla Energy</td><td>Freight 14-day</td><td>May 26</td><td><span class="status-badge transit">At Origin</span></td><td><span class="status-badge on-time">On Track</span></td></tr>
+        <tr><td><strong>AP-2024-88064</strong></td><td>Amazon SG</td><td>Express 2-day</td><td>May 13</td><td><span class="status-badge delayed">Delay — Weather</span></td><td><span class="status-badge delayed">BREACHED</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ========== AI MANAGER ========== -->
+<div class="ent-section" id="sec-ai">
+  <div class="ent-container">
+    <div class="ent-section-title">&#129302; AI Logistics Manager</div>
+    <div class="ent-section-sub">Autonomous monitoring, intelligent rerouting, anomaly detection, and predictive alerts</div>
+
+    <div class="ai-panel">
+      <h3>&#128308; Active Alerts (3)</h3>
+      <p>AI monitoring 2,147 active shipments — last updated 43 seconds ago</p>
+      <div class="ai-alerts">
+        <div class="ai-alert danger">
+          <div class="alert-icon">&#9889;</div>
+          <div class="alert-body">
+            <h5>SLA Breach — AP-2024-88064</h5>
+            <p>Amazon SG shipment delayed by Typhoon Hato (Hong Kong). Estimated 28h delay. Auto-escalation sent to client. Reroute via Guangzhou evaluated — ETA improvement: 14h.</p>
+          </div>
+        </div>
+        <div class="ai-alert warning">
+          <div class="alert-icon">&#9888;&#65039;</div>
+          <div class="alert-body">
+            <h5>Customs Risk — AP-2024-88097 (Apple Asia)</h5>
+            <p>AI flagged mismatch between declared value and market price for 3 SKUs. Recommendation: pre-submit revised commercial invoice to the United Kingdom Customs. Probability of hold: 78%.</p>
+          </div>
+        </div>
+        <div class="ai-alert ok">
+          <div class="alert-icon">&#9989;</div>
+          <div class="alert-body">
+            <h5>Route Optimized — SIN&#8594;LAX corridor</h5>
+            <p>AI rerouted 14 air freight shipments via Tokyo Narita to avoid JFK congestion. Estimated saving: $2,340 GBP and 6h transit time improvement.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="ai-chat">
+        <div class="ai-chat-messages" id="ai-chat-messages">
+          <div class="ai-msg bot"><div class="bubble">Hello! I'm your AI Logistics Manager. I'm monitoring all active shipments. Ask me anything about delays, routes, or customs.</div></div>
+        </div>
+        <div class="ai-chat-input">
+          <input type="text" id="ai-chat-input" placeholder="Ask: 'What's delayed?' or 'Optimize route to USA'..." onkeydown="if(event.key==='Enter')sendAiMsg()"/>
+          <button onclick="sendAiMsg()">Send</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Leaflet JS -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+// ---- Tab switching ----
+function showTab(id) {
+  document.querySelectorAll('.ent-section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.ent-nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('sec-' + id).classList.add('active');
+  const tabs = document.querySelectorAll('.ent-nav-tab');
+  const labels = ['tools','map','analytics','estimator','customs','fleet','sla','ai'];
+  const idx = labels.indexOf(id);
+  if (idx >= 0) tabs[idx].classList.add('active');
+
+  if (id === 'map') initMap();
+  if (id === 'analytics') initAnalytics();
+}
+
+// ---- Live Map ----
+let mapInstance = null;
+let allMarkers = [];
+
+const shipments = [
+  { lat: 1.35, lng: 103.82, type: 'air', status: 'ok', label: 'AP-88102 United Kingdom HUB' },
+  { lat: 40.71, lng: -74.00, type: 'air', status: 'ok', label: 'AP-88085 New York — Delivered' },
+  { lat: 51.50, lng: -0.12, type: 'air', status: 'ok', label: 'AP-88091 London — Transit' },
+  { lat: 35.68, lng: 139.69, type: 'sea', status: 'ok', label: 'AP-88079 Tokyo — Transit' },
+  { lat: 22.32, lng: 114.17, type: 'air', status: 'delayed', label: 'AP-88064 HK — DELAYED' },
+  { lat: 48.85, lng: 2.35, type: 'sea', status: 'ok', label: 'AP-88070 Paris — Transit' },
+  { lat: -33.87, lng: 151.21, type: 'sea', status: 'ok', label: 'AP-88060 Sydney — Delivering' },
+  { lat: 28.61, lng: 77.20, type: 'road', status: 'ok', label: 'AP-88055 Delhi — Transit' },
+  { lat: 25.20, lng: 55.27, type: 'air', status: 'ok', label: 'AP-88048 Dubai — Transit' },
+  { lat: 37.57, lng: 126.98, type: 'air', status: 'ok', label: 'AP-88042 Seoul — Delivered' },
+  { lat: 3.15, lng: 101.69, type: 'road', status: 'ok', label: 'AP-88039 KL — On Route' },
+  { lat: 31.23, lng: 121.47, type: 'sea', status: 'delayed', label: 'AP-88097 Shanghai — Customs Hold' },
+  { lat: 53.35, lng: -6.26, type: 'air', status: 'ok', label: 'AP-88033 Dublin — Transit' },
+  { lat: 19.08, lng: 72.88, type: 'sea', status: 'ok', label: 'AP-88027 Mumbai — In Port' },
+];
+
+const colorMap = { air: '#2563eb', sea: '#7c3aed', road: '#d97706' };
+
+function getColor(s) {
+  if (s.status === 'delayed') return '#CD2727';
+  return colorMap[s.type] || '#16a34a';
+}
+
+function initMap() {
+  if (mapInstance) return;
+  mapInstance = L.map('map-panel').setView([20, 30], 2);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; OpenStreetMap contributors',
+    maxZoom: 18
+  }).addTo(mapInstance);
+
+  shipments.forEach(s => {
+    const color = getColor(s);
+    const marker = L.circleMarker([s.lat, s.lng], {
+      radius: s.status === 'delayed' ? 12 : 9,
+      fillColor: color,
+      color: '#fff',
+      weight: 2,
+      opacity: 1,
+      fillOpacity: 0.85
+    }).addTo(mapInstance);
+    marker.bindPopup('<b>' + s.label + '</b><br>Type: ' + s.type + ' | Status: ' + (s.status === 'delayed' ? '<span style="color:red">DELAYED</span>' : 'On Track'));
+    marker._shipment = s;
+    allMarkers.push(marker);
+  });
+
+  // Draw sample routes as polylines
+  const routes = [
+    [[1.35,103.82],[22.32,114.17],[40.71,-74.00]],
+    [[1.35,103.82],[25.20,55.27],[51.50,-0.12]],
+    [[1.35,103.82],[35.68,139.69],[-33.87,151.21]],
+  ];
+  routes.forEach(r => {
+    L.polyline(r, { color: '#CD2727', weight: 1.5, opacity: 0.35, dashArray: '6,6' }).addTo(mapInstance);
+  });
+}
+
+function filterMap(type, btn) {
+  document.querySelectorAll('.map-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  if (!mapInstance) return;
+  allMarkers.forEach(m => {
+    const s = m._shipment;
+    const show = type === 'all' || s.type === type || (type === 'delayed' && s.status === 'delayed');
+    if (show) mapInstance.addLayer(m); else mapInstance.removeLayer(m);
+  });
+}
+
+// ---- Analytics ----
+function animateCount(id, target, prefix, suffix, duration) {
+  const el = document.getElementById(id);
+  const start = 0;
+  const step = (target / (duration / 16));
+  let current = 0;
+  const timer = setInterval(() => {
+    current = Math.min(current + step, target);
+    el.textContent = prefix + Math.round(current).toLocaleString() + suffix;
+    if (current >= target) clearInterval(timer);
+  }, 16);
+}
+
+let analyticsInit = false;
+function initAnalytics() {
+  if (analyticsInit) return;
+  analyticsInit = true;
+  animateCount('kpi-shipments', 18742, '', '', 1200);
+  animateCount('kpi-revenue', 4280000, '$', '', 1400);
+  animateCount('kpi-ontime', 98, '', '%', 1000);
+  animateCount('kpi-delayed', 23, '', '', 800);
+
+  const months = ['Oct','Nov','Dec','Jan','Feb','Mar','Apr','May'];
+  const vals = [1420,1580,1380,1720,1880,2050,1960,2210];
+  const max = Math.max(...vals);
+  const chart = document.getElementById('bar-chart');
+  chart.innerHTML = '';
+  months.forEach((m, i) => {
+    const pct = Math.round((vals[i] / max) * 100);
+    const wrap = document.createElement('div'); wrap.className = 'bar-wrap';
+    const bar = document.createElement('div'); bar.className = 'bar';
+    bar.style.height = '0%'; bar.style.transition = 'height 0.8s ease';
+    bar.title = m + ': ' + vals[i] + ' shipments';
+    const lbl = document.createElement('div'); lbl.className = 'bar-lbl'; lbl.textContent = m;
+    wrap.appendChild(bar); wrap.appendChild(lbl);
+    chart.appendChild(wrap);
+    setTimeout(() => { bar.style.height = pct + '%'; }, 100 + i * 80);
+  });
+}
+
+// ---- Shipment Estimator ----
+const rates = { express: 8.5, air: 5.2, sea: 1.8, road: 2.4 };
+const days = { express: '3-5 business days', air: '5-8 business days', sea: '18-28 days', road: '7-14 days' };
+
+function calcEstimate() {
+  const weight = parseFloat(document.getElementById('est-weight').value) || 1;
+  const l = parseFloat(document.getElementById('est-l').value) || 1;
+  const w = parseFloat(document.getElementById('est-w').value) || 1;
+  const h = parseFloat(document.getElementById('est-h').value) || 1;
+  const svc = document.getElementById('est-service').value;
+  const val = parseFloat(document.getElementById('est-value').value) || 0;
+
+  const volWeight = (l * w * h) / 5000;
+  const chargeWeight = Math.max(weight, volWeight);
+  const base = chargeWeight * rates[svc] * 12.5;
+  const fuel = base * 0.18;
+  const remote = base > 200 ? 25 : 0;
+  const gst = (base + fuel + remote) * 0.09;
+  const total = base + fuel + remote + gst;
+
+  const fmt = n => 'GBP $' + n.toFixed(2);
+  document.getElementById('er-base').textContent = fmt(base);
+  document.getElementById('er-fuel').textContent = fmt(fuel);
+  document.getElementById('er-remote').textContent = remote > 0 ? fmt(remote) : 'Not applicable';
+  document.getElementById('er-gst').textContent = fmt(gst);
+  document.getElementById('er-total').textContent = fmt(total);
+  document.getElementById('er-days').textContent = days[svc];
+  document.getElementById('est-result').style.display = 'block';
+}
+
+// ---- Customs Calculator ----
+const dutyRates = {
+  us: { electronics: 0.05, clothing: 0.15, food: 0.10, cosmetics: 0.07, machinery: 0.03, toys: 0.06 },
+  uk: { electronics: 0.12, clothing: 0.12, food: 0.05, cosmetics: 0.06, machinery: 0.04, toys: 0.05 },
+  au: { electronics: 0.05, clothing: 0.10, food: 0.05, cosmetics: 0.05, machinery: 0.00, toys: 0.05 },
+  de: { electronics: 0.14, clothing: 0.12, food: 0.09, cosmetics: 0.06, machinery: 0.03, toys: 0.047 },
+  jp: { electronics: 0.00, clothing: 0.10, food: 0.15, cosmetics: 0.05, machinery: 0.00, toys: 0.038 },
+  in: { electronics: 0.20, clothing: 0.25, food: 0.30, cosmetics: 0.20, machinery: 0.075, toys: 0.60 },
+  sg: { electronics: 0.00, clothing: 0.00, food: 0.00, cosmetics: 0.00, machinery: 0.00, toys: 0.00 },
+};
+const vatRates = { us: 0.085, uk: 0.20, au: 0.10, de: 0.21, jp: 0.10, in: 0.18, sg: 0.09 };
+
+function calcCustoms() {
+  const country = document.getElementById('cust-country').value;
+  const category = document.getElementById('cust-category').value;
+  const val = parseFloat(document.getElementById('cust-value').value) || 0;
+  const freight = parseFloat(document.getElementById('cust-freight').value) || 0;
+
+  const cif = val + freight;
+  const dutyRate = dutyRates[country]?.[category] || 0.10;
+  const duty = cif * dutyRate;
+  const vatRate = vatRates[country] || 0.10;
+  const vat = (cif + duty) * vatRate;
+  const total = cif + duty + vat;
+
+  const fmt = n => 'USD $' + n.toFixed(2);
+  document.getElementById('cr-cif').textContent = fmt(cif);
+  document.getElementById('cr-duty').textContent = fmt(duty) + ' (' + (dutyRate*100).toFixed(1) + '%)';
+  document.getElementById('cr-vat').textContent = fmt(vat) + ' (' + (vatRate*100).toFixed(0) + '%)';
+  document.getElementById('cr-total').textContent = fmt(total);
+  document.getElementById('cust-result').style.display = 'block';
+}
+
+// ---- AI Chat ----
+const aiResponses = {
+  'delay': 'Currently monitoring 3 delayed shipments. AP-88064 (Hong Kong) is most critical — typhoon disruption, 28h delay projected. Auto-escalation sent to Amazon SG.',
+  'route': 'I optimized the SIN→LAX corridor at 02:14 today — rerouted 14 shipments via Tokyo Narita, saving GBP $2,340 and 6h transit time. Want me to run a full corridor analysis?',
+  'customs': 'AP-88097 (Apple Asia, Shanghai) has a 78% hold probability. I recommend submitting a revised commercial invoice before Customs pre-clearance window closes at 17:00 SGT.',
+  'sla': 'SLA compliance is at 94.3% today. 1 breach: AP-88064. 1 at-risk: AP-88097. 5 shipments are on track against their SLA commitments.',
+  'fleet': 'Fleet status: 4 of 6 vehicles on route. VH-002 is stationary (possible breakdown) — last GPS ping 18 min ago. VH-005 at Johor Bahru customs checkpoint.',
+  'default': 'I\'m analysing all 2,147 active shipments. I can help with delay alerts, route optimization, customs risk, SLA compliance, and fleet status. What would you like to know?'
+};
+
+function sendAiMsg() {
+  const input = document.getElementById('ai-chat-input');
+  const msg = input.value.trim();
+  if (!msg) return;
+  input.value = '';
+
+  const msgs = document.getElementById('ai-chat-messages');
+  msgs.innerHTML += '<div class="ai-msg user"><div class="bubble">' + msg + '</div></div>';
+
+  setTimeout(() => {
+    const lc = msg.toLowerCase();
+    let reply = aiResponses.default;
+    if (lc.includes('delay') || lc.includes('late')) reply = aiResponses.delay;
+    else if (lc.includes('route') || lc.includes('optimize') || lc.includes('usa') || lc.includes('us')) reply = aiResponses.route;
+    else if (lc.includes('custom') || lc.includes('duty')) reply = aiResponses.customs;
+    else if (lc.includes('sla') || lc.includes('breach')) reply = aiResponses.sla;
+    else if (lc.includes('fleet') || lc.includes('vehicle') || lc.includes('driver')) reply = aiResponses.fleet;
+    msgs.innerHTML += '<div class="ai-msg bot"><div class="bubble">&#129302; ' + reply + '</div></div>';
+    msgs.scrollTop = msgs.scrollHeight;
+  }, 700);
+
+  msgs.scrollTop = msgs.scrollHeight;
+}
+</script>
+  <script src="/apps/airpak/js/ap-lang.js" defer></script>
+  <script src="/apps/airpak/js/ap-chat.js" defer></script>
+
+<!-- Preloader -->
+<div class="ap-preloader" id="apPreloader">
+  <svg class="ap-preloader-logo" viewBox="0 0 80 80" fill="none">
+    <rect width="80" height="80" rx="16" fill="rgba(255,255,255,.15)"/>
+    <path d="M20 40h40M40 20v40" stroke="white" stroke-width="5" stroke-linecap="round"/>
+    <circle cx="40" cy="40" r="12" fill="none" stroke="white" stroke-width="3"/>
+  </svg>
+  <div class="ap-preloader-title">Airpak Express</div>
+  <div class="ap-preloader-sub" id="apPreloaderGreeting">Loading your experience...</div>
+  <div class="ap-preloader-bar-wrap"><div class="ap-preloader-bar"></div></div>
+  <div class="ap-preloader-dots">
+    <div class="ap-preloader-dot"></div>
+    <div class="ap-preloader-dot"></div>
+    <div class="ap-preloader-dot"></div>
+  </div>
+</div>
+
+<script>
+// Preloader with dynamic greeting
+(function(){
+  var h = new Date().getHours();
+  var greeting = 'Good morning';
+  if (h >= 12 && h < 17) greeting = 'Good afternoon';
+  else if (h >= 17 && h < 21) greeting = 'Good evening';
+  else if (h >= 21) greeting = 'Good night';
+  var el = document.getElementById('apPreloaderGreeting');
+  if (el) el.textContent = greeting + ' — preparing your experience...';
+  
+  // Hide preloader once page is fully loaded
+  window.addEventListener('load', function(){
+    setTimeout(function(){
+      var pl = document.getElementById('apPreloader');
+      if (pl) pl.classList.add('hidden');
+      setTimeout(function(){ if(pl) pl.style.display='none'; }, 700);
+    }, 1200);
+  });
+})();
+</script>
+
+</body>
+</html>
