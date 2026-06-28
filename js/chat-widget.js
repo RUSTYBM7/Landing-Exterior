@@ -336,21 +336,26 @@
 
         chatInput.value = '';
 
-        // Simulate AI response
-        setTimeout(function() {
-            const botBubble = document.createElement('div');
-            botBubble.className = 'chat-message bot';
-            const responses = [
-                'Thank you for your message! Our AI assistant is processing your request.',
-                'I understand you need help with shipping. Let me assist you with that.',
-                'For immediate assistance, you can call us at +65 6743 9200.',
-                'I\'ve noted your inquiry. A support agent will follow up shortly.',
-                'Based on your question, I recommend visiting our FAQ section for quick answers.'
-            ];
-            botBubble.innerHTML = '<div class="bubble">' + responses[Math.floor(Math.random() * responses.length)] + '</div>';
-            messagesTab.appendChild(botBubble);
-            messagesTab.scrollTop = messagesTab.scrollHeight;
-        }, 1000);
+        // === AirPak Live Bridge =========================================
+        // Replaced canned-bot with real backend (Supabase + admin portal).
+        // UI, IDs, and styling are unchanged. The widget keeps the same
+        // .chat-message.user / .chat-message.bot bubble classes.
+        AirpakBridge.send(message).then(function(reply) {
+            appendBot(reply || 'Thanks — a team member will be with you shortly.');
+        }).catch(function(err) {
+            console.error('[AirpakBridge] send failed', err);
+            appendBot('We couldn\'t reach support just now. Please try again or email support@airpak-express.site.');
+        });
+        // =================================================================
+    }
+
+    function appendBot(text) {
+        const messagesTab = document.getElementById('chat-messages-tab');
+        const botBubble = document.createElement('div');
+        botBubble.className = 'chat-message bot';
+        botBubble.innerHTML = '<div class="bubble">' + text + '</div>';
+        messagesTab.appendChild(botBubble);
+        messagesTab.scrollTop = messagesTab.scrollHeight;
     }
 
     sendBtn.addEventListener('click', sendMessage);

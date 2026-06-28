@@ -21,6 +21,22 @@
       "destination": "/tracking.html"
     },
     {
+      "source": "/create-shipment",
+      "destination": "/create-shipment.html"
+    },
+    {
+      "source": "/chat-widget",
+      "destination": "/chat-widget.html"
+    },
+    {
+      "source": "/admin",
+      "destination": "/admin/index.html"
+    },
+    {
+      "source": "/admin/login",
+      "destination": "/admin/login.html"
+    },
+    {
       "source": "/careers",
       "destination": "/careers.html"
     },
@@ -215,5 +231,11 @@
   "env": {
     "VITE_SUPABASE_URL": "https://zygoqqsgzhgpvlpttfbk.supabase.co",
     "VITE_SUPABASE_ANON_KEY": "YOUR_SUPABASE_ANON_KEY"
+  },
+  "functions": {
+    "api/**/*.js": {
+      "memory": 256,
+      "maxDuration": 10
+    }
   }
 }

@@ -272,6 +272,7 @@ a{color:#CD2727;}
         <link rel="alternate" href="index.html" hreflang="en-sg" />        
 <!-- Chat Widget -->
 <link rel="stylesheet" href="/js/chat-widget.css">
+<script src="/js/airpak-bridge.js" defer></script>
 <script src="/js/chat-widget.js" defer></script>
 </head>
 <body>    
@@ -315,6 +316,9 @@ a{color:#CD2727;}
                                         </li>
                                         <li>
                                             <a href="tracking.html" class="tlang aph6">Track Shipment</a>
+                                        </li>
+                                        <li>
+                                            <a href="create-shipment.html" class="tlang aph6">Create Shipment</a>
                                         </li>
                                         <li>
                                             <a href="index.html#" class="tlang aph6">Login <i class="fi-rs-angle-down"></i></a>
@@ -415,6 +419,9 @@ a{color:#CD2727;}
                                         </li>
                                         <li>
                                             <a href="tracking.html" class="tlang aph6">Track Shipment</a>
+                                        </li>
+                                        <li>
+                                            <a href="create-shipment.html" class="tlang aph6">Create Shipment</a>
                                         </li>
                                         <li class="menu-item-has-children">
                                             <a href="index.html#" class="tlang">Login</a>
@@ -908,9 +915,14 @@ document.getElementById('homeVideo').addEventListener('ended', function() { this
 -->
        <script>
            function gettrack() {
-               if ($("#trackentry").val() == "") { return false;}
-               location.href = "tracking.html?tracking=" + $("#trackentry").val());
-               //location.href = "parcel?trackingnumber=" + $("#trackentry").val();
+               var v = ($("#trackentry").val() || "").trim();
+               if (!v) {
+                   $("#trackentry").focus();
+                   return false;
+               }
+               // Always use the clean /tracking slug with the param so vercel.json
+               // rewrites resolve correctly and tracking.html auto-fills the field.
+               location.href = "/tracking?tracking=" + encodeURIComponent(v);
            }
            function formini() {
                //$(".scrollingdiv .col-lg-3 .serviceboxhidden").css("top", "-100%");
