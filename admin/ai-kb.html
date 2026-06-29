@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AI Knowledge Base | Airpak Express Admin</title>
+    <link rel="shortcut icon" type="image/x-icon" href="/apps/airpak/images/icon.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sarabun:wght@400;600;700&display=swap" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        :root {
+            --brand:#CD2727; --brand-dark:#a8201f; --ink:#1f2937;
+            --ink-soft:#4b5563; --line:#e5e7eb; --bg:#f6f8fb; --card:#fff;
+            --ok:#16a34a; --warn:#f59e0b; --bad:#dc2626;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Inter', 'Sarabun', sans-serif; background: var(--bg); color: var(--ink); min-height: 100vh; }
+        a { color: inherit; text-decoration: none; }
+        header { background:#fff; border-bottom:1px solid var(--line); position:sticky; top:0; z-index:50; }
+        header .inner { max-width:1200px; margin:0 auto; padding:14px 20px; display:flex; justify-content:space-between; align-items:center; gap:16px; }
+        header .brand { display:flex; align-items:center; gap:12px; font-weight:700; }
+        header .brand img { height:36px; }
+        header nav a { padding:8px 12px; border-radius:8px; font-size:14px; font-weight:600; }
+        header nav a:hover { background:var(--bg); }
+        .wrap { max-width:1200px; margin:0 auto; padding:28px 20px 80px; }
+        h1 { font-family:'Sarabun',sans-serif; font-size:24px; font-weight:700; }
+        .sub { color:var(--ink-soft); margin-top:4px; margin-bottom:24px; }
+        .grid { display:grid; grid-template-columns: 1fr 1fr; gap:24px; }
+        @media (max-width: 900px) { .grid { grid-template-columns: 1fr; } }
+        .card { background:var(--card); border:1px solid var(--line); border-radius:14px; padding:24px; }
+        .card h2 { font-family:'Sarabun',sans-serif; font-size:18px; font-weight:700; margin-bottom:12px; }
+        .field { display:flex; flex-direction:column; gap:6px; margin-bottom:12px; }
+        .field label { font-size:13px; font-weight:600; color:var(--ink-soft); }
+        .field input, .field select, .field textarea {
+            border:1px solid var(--line); border-radius:10px; padding:10px 12px; font:inherit; outline:none;
+        }
+        .field input:focus, .field select:focus, .field textarea:focus { border-color:var(--brand); box-shadow:0 0 0 3px rgba(205,39,39,.12); }
+        .btn { padding:10px 16px; border-radius:10px; border:0; cursor:pointer; font-weight:600; font-size:14px; }
+        .btn-primary { background:var(--brand); color:#fff; }
+        .btn-primary:hover { background:var(--brand-dark); }
+        .btn-ghost { background:#fff; color:var(--ink); border:1px solid var(--line); }
+        .btn-ghost:hover { background:var(--bg); }
+        .btn:disabled { opacity:.6; cursor:not-allowed; }
+        .stats { display:grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap:12px; margin-bottom:24px; }
+        .stat { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:16px; }
+        .stat .v { font-size:22px; font-weight:700; color:var(--brand); }
+        .stat .k { font-size:12px; color:var(--ink-soft); margin-top:2px; }
+        .table { width:100%; border-collapse:collapse; font-size:14px; }
+        .table th, .table td { text-align:left; padding:10px 12px; border-bottom:1px solid var(--line); }
+        .table th { font-size:12px; color:var(--ink-soft); text-transform:uppercase; letter-spacing:.5px; }
+        .badge { display:inline-block; padding:2px 8px; border-radius:999px; font-size:11px; font-weight:700; background:#eef2ff; color:#3730a3; }
+        .badge.faq { background:#fef3c7; color:#92400e; }
+        .badge.service { background:#dbeafe; color:#1e40af; }
+        .badge.policy { background:#fce7f3; color:#9d174d; }
+        .row-actions button { background:transparent; border:0; color:var(--bad); cursor:pointer; font-size:12px; }
+        .toast { position:fixed; bottom:24px; left:50%; transform:translateX(-50%); background:var(--ink); color:#fff; padding:12px 18px; border-radius:10px; opacity:0; transition:.25s; pointer-events:none; z-index:200; }
+        .toast.show { opacity:1; }
+        .pill { display:inline-block; padding:2px 8px; margin-right:4px; border-radius:999px; background:#eef2ff; color:#3730a3; font-size:11px; }
+        .embed-status { font-size:11px; font-weight:700; padding:2px 8px; border-radius:999px; }
+        .embed-status.ok { background:#dcfce7; color:#166534; }
+        .embed-status.no { background:#fee2e2; color:#991b1b; }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="inner">
+        <div class="brand">
+            <img src="/apps/airpak/img/logosmall.png" alt="Airpak Express" />
+            <span>AI Knowledge Base</span>
+        </div>
+        <nav>
+            <a href="/">Public site</a>
+            <a href="/tracking">Track</a>
+            <a href="/admin/">Admin</a>
+        </nav>
+    </div>
+</header>
+
+<div class="wrap">
+    <h1>AI Knowledge Base</h1>
+    <p class="sub">Manage the open-source RAG corpus that powers the support assistant. Add FAQs, services, and policies — the orchestrator re-embeds on save.</p>
+
+    <div class="stats" id="stats">
+        <div class="stat"><div class="v" id="statCount">—</div><div class="k">Active chunks</div></div>
+        <div class="stat"><div class="v" id="statEmbedded">—</div><div class="k">With embedding</div></div>
+        <div class="stat"><div class="v" id="statSource">—</div><div class="k">Top source</div></div>
+        <div class="stat"><div class="v" id="statProvider">—</div><div class="k">AI provider</div></div>
+    </div>
+
+    <div class="grid">
+        <div class="card">
+            <h2>Add knowledge chunk</h2>
+            <div class="field"><label>Source</label>
+                <select id="src">
+                    <option value="faq">FAQ</option>
+                    <option value="service">Service</option>
+                    <option value="policy">Policy</option>
+                    <option value="custom">Custom</option>
+                </select>
+            </div>
+            <div class="field"><label>Title</label><input id="title" placeholder="How do I track my Airpak Express shipment?" /></div>
+            <div class="field"><label>Content</label><textarea id="content" rows="6" placeholder="Full answer the AI should give to customers..."></textarea></div>
+            <div class="field"><label>Tags (comma-separated)</label><input id="tags" placeholder="tracking, shipment, faq" /></div>
+            <div class="field"><label>Locale</label>
+                <select id="locale"><option value="en">English</option><option value="zh">Chinese</option><option value="ms">Malay</option><option value="ta">Tamil</option></select>
+            </div>
+            <button class="btn btn-primary btn-block" id="addBtn">Save & embed</button>
+        </div>
+
+        <div class="card">
+            <h2>Recent AI runs</h2>
+            <p class="sub">Audit trail of every orchestrator call. Helps tune skills and costs.</p>
+            <div id="runsList"><div class="sub">Loading...</div></div>
+        </div>
+    </div>
+
+    <div class="card" style="margin-top:24px;">
+        <h2>Knowledge chunks</h2>
+        <table class="table">
+            <thead><tr><th>Source</th><th>Title</th><th>Tags</th><th>Locale</th><th>Embedding</th><th></th></tr></thead>
+            <tbody id="rows"></tbody>
+        </table>
+    </div>
+</div>
+
+<div class="toast" id="toast">Saved</div>
+
+<script>
+const SUPABASE_URL  = 'https://zygoqqsgzhgpvlpttfbk.supabase.co';
+const SUPABASE_ANON = (window.__SUPABASE_ANON_KEY__ || '');
+
+const $ = (s) => document.querySelector(s);
+const toast = (m) => { const t=$('#toast'); t.textContent=m; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),1800); };
+
+let sb = null;
+if (SUPABASE_ANON && window.supabase) sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+
+async function loadStats() {
+    if (!sb) { $('#statCount').textContent = '—'; return; }
+    const { count: total } = await sb.from('ai_kb').select('id', { count: 'exact', head: true }).eq('active', true);
+    const { count: emb }  = await sb.from('ai_kb').select('id', { count: 'exact', head: true }).eq('active', true).not('embedding', 'is', null);
+    const { data: srcs }  = await sb.from('ai_kb').select('source').eq('active', true).limit(200);
+    const tally = {};
+    (srcs || []).forEach(r => { tally[r.source] = (tally[r.source] || 0) + 1; });
+    const top = Object.entries(tally).sort((a,b)=>b[1]-a[1])[0];
+    $('#statCount').textContent = total ?? 0;
+    $('#statEmbedded').textContent = emb ?? 0;
+    $('#statSource').textContent = top ? `${top[0]} (${top[1]})` : '—';
+}
+
+async function loadRows() {
+    if (!sb) return;
+    const { data, error } = await sb.from('ai_kb').select('id, source, title, tags, locale, embedding, updated_at').eq('active', true).order('updated_at', { ascending: false }).limit(100);
+    if (error) { $('#rows').innerHTML = '<tr><td colspan="6">Error: ' + error.message + '</td></tr>'; return; }
+    $('#rows').innerHTML = (data || []).map(r => `
+        <tr>
+            <td><span class="badge ${r.source}">${r.source}</span></td>
+            <td>${escapeHtml(r.title)}</td>
+            <td>${(r.tags || []).map(t => '<span class="pill">' + escapeHtml(t) + '</span>').join('')}</td>
+            <td>${r.locale || 'en'}</td>
+            <td><span class="embed-status ${r.embedding ? 'ok' : 'no'}">${r.embedding ? '✓' : '—'}</span></td>
+            <td class="row-actions"><button data-id="${r.id}" data-act="del">Delete</button></td>
+        </tr>
+    `).join('') || '<tr><td colspan="6" class="sub">No chunks yet.</td></tr>';
+    document.querySelectorAll('button[data-act=del]').forEach(b => {
+        b.addEventListener('click', async () => {
+            if (!confirm('Delete this chunk?')) return;
+            await sb.from('ai_kb').update({ active: false }).eq('id', b.dataset.id);
+            toast('Deleted');
+            loadRows(); loadStats();
+        });
+    });
+}
+
+async function loadRuns() {
+    try {
+        const r = await fetch('/api/ai/health');
+        if (!r.ok) return;
+        const data = await r.json();
+        $('#statProvider').textContent = (data.provider || '?') + (data.model ? '/' + data.model.split('/').pop() : '');
+        const runs = data.recent_runs || [];
+        $('#runsList').innerHTML = runs.length ? runs.map(run => `
+            <div style="padding:8px 0; border-bottom:1px solid var(--line); font-size:13px;">
+                <span class="badge">${run.skill || '?'}</span>
+                <strong>${run.provider || '?'}</strong> · ${run.model || ''} ·
+                <span>${run.latency_ms || 0}ms</span>
+                <span style="color:var(--ink-soft);"> · ${new Date(run.created_at).toLocaleTimeString()}</span>
+            </div>
+        `).join('') : '<div class="sub">No AI runs yet. Send a chat message to see them appear here.</div>';
+    } catch (e) {}
+}
+
+function escapeHtml(s) {
+    return String(s || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
+}
+
+$('#addBtn').addEventListener('click', async () => {
+    if (!sb) { toast('Supabase anon key not configured'); return; }
+    const title = $('#title').value.trim();
+    const content = $('#content').value.trim();
+    if (!title || !content) { toast('Title and content required'); return; }
+    const row = {
+        source: $('#src').value,
+        title,
+        content,
+        tags: $('#tags').value.split(',').map(t => t.trim()).filter(Boolean),
+        locale: $('#locale').value
+    };
+    $('#addBtn').disabled = true; $('#addBtn').textContent = 'Saving...';
+    const { data, error } = await sb.from('ai_kb').insert(row).select('id').single();
+    $('#addBtn').disabled = false; $('#addBtn').textContent = 'Save & embed';
+    if (error) { toast('Save failed: ' + error.message); return; }
+    // Trigger embed (admin secret must be set; otherwise this 401s and we still saved the row)
+    fetch('/api/ai/ingest', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ids: [data.id] })
+    }).catch(() => {});
+    toast('Saved. Embedding in background.');
+    $('#title').value = ''; $('#content').value = ''; $('#tags').value = '';
+    loadRows(); loadStats();
+});
+
+// initial
+loadStats(); loadRows(); loadRuns();
+setInterval(loadRuns, 8000);
+</script>
+</body>
+</html>

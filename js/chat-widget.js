@@ -336,15 +336,32 @@
 
         chatInput.value = '';
 
-        // === AirPak Live Bridge =========================================
-        // Replaced canned-bot with real backend (Supabase + admin portal).
-        // UI, IDs, and styling are unchanged. The widget keeps the same
-        // .chat-message.user / .chat-message.bot bubble classes.
-        AirpakBridge.send(message).then(function(reply) {
-            appendBot(reply || 'Thanks — a team member will be with you shortly.');
+        // === AirPak AI Swarm ============================================
+        // Routes through the AI orchestrator first (skills: tracking,
+        // rates, faq, intake, escalate). Admin replies still arrive via
+        // the AirpakBridge poll loop — both work together. If the AI
+        // escalates, the message is also persisted for a human to pick up.
+        AirpakAI.send(message, {
+            ticketId: (window.AirpakBridge && AirpakBridge.getSession().ticketId) || null
+        }).then(function(res) {
+            appendBot(res.reply || 'Thanks — a team member will be with you shortly.');
+            // The AI may also persist the conversation to Supabase; tell
+            // the bridge so future polls find the ticket.
+            if (res.ticketId && window.AirpakBridge) {
+                AirpakBridge.setSession({ ticketId: res.ticketId });
+            }
+            // Optional: respect skill actions (e.g. open_url)
+            if (res.action && res.action.type === 'open_url' && res.action.url) {
+                setTimeout(function() { window.open(res.action.url, '_blank'); }, 600);
+            }
         }).catch(function(err) {
-            console.error('[AirpakBridge] send failed', err);
-            appendBot('We couldn\'t reach support just now. Please try again or email support@airpak-express.site.');
+            console.error('[AirpakAI] failed, falling back to bridge', err);
+            // Last resort: plain bridge send (existing admin-reply flow)
+            if (window.AirpakBridge) {
+                AirpakBridge.send(message).then(appendBot).catch(function() {
+                    appendBot('We couldn\'t reach support just now. Please try again or email support@airpak-express.site.');
+                });
+            }
         });
         // =================================================================
     }
