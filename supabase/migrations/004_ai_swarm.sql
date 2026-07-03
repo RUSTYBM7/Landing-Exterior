@@ -29,9 +29,27 @@ CREATE TABLE IF NOT EXISTS ai_kb (
     updated_at   TIMESTAMPTZ DEFAULT now()
 );
 
-CREATE INDEX IF NOT EXISTS idx_ai_kb_active ON ai_kb(active);
-CREATE INDEX IF NOT EXISTS idx_ai_kb_source ON ai_kb(source);
-CREATE INDEX IF NOT EXISTS idx_ai_kb_locale ON ai_kb(locale);
+DO $$
+BEGIN
+    IF EXISTS (SELECT 1 FROM information_schema.columns
+               WHERE table_schema='public' AND table_name='ai_kb' AND column_name='active') THEN
+        EXECUTE 'CREATE INDEX IF NOT EXISTS idx_ai_kb_active ON ai_kb(active)';
+    END IF;
+END $$;
+DO $$
+BEGIN
+    IF EXISTS (SELECT 1 FROM information_schema.columns
+               WHERE table_schema='public' AND table_name='ai_kb' AND column_name='source') THEN
+        EXECUTE 'CREATE INDEX IF NOT EXISTS idx_ai_kb_source ON ai_kb(source)';
+    END IF;
+END $$;
+DO $$
+BEGIN
+    IF EXISTS (SELECT 1 FROM information_schema.columns
+               WHERE table_schema='public' AND table_name='ai_kb' AND column_name='locale') THEN
+        EXECUTE 'CREATE INDEX IF NOT EXISTS idx_ai_kb_locale ON ai_kb(locale)';
+    END IF;
+END $$;
 -- ivfflat is fine for small/medium corpora (<100k chunks)
 CREATE INDEX IF NOT EXISTS idx_ai_kb_embedding
     ON ai_kb USING ivfflat (embedding vector_cosine_ops) WITH (lists = 100);
@@ -58,7 +76,13 @@ CREATE TABLE IF NOT EXISTS ai_runs (
     metadata   JSONB DEFAULT '{}'::jsonb,
     created_at TIMESTAMPTZ DEFAULT now()
 );
-CREATE INDEX IF NOT EXISTS idx_ai_runs_session ON ai_runs(session_id, created_at DESC);
+DO $$
+BEGIN
+    IF EXISTS (SELECT 1 FROM information_schema.columns
+               WHERE table_schema='public' AND table_name='ai_runs' AND column_name='session_id') THEN
+        EXECUTE 'CREATE INDEX IF NOT EXISTS idx_ai_runs_session ON ai_runs(session_id, created_at DESC)';
+    END IF;
+END $$;
 CREATE INDEX IF NOT EXISTS idx_ai_runs_skill   ON ai_runs(skill, created_at DESC);
 
 -- ============================================================
@@ -109,11 +133,14 @@ ALTER TABLE ai_kb   ENABLE ROW LEVEL SECURITY;
 ALTER TABLE ai_runs ENABLE ROW LEVEL SECURITY;
 
 DROP POLICY IF EXISTS "public read ai_kb" ON ai_kb;
+DROP POLICY IF EXISTS "public read ai_kb" ON ai_kb;
 CREATE POLICY "public read ai_kb" ON ai_kb FOR SELECT USING (active = true);
 
 DROP POLICY IF EXISTS "public insert ai_runs" ON ai_runs;
+DROP POLICY IF EXISTS "public insert ai_runs" ON ai_runs;
 CREATE POLICY "public insert ai_runs" ON ai_runs FOR INSERT WITH CHECK (true);
 
+DROP POLICY IF EXISTS "public read ai_runs" ON ai_runs;
 DROP POLICY IF EXISTS "public read ai_runs" ON ai_runs;
 CREATE POLICY "public read ai_runs" ON ai_runs FOR SELECT USING (true);
 
@@ -194,6 +221,7 @@ RETURNS TRIGGER AS $$
 BEGIN NEW.updated_at = now(); RETURN NEW; END;
 $$ LANGUAGE plpgsql;
 
+DROP TRIGGER IF EXISTS trg_ai_kb_updated_at ON ai_kb;
 DROP TRIGGER IF EXISTS trg_ai_kb_updated_at ON ai_kb;
 CREATE TRIGGER trg_ai_kb_updated_at
 BEFORE UPDATE ON ai_kb

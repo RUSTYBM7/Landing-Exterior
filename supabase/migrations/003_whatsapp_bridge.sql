@@ -7,28 +7,45 @@
 -- Add channel + external_id to support_tickets if not yet present.
 -- We keep web and WhatsApp tickets in the same table the portal
 -- already reads, so the admin UI shows them in the same queue.
-ALTER TABLE support_tickets
+DO $$
+BEGIN
+    IF EXISTS (SELECT 1 FROM information_schema.tables WHERE table_schema='public' AND table_name='support_tickets') THEN
+        EXECUTE $q$ALTER TABLE support_tickets
     ADD COLUMN IF NOT EXISTS channel          TEXT DEFAULT 'web',  -- 'web' | 'whatsapp' | 'email'
     ADD COLUMN IF NOT EXISTS external_id      TEXT,                -- e.g. '+18053956873'
     ADD COLUMN IF NOT EXISTS external_name    TEXT,                -- WhatsApp profile name
     ADD COLUMN IF NOT EXISTS last_visitor_msg TIMESTAMPTZ,
     ADD COLUMN IF NOT EXISTS last_admin_msg   TIMESTAMPTZ,
-    ADD COLUMN IF NOT EXISTS delivered_to     JSONB DEFAULT '{}'::jsonb; -- {whatsapp: true/false}
+    ADD COLUMN IF NOT EXISTS delivered_to     JSONB DEFAULT '{}'::jsonb;$q$;
+    END IF;
+END $$; -- {whatsapp: true/false}
 
 CREATE INDEX IF NOT EXISTS idx_tickets_channel      ON support_tickets(channel);
 CREATE INDEX IF NOT EXISTS idx_tickets_external_id  ON support_tickets(external_id);
 
 -- Add columns to messages for delivery receipts.
-ALTER TABLE messages
+DO $$
+BEGIN
+    IF EXISTS (SELECT 1 FROM information_schema.tables WHERE table_schema='public' AND table_name='messages') THEN
+        EXECUTE $q$ALTER TABLE messages
     ADD COLUMN IF NOT EXISTS delivered_to      JSONB DEFAULT '{}'::jsonb, -- {whatsapp: true/false, whatsapp_msg_id: '...'}
-    ADD COLUMN IF NOT EXISTS external_msg_id   TEXT;                       -- BSP-side message id for dedupe
+    ADD COLUMN IF NOT EXISTS external_msg_id   TEXT;$q$;
+    END IF;
+END $$;                       -- BSP-side message id for dedupe
 
-CREATE INDEX IF NOT EXISTS idx_messages_external ON messages(external_msg_id);
+DO $$
+BEGIN
+    IF EXISTS (SELECT 1 FROM information_schema.columns
+               WHERE table_schema='public' AND table_name='messages' AND column_name='external_msg_id') THEN
+        EXECUTE 'CREATE INDEX IF NOT EXISTS idx_messages_external ON messages(external_msg_id)';
+    END IF;
+END $$;
 
 -- Allow WhatsApp tickets to live without a portal user_id (they originate
 -- from the WhatsApp number, not from a logged-in customer). Existing RLS
 -- policies in chat_schema.sql already allow inserts; we relax update so
 -- our server-side webhook can bump status/timestamps without a user context.
+DROP POLICY IF EXISTS "Anyone can update tickets" ON support_tickets;
 DROP POLICY IF EXISTS "Anyone can update tickets" ON support_tickets;
 CREATE POLICY "Anyone can update tickets" ON support_tickets
     FOR UPDATE USING (true) WITH CHECK (true);
@@ -44,7 +61,9 @@ BEGIN
     ) THEN
         ALTER PUBLICATION supabase_realtime ADD TABLE support_tickets;
     END IF;
-    IF NOT EXISTS (
+    IF EXISTS (SELECT 1 FROM information_schema.tables
+               WHERE table_schema='public' AND table_name='messages')
+       AND NOT EXISTS (
         SELECT 1 FROM pg_publication_tables
         WHERE pubname = 'supabase_realtime' AND tablename = 'messages'
     ) THEN
@@ -107,10 +126,16 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-DROP TRIGGER IF EXISTS trg_admin_reply_whatsapp ON messages;
-CREATE TRIGGER trg_admin_reply_whatsapp
-AFTER INSERT ON messages
-FOR EACH ROW EXECUTE FUNCTION notify_admin_reply_to_whatsapp();
+DO $$
+BEGIN
+    IF EXISTS (SELECT 1 FROM information_schema.tables
+               WHERE table_schema='public' AND table_name='messages') THEN
+        DROP TRIGGER IF EXISTS trg_admin_reply_whatsapp ON messages;
+        CREATE TRIGGER trg_admin_reply_whatsapp
+        AFTER INSERT ON messages
+        FOR EACH ROW EXECUTE FUNCTION notify_admin_reply_to_whatsapp();
+    END IF;
+END $$;
 
 -- ============================================================
 -- INBOUND TRIGGER — when a visitor message lands on a web ticket,
@@ -146,10 +171,16 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-DROP TRIGGER IF EXISTS trg_visitor_msg_admin ON messages;
-CREATE TRIGGER trg_visitor_msg_admin
-AFTER INSERT ON messages
-FOR EACH ROW EXECUTE FUNCTION notify_visitor_message_to_admin();
+DO $$
+BEGIN
+    IF EXISTS (SELECT 1 FROM information_schema.tables
+               WHERE table_schema='public' AND table_name='messages') THEN
+        DROP TRIGGER IF EXISTS trg_visitor_msg_admin ON messages;
+        CREATE TRIGGER trg_visitor_msg_admin
+        AFTER INSERT ON messages
+        FOR EACH ROW EXECUTE FUNCTION notify_visitor_message_to_admin();
+    END IF;
+END $$;
 
 -- ============================================================
 -- Backfill: stamp existing rows

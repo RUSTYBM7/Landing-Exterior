@@ -46,9 +46,27 @@ CREATE TABLE IF NOT EXISTS shipments (
     updated_at TIMESTAMPTZ DEFAULT now()
 );
 
-CREATE INDEX IF NOT EXISTS idx_shipments_tracking_number ON shipments(tracking_number);
-CREATE INDEX IF NOT EXISTS idx_shipments_status ON shipments(status);
-CREATE INDEX IF NOT EXISTS idx_shipments_created_at ON shipments(created_at DESC);
+DO $$
+BEGIN
+    IF EXISTS (SELECT 1 FROM information_schema.columns
+               WHERE table_schema='public' AND table_name='shipments' AND column_name='tracking_number') THEN
+        EXECUTE 'CREATE INDEX IF NOT EXISTS idx_shipments_tracking_number ON shipments(tracking_number)';
+    END IF;
+END $$;
+DO $$
+BEGIN
+    IF EXISTS (SELECT 1 FROM information_schema.columns
+               WHERE table_schema='public' AND table_name='shipments' AND column_name='status') THEN
+        EXECUTE 'CREATE INDEX IF NOT EXISTS idx_shipments_status ON shipments(status)';
+    END IF;
+END $$;
+DO $$
+BEGIN
+    IF EXISTS (SELECT 1 FROM information_schema.columns
+               WHERE table_schema='public' AND table_name='shipments' AND column_name='created_at') THEN
+        EXECUTE 'CREATE INDEX IF NOT EXISTS idx_shipments_created_at ON shipments(created_at DESC)';
+    END IF;
+END $$;
 
 -- ============== TRACKING EVENTS =================
 CREATE TABLE IF NOT EXISTS tracking_events (
@@ -61,7 +79,13 @@ CREATE TABLE IF NOT EXISTS tracking_events (
     event_date TIMESTAMPTZ DEFAULT now(),
     created_at TIMESTAMPTZ DEFAULT now()
 );
-CREATE INDEX IF NOT EXISTS idx_tracking_events_tracking ON tracking_events(tracking_number);
+DO $$
+BEGIN
+    IF EXISTS (SELECT 1 FROM information_schema.columns
+               WHERE table_schema='public' AND table_name='tracking_events' AND column_name='tracking_number') THEN
+        EXECUTE 'CREATE INDEX IF NOT EXISTS idx_tracking_events_tracking ON tracking_events(tracking_number)';
+    END IF;
+END $$;
 
 -- ============== CHAT SESSIONS =================
 -- One row per conversation thread (anonymous or known user)
@@ -82,8 +106,20 @@ CREATE TABLE IF NOT EXISTS chat_sessions (
     created_at TIMESTAMPTZ DEFAULT now(),
     updated_at TIMESTAMPTZ DEFAULT now()
 );
-CREATE INDEX IF NOT EXISTS idx_chat_sessions_status ON chat_sessions(status, last_message_at DESC);
-CREATE INDEX IF NOT EXISTS idx_chat_sessions_external ON chat_sessions(external_id);
+DO $$
+BEGIN
+    IF EXISTS (SELECT 1 FROM information_schema.columns
+               WHERE table_schema='public' AND table_name='chat_sessions' AND column_name='status') THEN
+        EXECUTE 'CREATE INDEX IF NOT EXISTS idx_chat_sessions_status ON chat_sessions(status, last_message_at DESC)';
+    END IF;
+END $$;
+DO $$
+BEGIN
+    IF EXISTS (SELECT 1 FROM information_schema.columns
+               WHERE table_schema='public' AND table_name='chat_sessions' AND column_name='external_id') THEN
+        EXECUTE 'CREATE INDEX IF NOT EXISTS idx_chat_sessions_external ON chat_sessions(external_id)';
+    END IF;
+END $$;
 
 -- ============== CHAT MESSAGES =================
 CREATE TABLE IF NOT EXISTS chat_messages (
@@ -98,7 +134,13 @@ CREATE TABLE IF NOT EXISTS chat_messages (
     read_at TIMESTAMPTZ,
     created_at TIMESTAMPTZ DEFAULT now()
 );
-CREATE INDEX IF NOT EXISTS idx_chat_messages_session ON chat_messages(session_id, created_at);
+DO $$
+BEGIN
+    IF EXISTS (SELECT 1 FROM information_schema.columns
+               WHERE table_schema='public' AND table_name='chat_messages' AND column_name='session_id') THEN
+        EXECUTE 'CREATE INDEX IF NOT EXISTS idx_chat_messages_session ON chat_messages(session_id, created_at)';
+    END IF;
+END $$;
 
 -- ============== ADMINS =================
 CREATE TABLE IF NOT EXISTS admins (
@@ -123,7 +165,13 @@ CREATE TABLE IF NOT EXISTS activity_log (
     details JSONB,
     created_at TIMESTAMPTZ DEFAULT now()
 );
-CREATE INDEX IF NOT EXISTS idx_activity_log_created ON activity_log(created_at DESC);
+DO $$
+BEGIN
+    IF EXISTS (SELECT 1 FROM information_schema.columns
+               WHERE table_schema='public' AND table_name='activity_log' AND column_name='created_at') THEN
+        EXECUTE 'CREATE INDEX IF NOT EXISTS idx_activity_log_created ON activity_log(created_at DESC)';
+    END IF;
+END $$;
 
 -- ============================================================
 -- ROW-LEVEL SECURITY
@@ -139,28 +187,36 @@ ALTER TABLE activity_log     ENABLE ROW LEVEL SECURITY;
 
 -- Public read for tracking (lookup by tracking_number)
 DROP POLICY IF EXISTS "public read shipments" ON shipments;
+DROP POLICY IF EXISTS "public read shipments" ON shipments;
 CREATE POLICY "public read shipments" ON shipments FOR SELECT USING (true);
 
+DROP POLICY IF EXISTS "public read tracking_events" ON tracking_events;
 DROP POLICY IF EXISTS "public read tracking_events" ON tracking_events;
 CREATE POLICY "public read tracking_events" ON tracking_events FOR SELECT USING (true);
 
 -- Visitors can create shipments (create flow)
 DROP POLICY IF EXISTS "public insert shipments" ON shipments;
+DROP POLICY IF EXISTS "public insert shipments" ON shipments;
 CREATE POLICY "public insert shipments" ON shipments FOR INSERT WITH CHECK (true);
 
 -- Visitors can open chat sessions and send messages
 DROP POLICY IF EXISTS "public insert chat_sessions" ON chat_sessions;
+DROP POLICY IF EXISTS "public insert chat_sessions" ON chat_sessions;
 CREATE POLICY "public insert chat_sessions" ON chat_sessions FOR INSERT WITH CHECK (true);
 
+DROP POLICY IF EXISTS "public read own chat_sessions" ON chat_sessions;
 DROP POLICY IF EXISTS "public read own chat_sessions" ON chat_sessions;
 CREATE POLICY "public read own chat_sessions" ON chat_sessions FOR SELECT USING (true);
 
 DROP POLICY IF EXISTS "public update own chat_sessions" ON chat_sessions;
+DROP POLICY IF EXISTS "public update own chat_sessions" ON chat_sessions;
 CREATE POLICY "public update own chat_sessions" ON chat_sessions FOR UPDATE USING (true);
 
 DROP POLICY IF EXISTS "public insert chat_messages" ON chat_messages;
+DROP POLICY IF EXISTS "public insert chat_messages" ON chat_messages;
 CREATE POLICY "public insert chat_messages" ON chat_messages FOR INSERT WITH CHECK (true);
 
+DROP POLICY IF EXISTS "public read chat_messages" ON chat_messages;
 DROP POLICY IF EXISTS "public read chat_messages" ON chat_messages;
 CREATE POLICY "public read chat_messages" ON chat_messages FOR SELECT USING (true);
 
@@ -190,6 +246,7 @@ END;
 $$ LANGUAGE plpgsql;
 
 DROP TRIGGER IF EXISTS trg_chat_message_after_insert ON chat_messages;
+DROP TRIGGER IF EXISTS trg_chat_message_after_insert ON chat_messages;
 CREATE TRIGGER trg_chat_message_after_insert
 AFTER INSERT ON chat_messages
 FOR EACH ROW EXECUTE FUNCTION chat_message_after_insert();
@@ -202,6 +259,7 @@ RETURNS TRIGGER AS $$
 BEGIN NEW.updated_at = now(); RETURN NEW; END;
 $$ LANGUAGE plpgsql;
 
+DROP TRIGGER IF EXISTS trg_shipments_updated_at ON shipments;
 DROP TRIGGER IF EXISTS trg_shipments_updated_at ON shipments;
 CREATE TRIGGER trg_shipments_updated_at
 BEFORE UPDATE ON shipments

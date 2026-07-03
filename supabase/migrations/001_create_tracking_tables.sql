@@ -39,19 +39,24 @@ ALTER TABLE shipments ENABLE ROW LEVEL SECURITY;
 ALTER TABLE tracking_events ENABLE ROW LEVEL SECURITY;
 
 -- Create policy for public read access (for tracking)
+DROP POLICY IF EXISTS "Allow public read access to shipments" ON shipments;
 CREATE POLICY "Allow public read access to shipments" ON shipments
     FOR SELECT USING (true);
 
+DROP POLICY IF EXISTS "Allow public read access to tracking events" ON tracking_events;
 CREATE POLICY "Allow public read access to tracking events" ON tracking_events
     FOR SELECT USING (true);
 
 -- Create policy for authenticated users to manage shipments
+DROP POLICY IF EXISTS "Authenticated users can insert shipments" ON shipments;
 CREATE POLICY "Authenticated users can insert shipments" ON shipments
     FOR INSERT WITH CHECK (true);
 
+DROP POLICY IF EXISTS "Authenticated users can update shipments" ON shipments;
 CREATE POLICY "Authenticated users can update shipments" ON shipments
     FOR UPDATE USING (true);
 
+DROP POLICY IF EXISTS "Authenticated users can insert tracking events" ON tracking_events;
 CREATE POLICY "Authenticated users can insert tracking events" ON tracking_events
     FOR INSERT WITH CHECK (true);
 
@@ -65,57 +70,11 @@ END;
 $$ LANGUAGE plpgsql;
 
 -- Trigger to auto-update updated_at
+DROP TRIGGER IF EXISTS update_shipments_updated_at ON shipments;
 CREATE TRIGGER update_shipments_updated_at
     BEFORE UPDATE ON shipments
     FOR EACH ROW
     EXECUTE FUNCTION update_updated_at_column();
 
--- Insert sample data for testing
-INSERT INTO shipments (tracking_number, status, origin, destination, sender_name, receiver_name, service_type)
-VALUES
-    ('AP123456789', 'In Transit', 'Singapore', 'Kuala Lumpur', 'ABC Company', 'John Doe', 'Express'),
-    ('AP987654321', 'Delivered', 'Singapore', 'Penang', 'XYZ Trading', 'Jane Smith', 'Standard'),
-    ('AP456789123', 'Pending', 'Singapore', 'Johor Bahru', 'Test Corp', 'Mike Johnson', 'Economy')
-ON CONFLICT (tracking_number) DO NOTHING;
 
--- Insert sample tracking events
-DO $$
-DECLARE
-    shipment1_id BIGINT;
-    shipment2_id BIGINT;
-    shipment3_id BIGINT;
-BEGIN
-    SELECT id INTO shipment1_id FROM shipments WHERE tracking_number = 'AP123456789';
-    SELECT id INTO shipment2_id FROM shipments WHERE tracking_number = 'AP987654321';
-    SELECT id INTO shipment3_id FROM shipments WHERE tracking_number = 'AP456789123';
-
-    -- Shipment 1 events
-    IF shipment1_id IS NOT NULL THEN
-        INSERT INTO tracking_events (shipment_id, title, location, event_date) VALUES
-            (shipment1_id, 'Shipment Picked Up', 'Singapore Warehouse', NOW() - INTERVAL '3 days'),
-            (shipment1_id, 'In Transit to Destination', 'Singapore Sorting Center', NOW() - INTERVAL '2 days'),
-            (shipment1_id, 'Customs Clearance', 'Border Crossing', NOW() - INTERVAL '1 day'),
-            (shipment1_id, 'Out for Delivery', 'Kuala Lumpur Distribution Center', NOW());
-    END IF;
-
-    -- Shipment 2 events
-    IF shipment2_id IS NOT NULL THEN
-        INSERT INTO tracking_events (shipment_id, title, location, event_date) VALUES
-            (shipment2_id, 'Shipment Picked Up', 'Singapore Warehouse', NOW() - INTERVAL '5 days'),
-            (shipment2_id, 'In Transit to Destination', 'Singapore Sorting Center', NOW() - INTERVAL '4 days'),
-            (shipment2_id, 'Customs Clearance', 'Border Crossing', NOW() - INTERVAL '3 days'),
-            (shipment2_id, 'Out for Delivery', 'Penang Distribution Center', NOW() - INTERVAL '2 days'),
-            (shipment2_id, 'Delivered', 'Penang', NOW() - INTERVAL '1 day');
-    END IF;
-
-    -- Shipment 3 events
-    IF shipment3_id IS NOT NULL THEN
-        INSERT INTO tracking_events (shipment_id, title, location, event_date) VALUES
-            (shipment3_id, 'Shipment Created', 'Singapore', NOW() - INTERVAL '1 hour');
-    END IF;
-END $$;
-
--- Grant permissions
-GRANT USAGE ON SCHEMA public TO anon;
-GRANT ALL ON ALL TABLES IN SCHEMA public TO anon;
-GRANT ALL ON ALL SEQUENCES IN SCHEMA public TO anon;
+-- (sample data omitted; schema is pre-existing on remote)
