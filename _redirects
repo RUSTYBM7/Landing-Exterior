@@ -1,47 +1,26 @@
-# Main redirects to www.airpak-express.site
-/aboutus.html https://www.airpak-express.site/about-us 301
-/careers.html https://www.airpak-express.site/careers 301
-/comingsoon.html https://www.airpak-express.site/coming-soon 301
-/contact.html https://www.airpak-express.site/contact 301
-/fuelsurcharge.html https://www.airpak-express.site/fuel-surcharge 301
-/international-shipping.html https://www.airpak-express.site/international-shipping 301
-/logistics-partner-singapore.html https://www.airpak-express.site/logistics-partner-singapore 301
-/media-listing.html https://www.airpak-express.site/media-listing 301
-/privacypolicy.html https://www.airpak-express.site/privacy-policy 301
-/service-domestic-worldwide-deliveries.html https://www.airpak-express.site/service/domestic-worldwide-deliveries 301
-/service-international-crossborder.html https://www.airpak-express.site/service/international-crossborder 301
-/service-warehousing.html https://www.airpak-express.site/service/warehousing 301
-/service-worldwideforwarding.html https://www.airpak-express.site/service/worldwide-forwarding 301
-/standardconditionsofcarriage.html https://www.airpak-express.site/standard-conditions-of-carriage 301
-/termsofservice.html https://www.airpak-express.site/terms-of-service 301
-/tracking.html https://www.airpak-express.site/tracking 301
-/worldwide-domestic-courier-service.html https://www.airpak-express.site/worldwide-domestic-courier-service 301
-/media?name=omnichannel-fulfilment-checklist-for-international-shipping.html https://www.airpak-express.site/media?name=omnichannel-fulfilment-checklist-for-international-shipping 301
+# Cloudflare Pages / Netlify-style redirects - CLEAN VERSION
+# No conflicting loops - REHABILITATED
 
-# Root domain to www redirect
-https://airpak-express.site/* https://www.airpak-express.site/:splat 301
-http://airpak-express.site/* https://www.airpak-express.site/:splat 301
+# Clean URL rewrites (serve the HTML files with 200)
+/about-us               /aboutus.html   200
+/aboutus                /aboutus.html   200
+/contact                /contact.html   200
+/tracking               /tracking.html  200
+/careers                /careers.html   200
+/services/domestic      /service-domestic-worldwide-deliveries.html 200
+/services/warehousing   /service-warehousing.html 200
+/services/international /service-international-crossborder.html 200
+/services/freight       /service-worldwideforwarding.html 200
+/international-shipping /international-shipping.html 200
+/logistics-partner      /logistics-partner-singapore.html 200
+/media                  /media-listing.html 200
+/privacy-policy         /privacypolicy.html 200
+/terms-of-service       /termsofservice.html 200
+/standard-conditions    /standardconditionsofcarriage.html 200
+/fuel-surcharge         /fuelsurcharge.html 200
+/worldwide-domestic     /worldwide-domestic-courier-service.html 200
+/coming-soon            /comingsoon.html 200
+/enterprise-tools       /enterprise-tools.html 200
 
-# Internal rewrites
-/                       /index.html
-/about-us               /aboutus.html
-/aboutus                /aboutus.html
-/contact                /contact.html
-/tracking               /tracking.html
-/careers                /careers.html
-/services/domestic      /service-domestic-worldwide-deliveries.html
-/services/warehousing   /service-warehousing.html
-/services/international /service-international-crossborder.html
-/services/freight       /service-worldwideforwarding.html
-/international-shipping /international-shipping.html
-/logistics-partner      /logistics-partner-singapore.html
-/media                  /media-listing.html
-/privacy-policy         /privacypolicy.html
-/terms-of-service       /termsofservice.html
-/standard-conditions    /standardconditionsofcarriage.html
-/fuel-surcharge         /fuelsurcharge.html
-/worldwide-domestic     /worldwide-domestic-courier-service.html
-/coming-soon            /comingsoon.html
-
-# API proxy to shipnow
+# API proxy (keep if needed)
 /api/*  https://shipnow.airpak-express.site/api/:splat  200
