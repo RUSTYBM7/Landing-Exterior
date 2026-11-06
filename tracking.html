@@ -1,1 +1,100 @@
-PLACEHOLDER_WILL_USE_FILE
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Track Shipment | Airpak Express</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+<style>
+:root{--primary:#CD2727;--primary-dark:#a81f1f;--success:#10B981;--dark:#0F172A;--gray-50:#F8FAFC;--gray-100:#F1F5F9;--gray-200:#E2E8F0;--gray-400:#94A3B8;--gray-500:#64748B;--gray-700:#334155;--radius:16px;--shadow:0 4px 24px rgba(15,23,42,.06);--shadow-lg:0 12px 40px rgba(15,23,42,.1)}
+*{margin:0;padding:0;box-sizing:border-box}body{font-family:Inter,-apple-system,sans-serif;background:var(--gray-50);color:var(--dark);line-height:1.5;min-height:100vh}
+.header{background:#fff;border-bottom:1px solid var(--gray-200);padding:14px 0;position:sticky;top:0;z-index:100}
+.header-inner{max-width:1100px;margin:0 auto;padding:0 20px;display:flex;align-items:center;justify-content:space-between}
+.logo{font-family:Poppins,sans-serif;font-weight:700;font-size:1.35rem;color:var(--primary);text-decoration:none}.logo span{color:var(--dark);font-weight:600}
+.nav-links{display:flex;gap:24px;align-items:center}.nav-links a{text-decoration:none;color:var(--gray-700);font-weight:500;font-size:.9rem}.nav-links a:hover{color:var(--primary)}
+.btn-primary{background:var(--primary);color:#fff!important;padding:10px 20px;border-radius:50px;font-weight:600;font-size:.875rem}
+.hero{background:linear-gradient(135deg,#0F172A,#1E293B);padding:48px 20px 60px;color:#fff;text-align:center}
+.hero h1{font-family:Poppins,sans-serif;font-size:clamp(1.75rem,4vw,2.25rem);font-weight:700;margin-bottom:8px}
+.hero p{color:#94A3B8;margin-bottom:28px}
+.search-box{max-width:560px;margin:0 auto;display:flex;background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 20px 50px rgba(0,0,0,.25)}
+.search-box input{flex:1;border:none;padding:18px 22px;font-size:1rem;outline:none;color:var(--dark);font-family:inherit}
+.search-box button{background:var(--primary);color:#fff;border:none;padding:0 28px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:8px}
+.search-box button:hover{background:var(--primary-dark)}
+.container{max-width:1100px;margin:-30px auto 60px;padding:0 20px;position:relative;z-index:10}
+.result-card{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow-lg);overflow:hidden;display:none}
+.result-card.active{display:block;animation:fadeUp .4s ease}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.status-banner{padding:24px 28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px}
+.status-banner.out-for-delivery{background:linear-gradient(135deg,#FEF3C7,#FDE68A)}
+.status-banner.in-transit{background:linear-gradient(135deg,#DBEAFE,#BFDBFE)}
+.status-banner.delivered{background:linear-gradient(135deg,#D1FAE5,#A7F3D0)}
+.status-info h2{font-family:Poppins,sans-serif;font-size:1.35rem;font-weight:700;margin-bottom:4px}
+.status-info p{color:var(--gray-700);font-size:.9rem}
+.tracking-id{background:rgba(255,255,255,.7);padding:10px 16px;border-radius:10px;font-weight:600;font-size:.9rem;display:flex;align-items:center;gap:8px}
+.progress-section{padding:28px;border-bottom:1px solid var(--gray-100)}
+.progress-steps{display:flex;justify-content:space-between;position:relative;max-width:600px;margin:0 auto}
+.progress-steps::before{content:'';position:absolute;top:18px;left:10%;right:10%;height:3px;background:var(--gray-200);z-index:0}
+.line-fill{position:absolute;top:18px;left:10%;height:3px;background:var(--primary);z-index:1;transition:width .6s ease}
+.step{display:flex;flex-direction:column;align-items:center;gap:8px;position:relative;z-index:2;flex:1}
+.step-dot{width:36px;height:36px;border-radius:50%;background:#fff;border:3px solid var(--gray-200);display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700;color:var(--gray-400)}
+.step.completed .step-dot{background:var(--success);border-color:var(--success);color:#fff}
+.step.active .step-dot{background:var(--primary);border-color:var(--primary);color:#fff}
+.step-label{font-size:.75rem;font-weight:600;color:var(--gray-400);text-align:center}
+.step.active .step-label,.step.completed .step-label{color:var(--dark)}
+.details-grid{display:grid;grid-template-columns:1.2fr 1fr;gap:0}
+@media(max-width:800px){.details-grid{grid-template-columns:1fr}}
+.map-area{background:var(--gray-100);min-height:320px;position:relative;overflow:hidden}
+.map-placeholder{width:100%;height:100%;min-height:320px;background:linear-gradient(180deg,rgba(15,23,42,.03),transparent),url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23cbd5e1' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;color:var(--gray-500)}
+.map-marker{width:48px;height:48px;background:var(--primary);border-radius:50% 50% 50% 0;transform:rotate(-45deg);display:flex;align-items:center;justify-content:center;box-shadow:0 8px 20px rgba(205,39,39,.35);animation:bounce 2s infinite}
+.map-marker::after{content:'';width:18px;height:18px;background:#fff;border-radius:50%;transform:rotate(45deg)}
+@keyframes bounce{0%,100%{transform:rotate(-45deg) translateY(0)}50%{transform:rotate(-45deg) translateY(-8px)}}
+.map-label{margin-top:12px;font-weight:600;font-size:.9rem;color:var(--gray-700)}
+.timeline-area{padding:28px}
+.timeline-area h3{font-family:Poppins,sans-serif;font-size:1rem;font-weight:600;margin-bottom:20px}
+.timeline{position:relative;padding-left:28px}
+.timeline::before{content:'';position:absolute;left:7px;top:8px;bottom:8px;width:2px;background:var(--gray-200)}
+.timeline-item{position:relative;padding-bottom:22px}
+.timeline-item:last-child{padding-bottom:0}
+.timeline-item::before{content:'';position:absolute;left:-24px;top:4px;width:14px;height:14px;border-radius:50%;background:#fff;border:3px solid #cbd5e1}
+.timeline-item.completed::before{background:var(--success);border-color:var(--success)}
+.timeline-item.active::before{background:var(--primary);border-color:var(--primary);box-shadow:0 0 0 4px rgba(205,39,39,.15)}
+.timeline-item .time{font-size:.75rem;color:var(--gray-400);font-weight:500;margin-bottom:2px}
+.timeline-item .event{font-weight:600;font-size:.9rem}
+.timeline-item .location{font-size:.8rem;color:var(--gray-500)}
+.actions{padding:20px 28px 28px;display:flex;gap:12px;flex-wrap:wrap;border-top:1px solid var(--gray-100)}
+.btn{padding:12px 22px;border-radius:50px;font-weight:600;font-size:.875rem;cursor:pointer;border:none;font-family:inherit;display:inline-flex;align-items:center;gap:8px}
+.btn-outline{background:#fff;border:1.5px solid var(--gray-200);color:var(--gray-700)}
+.btn-outline:hover{border-color:var(--primary);color:var(--primary)}
+.btn-solid{background:var(--primary);color:#fff}.btn-solid:hover{background:var(--primary-dark)}
+.empty-state{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);padding:60px 30px;text-align:center}
+.empty-state h3{font-family:Poppins,sans-serif;font-size:1.2rem;margin-bottom:8px}
+.empty-state p{color:var(--gray-500);max-width:360px;margin:0 auto}
+.recent{margin-top:32px}.recent h3{font-family:Poppins,sans-serif;font-size:1rem;font-weight:600;margin-bottom:16px}
+.recent-item{background:#fff;border-radius:10px;padding:16px 20px;display:flex;align-items:center;justify-content:space-between;box-shadow:var(--shadow);cursor:pointer;transition:transform .2s;border:1px solid transparent;margin-bottom:12px}
+.recent-item:hover{transform:translateY(-2px);box-shadow:var(--shadow-lg)}
+.badge{padding:5px 12px;border-radius:50px;font-size:.75rem;font-weight:600}
+.badge.delivery{background:#FEF3C7;color:#92400E}.badge.transit{background:#DBEAFE;color:#1E40AF}.badge.delivered{background:#D1FAE5;color:#065F46}
+.footer{text-align:center;padding:30px 20px;color:var(--gray-400);font-size:.85rem}.footer a{color:var(--primary);text-decoration:none}
+</style>
+</head>
+<body>
+<header class="header"><div class="header-inner"><a href="/" class="logo">Airpak <span>Express</span></a><nav class="nav-links"><a href="/">Home</a><a href="/services/domestic">Services</a><a href="/contact">Contact</a><a href="https://shipnow.airpak-express.site" class="btn-primary">Ship Now</a></nav></div></header>
+<section class="hero"><h1>Track Your Shipment</h1><p>Enter your tracking number for real-time updates and delivery status</p><div class="search-box"><input type="text" id="trackInput" placeholder="Enter tracking number (e.g. APK123456789)" autocomplete="off"><button onclick="trackShipment()">Track</button></div></section>
+<div class="container">
+<div class="result-card" id="resultCard">
+<div class="status-banner out-for-delivery" id="statusBanner"><div class="status-info"><h2 id="statusTitle">Out for delivery</h2><p id="statusSubtitle">Arrives today by 5:30 PM</p></div><div class="tracking-id"><span id="displayTrackingId">APK123456789</span></div></div>
+<div class="progress-section"><div class="progress-steps"><div class="line-fill" id="progressLine" style="width:66%"></div><div class="step completed"><div class="step-dot">✓</div><div class="step-label">Picked up</div></div><div class="step completed"><div class="step-dot">✓</div><div class="step-label">In transit</div></div><div class="step active"><div class="step-dot">3</div><div class="step-label">Out for delivery</div></div><div class="step"><div class="step-dot">4</div><div class="step-label">Delivered</div></div></div></div>
+<div class="details-grid"><div class="map-area"><div class="map-placeholder"><div class="map-marker"></div><div class="map-label">Live location • Vehicle en route</div></div></div><div class="timeline-area"><h3>Shipment Timeline</h3><div class="timeline" id="timeline"><div class="timeline-item active"><div class="time">Today • 10:15 AM</div><div class="event">Out for delivery</div><div class="location">Local delivery facility</div></div><div class="timeline-item completed"><div class="time">Today • 6:40 AM</div><div class="event">Arrived at local facility</div><div class="location">Distribution center</div></div><div class="timeline-item completed"><div class="time">Yesterday • 9:20 PM</div><div class="event">In transit</div><div class="location">Regional hub</div></div><div class="timeline-item completed"><div class="time">Yesterday • 2:15 PM</div><div class="event">Picked up</div><div class="location">Origin facility</div></div></div></div></div>
+<div class="actions"><button class="btn btn-solid">Change Delivery</button><button class="btn btn-outline">Contact Courier</button><button class="btn btn-outline" onclick="window.print()">Download Proof</button></div>
+</div>
+<div class="empty-state" id="emptyState"><h3>Enter a tracking number</h3><p>Track any Airpak Express shipment in real time. You’ll see live status, estimated delivery, and full timeline.</p></div>
+<div class="recent" id="recentSection" style="display:none"><h3>Recent Trackings</h3><div class="recent-item" onclick="document.getElementById('trackInput').value='APK987654321';trackShipment()"><div><strong>APK987654321</strong><br><span style="font-size:.8rem;color:#64748B">Documents • Singapore → KL</span></div><span class="badge transit">In Transit</span></div></div>
+</div>
+<footer class="footer">© 2026 Airpak Express • <a href="/">Home</a> • <a href="/contact">Support</a></footer>
+<script>
+(function(){const p=new URLSearchParams(location.search);const t=p.get('tracking')||p.get('id');if(t){document.getElementById('trackInput').value=t;setTimeout(trackShipment,300)}})();
+function trackShipment(){const input=document.getElementById('trackInput');const val=(input.value||'').trim().toUpperCase();if(!val){input.focus();return}document.getElementById('emptyState').style.display='none';document.getElementById('resultCard').classList.add('active');document.getElementById('recentSection').style.display='block';document.getElementById('displayTrackingId').textContent=val;const last=val.slice(-1);const banner=document.getElementById('statusBanner');const title=document.getElementById('statusTitle');const sub=document.getElementById('statusSubtitle');if(['1','2','3'].includes(last)){banner.className='status-banner delivered';title.textContent='Delivered';sub.textContent='Signed for by recipient • Today 11:42 AM';document.getElementById('progressLine').style.width='100%'}else if(['4','5','6'].includes(last)){banner.className='status-banner in-transit';title.textContent='In Transit';sub.textContent='Estimated delivery: Tomorrow by 6:00 PM';document.getElementById('progressLine').style.width='40%'}else{banner.className='status-banner out-for-delivery';title.textContent='Out for delivery';sub.textContent='Arrives today by 5:30 PM';document.getElementById('progressLine').style.width='66%'}document.getElementById('resultCard').scrollIntoView({behavior:'smooth',block:'start'})}
+document.getElementById('trackInput').addEventListener('keydown',e=>{if(e.key==='Enter')trackShipment()});
+</script>
+</body>
+</html>
