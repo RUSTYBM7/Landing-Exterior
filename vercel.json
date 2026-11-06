@@ -1,241 +1,35 @@
 {
-  "redirects": [
-    {
-      "source": "/",
-      "destination": "/index.html"
-    },
-    {
-      "source": "/about-us",
-      "destination": "/aboutus.html"
-    },
-    {
-      "source": "/aboutus",
-      "destination": "/aboutus.html"
-    },
-    {
-      "source": "/contact",
-      "destination": "/contact.html"
-    },
-    {
-      "source": "/tracking",
-      "destination": "/tracking.html"
-    },
-    {
-      "source": "/create-shipment",
-      "destination": "/create-shipment.html"
-    },
-    {
-      "source": "/chat-widget",
-      "destination": "/chat-widget.html"
-    },
-    {
-      "source": "/admin",
-      "destination": "/admin/index.html"
-    },
-    {
-      "source": "/admin/login",
-      "destination": "/admin/login.html"
-    },
-    {
-      "source": "/careers",
-      "destination": "/careers.html"
-    },
-    {
-      "source": "/services/domestic",
-      "destination": "/service-domestic-worldwide-deliveries.html"
-    },
-    {
-      "source": "/services/warehousing",
-      "destination": "/service-warehousing.html"
-    },
-    {
-      "source": "/services/international",
-      "destination": "/service-international-crossborder.html"
-    },
-    {
-      "source": "/services/freight",
-      "destination": "/service-worldwideforwarding.html"
-    },
-    {
-      "source": "/international-shipping",
-      "destination": "/international-shipping.html"
-    },
-    {
-      "source": "/logistics-partner",
-      "destination": "/logistics-partner-singapore.html"
-    },
-    {
-      "source": "/media",
-      "destination": "/media-listing.html"
-    },
-    {
-      "source": "/privacy-policy",
-      "destination": "/privacypolicy.html"
-    },
-    {
-      "source": "/terms-of-service",
-      "destination": "/termsofservice.html"
-    },
-    {
-      "source": "/standard-conditions",
-      "destination": "/standardconditionsofcarriage.html"
-    },
-    {
-      "source": "/fuel-surcharge",
-      "destination": "/fuelsurcharge.html"
-    },
-    {
-      "source": "/worldwide-domestic",
-      "destination": "/worldwide-domestic-courier-service.html"
-    },
-    {
-      "source": "/coming-soon",
-      "destination": "/comingsoon.html"
-    },
-    {
-      "source": "/aboutus.html",
-      "destination": "https://www.airpak-express.site/about-us",
-      "permanent": true
-    },
-    {
-      "source": "/careers.html",
-      "destination": "https://www.airpak-express.site/careers",
-      "permanent": true
-    },
-    {
-      "source": "/comingsoon.html",
-      "destination": "https://www.airpak-express.site/coming-soon",
-      "permanent": true
-    },
-    {
-      "source": "/contact.html",
-      "destination": "https://www.airpak-express.site/contact",
-      "permanent": true
-    },
-    {
-      "source": "/fuelsurcharge.html",
-      "destination": "https://www.airpak-express.site/fuel-surcharge",
-      "permanent": true
-    },
-    {
-      "source": "/international-shipping.html",
-      "destination": "https://www.airpak-express.site/international-shipping",
-      "permanent": true
-    },
-    {
-      "source": "/logistics-partner-singapore.html",
-      "destination": "https://www.airpak-express.site/logistics-partner-singapore",
-      "permanent": true
-    },
-    {
-      "source": "/media-listing.html",
-      "destination": "https://www.airpak-express.site/media-listing",
-      "permanent": true
-    },
-    {
-      "source": "/privacypolicy.html",
-      "destination": "https://www.airpak-express.site/privacy-policy",
-      "permanent": true
-    },
-    {
-      "source": "/service-domestic-worldwide-deliveries.html",
-      "destination": "https://www.airpak-express.site/service/domestic-worldwide-deliveries",
-      "permanent": true
-    },
-    {
-      "source": "/service-international-crossborder.html",
-      "destination": "https://www.airpak-express.site/service/international-crossborder",
-      "permanent": true
-    },
-    {
-      "source": "/service-warehousing.html",
-      "destination": "https://www.airpak-express.site/service/warehousing",
-      "permanent": true
-    },
-    {
-      "source": "/service-worldwideforwarding.html",
-      "destination": "https://www.airpak-express.site/service/worldwide-forwarding",
-      "permanent": true
-    },
-    {
-      "source": "/standardconditionsofcarriage.html",
-      "destination": "https://www.airpak-express.site/standard-conditions-of-carriage",
-      "permanent": true
-    },
-    {
-      "source": "/termsofservice.html",
-      "destination": "https://www.airpak-express.site/terms-of-service",
-      "permanent": true
-    },
-    {
-      "source": "/tracking.html",
-      "destination": "https://www.airpak-express.site/tracking",
-      "permanent": true
-    },
-    {
-      "source": "/worldwide-domestic-courier-service.html",
-      "destination": "https://www.airpak-express.site/worldwide-domestic-courier-service",
-      "permanent": true
-    },
-    {
-      "source": "/enterprise-tools",
-      "destination": "/enterprise-tools.html"
-    },
-    {
-      "source": "/enterprise-tools.html",
-      "destination": "https://www.airpak-express.site/enterprise-tools",
-      "permanent": true
-    },
-    {
-      "source": "/get-online",
-      "destination": "/enterprise-tools.html"
-    }
-  ],
   "rewrites": [
-    {
-      "source": "/api/:path*",
-      "destination": "https://shipnow.airpak-express.site/api/:path*"
-    },
-    {
-      "source": "/rest/:path*",
-      "destination": "https://zygoqqsgzhgpvlpttfbk.supabase.co/rest/:path*"
-    }
+    { "source": "/", "destination": "/index.html" },
+    { "source": "/about-us", "destination": "/aboutus.html" },
+    { "source": "/aboutus", "destination": "/aboutus.html" },
+    { "source": "/contact", "destination": "/contact.html" },
+    { "source": "/tracking", "destination": "/tracking.html" },
+    { "source": "/careers", "destination": "/careers.html" },
+    { "source": "/services/domestic", "destination": "/service-domestic-worldwide-deliveries.html" },
+    { "source": "/services/warehousing", "destination": "/service-warehousing.html" },
+    { "source": "/services/international", "destination": "/service-international-crossborder.html" },
+    { "source": "/services/freight", "destination": "/service-worldwideforwarding.html" },
+    { "source": "/international-shipping", "destination": "/international-shipping.html" },
+    { "source": "/logistics-partner", "destination": "/logistics-partner-singapore.html" },
+    { "source": "/media", "destination": "/media-listing.html" },
+    { "source": "/privacy-policy", "destination": "/privacypolicy.html" },
+    { "source": "/terms-of-service", "destination": "/termsofservice.html" },
+    { "source": "/standard-conditions", "destination": "/standardconditionsofcarriage.html" },
+    { "source": "/fuel-surcharge", "destination": "/fuelsurcharge.html" },
+    { "source": "/worldwide-domestic", "destination": "/worldwide-domestic-courier-service.html" },
+    { "source": "/coming-soon", "destination": "/comingsoon.html" },
+    { "source": "/enterprise-tools", "destination": "/enterprise-tools.html" },
+    { "source": "/api/:path*", "destination": "https://shipnow.airpak-express.site/api/:path*" }
   ],
   "headers": [
     {
       "source": "/(.*)",
       "headers": [
-        {
-          "key": "X-Content-Type-Options",
-          "value": "nosniff"
-        },
-        {
-          "key": "X-Frame-Options",
-          "value": "DENY"
-        },
-        {
-          "key": "X-XSS-Protection",
-          "value": "1; mode=block"
-        },
-        {
-          "key": "Referrer-Policy",
-          "value": "strict-origin-when-cross-origin"
-        },
-        {
-          "key": "Content-Security-Policy",
-          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://zygoqqsgzhgpvlpttfbk.supabase.co https://shipnow.airpak-express.site"
-        }
+        { "key": "X-Content-Type-Options", "value": "nosniff" },
+        { "key": "X-Frame-Options", "value": "DENY" },
+        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" }
       ]
     }
-  ],
-  "env": {
-    "VITE_SUPABASE_URL": "https://zygoqqsgzhgpvlpttfbk.supabase.co",
-    "VITE_SUPABASE_ANON_KEY": "YOUR_SUPABASE_ANON_KEY"
-  },
-  "functions": {
-    "api/**/*.js": {
-      "memory": 256,
-      "maxDuration": 10
-    }
-  }
+  ]
 }
