@@ -1,0 +1,8 @@
+# Exclude serverless functions so marketing site can deploy on Hobby plan
+api/
+node_modules/
+.git/
+*.md
+.env*
+prisma/
+admin/
