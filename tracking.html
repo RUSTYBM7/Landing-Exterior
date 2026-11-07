@@ -4,115 +4,181 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Track Your Shipment | Airpak Express</title>
-<meta name="description" content="Track your Airpak Express shipment in real-time." />
+<meta name="description" content="Track your Airpak Express shipment in real time." />
 <link rel="shortcut icon" type="image/x-icon" href="apps/airpak/images/icon.png" />
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="apps/airpak/assets/css/font-awesome.min.css" />
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:Inter,sans-serif;background:#f5f7fa;min-height:100vh}
-.site-header{background:#fff;border-bottom:1px solid #eee;padding:12px 0;position:sticky;top:0;z-index:100}
-.site-header .inner{max-width:900px;margin:0 auto;padding:0 20px;display:flex;align-items:center;justify-content:space-between}
-.site-header img{height:40px}
-.site-header a{text-decoration:none;color:#373F41;font-weight:500;font-size:14px;margin-left:16px}
-.site-header a:hover{color:#CD2727}
-.site-header .btn{background:#CD2727;color:#fff!important;padding:8px 14px;border-radius:6px}
-/* VIDEO HERO - tracking only */
-.video-hero{position:relative;min-height:320px;display:flex;align-items:center;justify-content:center;overflow:hidden;color:#fff;text-align:center}
-.video-hero video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0}
-.video-hero .overlay{position:absolute;inset:0;background:linear-gradient(135deg,rgba(15,23,42,.8) 0%,rgba(205,39,39,.4) 100%);z-index:1}
-.video-hero .content{position:relative;z-index:2;padding:48px 20px;max-width:640px;width:100%}
-.video-hero h1{font-family:Poppins,sans-serif;font-size:clamp(1.7rem,4vw,2.4rem);font-weight:600;margin-bottom:8px;text-shadow:0 2px 12px rgba(0,0,0,.35)}
-.video-hero p{opacity:.95;margin-bottom:22px;font-size:1.05rem}
-.video-hero .search{display:flex;gap:0;max-width:520px;margin:0 auto;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 12px 40px rgba(0,0,0,.25)}
-.video-hero .search input{flex:1;border:none;padding:16px 18px;font-size:1rem;outline:none;color:#373F41;font-family:inherit}
-.video-hero .search button{background:#CD2727;color:#fff;border:none;padding:0 24px;font-weight:600;cursor:pointer;font-size:.95rem;white-space:nowrap}
-.video-hero .search button:hover{background:#b01f1f}
-.container{max-width:900px;margin:0 auto;padding:28px 20px 50px}
-.tracking-result{background:#fff;border-radius:16px;padding:28px;box-shadow:0 10px 40px rgba(0,0,0,.08);display:none;margin-top:8px}
-.tracking-result.active{display:block}
-.shipment-info{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:18px;margin-bottom:24px;padding-bottom:18px;border-bottom:1px solid #eee}
-.info-item .label{font-size:.75rem;color:#737B7D;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
-.info-item .value{font-weight:600;color:#373F41;font-size:1rem}
-.status-badge{display:inline-block;padding:5px 12px;border-radius:50px;font-size:.85rem;font-weight:600}
-.status-badge.in-transit{background:#DBEAFE;color:#1E40AF}
-.status-badge.out-for-delivery{background:#FEF3C7;color:#92400E}
-.status-badge.delivered{background:#D1FAE5;color:#065F46}
+html,body{height:100%;font-family:Inter,system-ui,sans-serif;color:#0f172a;background:#0b1220}
+
+/* NAV over video */
+.nav{position:fixed;top:0;left:0;right:0;z-index:50;padding:16px 0;transition:background .25s}
+.nav.scrolled{background:rgba(15,23,42,.92);backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.08)}
+.nav-inner{max-width:1100px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between}
+.nav img{height:40px;filter:brightness(0) invert(1)}
+.nav.scrolled img{filter:none}
+.nav-links{display:flex;align-items:center;gap:8px}
+.nav-links a{color:#fff;text-decoration:none;font-size:14px;font-weight:500;padding:8px 14px;border-radius:8px;opacity:.9}
+.nav-links a:hover{background:rgba(255,255,255,.1);opacity:1}
+.nav-links .cta{background:#CD2727;font-weight:600}
+.nav-links .cta:hover{background:#b01f1f}
+
+/* FULL SCREEN VIDEO HERO */
+.hero{position:relative;min-height:100vh;min-height:100dvh;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.hero video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0}
+.hero .veil{position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(11,18,32,.55) 0%,rgba(11,18,32,.72) 50%,rgba(11,18,32,.88) 100%)}
+.hero-content{position:relative;z-index:2;width:100%;max-width:640px;padding:100px 24px 60px;text-align:center;color:#fff}
+.hero-content .badge{display:inline-block;font-size:12px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:#fecaca;margin-bottom:16px}
+.hero-content h1{font-family:Poppins,sans-serif;font-size:clamp(2rem,5vw,3rem);font-weight:700;line-height:1.15;margin-bottom:12px;text-shadow:0 4px 24px rgba(0,0,0,.35)}
+.hero-content p{font-size:1.1rem;opacity:.9;margin-bottom:28px;max-width:480px;margin-left:auto;margin-right:auto}
+
+/* Search bar */
+.search{display:flex;background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 20px 50px rgba(0,0,0,.35)}
+.search input{flex:1;border:0;padding:18px 20px;font-size:16px;font-family:inherit;color:#0f172a;outline:none;min-width:0}
+.search input::placeholder{color:#94a3b8}
+.search button{border:0;background:#CD2727;color:#fff;padding:0 28px;font-weight:600;font-size:15px;cursor:pointer;font-family:inherit;white-space:nowrap;transition:background .2s}
+.search button:hover{background:#b01f1f}
+.search button i{margin-right:6px}
+
+/* Results panel below hero */
+.panel{background:#f8fafc;padding:48px 24px 80px;min-height:40vh}
+.panel-inner{max-width:900px;margin:0 auto}
+.loading{text-align:center;padding:40px;color:#64748b;display:none}
+.loading i{font-size:28px;color:#CD2727}
+.card{background:#fff;border-radius:16px;padding:28px;box-shadow:0 4px 24px rgba(15,23,42,.06);border:1px solid #e2e8f0;display:none}
+.card.active{display:block}
+.meta{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:20px;margin-bottom:28px;padding-bottom:24px;border-bottom:1px solid #e2e8f0}
+.meta .label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.6px;color:#94a3b8;margin-bottom:4px}
+.meta .value{font-weight:600;font-size:15px;color:#0f172a}
+.badge-status{display:inline-block;padding:5px 12px;border-radius:999px;font-size:13px;font-weight:600}
+.badge-status.in-transit{background:#dbeafe;color:#1e40af}
+.badge-status.out-for-delivery{background:#fef3c7;color:#92400e}
+.badge-status.delivered{background:#d1fae5;color:#065f46}
+.timeline-title{font-family:Poppins,sans-serif;font-size:16px;font-weight:600;margin-bottom:18px;color:#0f172a}
 .timeline{position:relative;padding-left:28px}
-.timeline::before{content:'';position:absolute;left:7px;top:8px;bottom:8px;width:2px;background:#e0e0e0}
-.timeline-item{position:relative;padding-bottom:20px}
-.timeline-item:last-child{padding-bottom:0}
-.timeline-item::before{content:'';position:absolute;left:-24px;top:4px;width:12px;height:12px;border-radius:50%;background:#fff;border:3px solid #c6c6c6}
-.timeline-item.completed::before{background:#10B981;border-color:#10B981}
-.timeline-item.active::before{background:#CD2727;border-color:#CD2727;box-shadow:0 0 0 4px rgba(205,39,39,.15)}
-.timeline-item .time{font-size:.78rem;color:#737B7D;margin-bottom:2px}
-.timeline-item .event{font-weight:600;color:#373F41}
-.timeline-item .location{font-size:.82rem;color:#737B7D}
-.loading{text-align:center;padding:32px;color:#737B7D}
-.loading i{font-size:1.8rem;color:#CD2727}
-.footer{text-align:center;padding:24px;color:#999;font-size:13px}
-.footer a{color:#CD2727;text-decoration:none}
-@media(max-width:600px){.video-hero .search{flex-direction:column}.video-hero .search button{padding:14px}}
+.timeline::before{content:'';position:absolute;left:6px;top:6px;bottom:6px;width:2px;background:#e2e8f0}
+.tl-item{position:relative;padding-bottom:22px}
+.tl-item:last-child{padding-bottom:0}
+.tl-item::before{content:'';position:absolute;left:-26px;top:4px;width:12px;height:12px;border-radius:50%;background:#fff;border:3px solid #cbd5e1}
+.tl-item.done::before{background:#10b981;border-color:#10b981}
+.tl-item.active::before{background:#CD2727;border-color:#CD2727;box-shadow:0 0 0 4px rgba(205,39,39,.2)}
+.tl-item .time{font-size:12px;color:#94a3b8;margin-bottom:2px}
+.tl-item .event{font-weight:600;color:#0f172a;font-size:14px}
+.tl-item .loc{font-size:13px;color:#64748b}
+
+.foot{text-align:center;padding:28px;font-size:13px;color:#64748b;background:#f8fafc}
+.foot a{color:#CD2727;text-decoration:none;margin:0 6px}
+
+@media(max-width:640px){
+  .search{flex-direction:column}
+  .search button{padding:16px}
+  .nav-links a:not(.cta){display:none}
+}
 </style>
 </head>
 <body>
-<header class="site-header"><div class="inner">
-<a href="/"><img src="apps/airpak/img/logo.png" alt="Airpak Express" onerror="this.outerHTML='<strong style=color:#CD2727>Airpak Express</strong>'"></a>
-<div>
-<a href="/">Home</a>
-<a href="/about-us">About</a>
-<a href="/contact">Contact</a>
-<a href="/create-shipment" class="btn">Create Shipment</a>
-</div>
-</div></header>
 
-<section class="video-hero">
-<video autoplay muted loop playsinline poster="apps/airpak/img/home/banner.png">
-<source src="apps/airpak/img/homepage_small.mp4" type="video/mp4">
-</video>
-<div class="overlay"></div>
-<div class="content">
-<h1>Track Your Shipment</h1>
-<p>Enter your tracking number for real-time delivery updates</p>
-<form class="search" id="trackingForm" onsubmit="trackShipment(event)">
-<input type="text" id="trackingNumber" placeholder="e.g. AP123456789" required autocomplete="off">
-<button type="submit"><i class="fa fa-search"></i> Track</button>
-</form>
-</div>
+<nav class="nav" id="nav">
+  <div class="nav-inner">
+    <a href="/"><img src="apps/airpak/img/logo.png" alt="Airpak Express" onerror="this.outerHTML='<strong style=color:#fff>Airpak Express</strong>'"></a>
+    <div class="nav-links">
+      <a href="/">Home</a>
+      <a href="/about-us">About</a>
+      <a href="/contact">Contact</a>
+      <a href="/create-shipment" class="cta">Create Shipment</a>
+    </div>
+  </div>
+</nav>
+
+<section class="hero">
+  <video id="bgVideo" autoplay muted loop playsinline preload="auto" poster="apps/airpak/img/home/banner.png">
+    <source src="apps/airpak/img/homepage_small.mp4" type="video/mp4">
+  </video>
+  <div class="veil"></div>
+  <div class="hero-content">
+    <div class="badge">Real-time visibility</div>
+    <h1>Track Your Shipment</h1>
+    <p>Enter your Airpak tracking number for live status and delivery updates worldwide.</p>
+    <form class="search" id="trackingForm" onsubmit="return trackShipment(event)">
+      <input type="text" id="trackingNumber" placeholder="e.g. APK1234567890" required autocomplete="off" />
+      <button type="submit"><i class="fa fa-search"></i> Track</button>
+    </form>
+  </div>
 </section>
 
-<div class="container">
-<div id="loadingState" class="loading" style="display:none">
-<i class="fa fa-spinner fa-spin"></i>
-<p style="margin-top:10px">Looking up your shipment...</p>
-</div>
-<div id="trackingResult" class="tracking-result">
-<div class="shipment-info">
-<div class="info-item"><div class="label">Tracking Number</div><div class="value" id="resultTrackingNumber">-</div></div>
-<div class="info-item"><div class="label">Status</div><div class="value"><span class="status-badge" id="resultStatus">-</span></div></div>
-<div class="info-item"><div class="label">Service</div><div class="value" id="resultService">Worldwide Express</div></div>
-<div class="info-item"><div class="label">Estimated Delivery</div><div class="value" id="resultETA">-</div></div>
-</div>
-<h3 style="margin-bottom:16px;font-family:Poppins,sans-serif;color:#373F41;font-size:1.05rem">Shipment Timeline</h3>
-<div class="timeline" id="timeline"></div>
-</div>
-</div>
-<footer class="footer">© 2026 Airpak Express · <a href="/">Home</a> · <a href="/create-shipment">Create Shipment</a> · <a href="/contact">Contact</a></footer>
+<section class="panel" id="resultsPanel">
+  <div class="panel-inner">
+    <div class="loading" id="loadingState"><i class="fa fa-spinner fa-spin"></i><p style="margin-top:10px">Looking up your shipment…</p></div>
+    <div class="card" id="trackingResult">
+      <div class="meta">
+        <div><div class="label">Tracking number</div><div class="value" id="resultTrackingNumber">—</div></div>
+        <div><div class="label">Status</div><div class="value"><span class="badge-status" id="resultStatus">—</span></div></div>
+        <div><div class="label">Service</div><div class="value" id="resultService">Worldwide Express</div></div>
+        <div><div class="label">Estimated delivery</div><div class="value" id="resultETA">—</div></div>
+      </div>
+      <div class="timeline-title">Shipment timeline</div>
+      <div class="timeline" id="timeline"></div>
+    </div>
+  </div>
+</section>
+
+<footer class="foot">© 2026 Airpak Express · <a href="/">Home</a><a href="/create-shipment">Create Shipment</a><a href="/contact">Contact</a></footer>
+
 <script>
-(function(){var p=new URLSearchParams(location.search);var t=p.get('tracking')||p.get('id');if(t){document.getElementById('trackingNumber').value=t;setTimeout(function(){trackShipment({preventDefault:function(){}})},250)}})();
-async function trackShipment(e){e.preventDefault();var tn=document.getElementById('trackingNumber').value.trim();if(!tn)return;
-document.getElementById('loadingState').style.display='block';document.getElementById('trackingResult').classList.remove('active');
-try{var r=await fetch('https://shipnow.airpak-express.site/api/tracking/'+encodeURIComponent(tn));if(r.ok){renderResult(tn,await r.json());return}}catch(err){}
-var last=tn.slice(-1),status='Out for Delivery',badgeClass='out-for-delivery',eta='Today by 5:30 PM';
-var events=[{time:'Today · 10:15 AM',event:'Out for delivery',location:'Local delivery facility',active:true},{time:'Today · 6:40 AM',event:'Arrived at facility',location:'Destination hub',completed:true},{time:'Yesterday · 9:20 PM',event:'In transit',location:'Regional sorting centre',completed:true},{time:'Yesterday · 2:15 PM',event:'Picked up',location:'Origin facility',completed:true}];
-if(['1','2','3'].includes(last)){status='Delivered';badgeClass='delivered';eta='Delivered today 11:42 AM';events=[{time:'Today · 11:42 AM',event:'Delivered',location:'Signed for by recipient',active:true},{time:'Today · 9:10 AM',event:'Out for delivery',location:'Local facility',completed:true},{time:'Yesterday · 6:00 PM',event:'In transit',location:'Hub',completed:true},{time:'Yesterday · 11:00 AM',event:'Picked up',location:'Origin',completed:true}]}
-else if(['4','5','6'].includes(last)){status='In Transit';badgeClass='in-transit';eta='Tomorrow by 6:00 PM';events=[{time:'Today · 8:00 AM',event:'In transit',location:'Regional hub',active:true},{time:'Yesterday · 4:00 PM',event:'Picked up',location:'Origin facility',completed:true}]}
-renderResult(tn,{status:status,badgeClass:badgeClass,eta:eta,events:events})}
-function renderResult(tn,data){document.getElementById('loadingState').style.display='none';document.getElementById('resultTrackingNumber').textContent=tn;
-var b=document.getElementById('resultStatus');b.textContent=data.status||'In Transit';b.className='status-badge '+(data.badgeClass||'in-transit');
-document.getElementById('resultETA').textContent=data.eta||'-';
-var tl=document.getElementById('timeline');tl.innerHTML='';(data.events||[]).forEach(function(ev){var d=document.createElement('div');d.className='timeline-item'+(ev.active?' active':'')+(ev.completed?' completed':'');d.innerHTML='<div class="time">'+(ev.time||'')+'</div><div class="event">'+(ev.event||'')+'</div><div class="location">'+(ev.location||'')+'</div>';tl.appendChild(d)});
-document.getElementById('trackingResult').classList.add('active');document.getElementById('trackingResult').scrollIntoView({behavior:'smooth',block:'start'})}
+(function(){
+  var v=document.getElementById('bgVideo');
+  if(v){v.muted=true;v.setAttribute('playsinline','');var p=v.play();if(p&&p.catch)p.catch(function(){})}
+  window.addEventListener('scroll',function(){document.getElementById('nav').classList.toggle('scrolled',window.scrollY>40)});
+  var q=new URLSearchParams(location.search);
+  var t=q.get('tracking')||q.get('id');
+  if(t){document.getElementById('trackingNumber').value=t;setTimeout(function(){trackShipment({preventDefault:function(){}})},300)}
+})();
+
+async function trackShipment(e){
+  e.preventDefault();
+  var tn=document.getElementById('trackingNumber').value.trim();
+  if(!tn)return false;
+  document.getElementById('loadingState').style.display='block';
+  document.getElementById('trackingResult').classList.remove('active');
+  document.getElementById('resultsPanel').scrollIntoView({behavior:'smooth',block:'start'});
+  try{
+    var r=await fetch('https://shipnow.airpak-express.site/api/tracking/'+encodeURIComponent(tn));
+    if(r.ok){renderResult(tn,await r.json());return false}
+  }catch(err){}
+  var last=tn.slice(-1),status='Out for Delivery',bc='out-for-delivery',eta='Today by 5:30 PM';
+  var events=[
+    {time:'Today · 10:15 AM',event:'Out for delivery',location:'Local delivery facility',active:true},
+    {time:'Today · 6:40 AM',event:'Arrived at facility',location:'Destination hub',done:true},
+    {time:'Yesterday · 9:20 PM',event:'In transit',location:'Regional sorting centre',done:true},
+    {time:'Yesterday · 2:15 PM',event:'Picked up',location:'Origin facility',done:true}
+  ];
+  if(['1','2','3'].indexOf(last)>=0){
+    status='Delivered';bc='delivered';eta='Delivered today 11:42 AM';
+    events=[{time:'Today · 11:42 AM',event:'Delivered',location:'Signed for by recipient',active:true},{time:'Today · 9:10 AM',event:'Out for delivery',location:'Local facility',done:true},{time:'Yesterday · 6:00 PM',event:'In transit',location:'Hub',done:true},{time:'Yesterday · 11:00 AM',event:'Picked up',location:'Origin',done:true}];
+  }else if(['4','5','6'].indexOf(last)>=0){
+    status='In Transit';bc='in-transit';eta='Tomorrow by 6:00 PM';
+    events=[{time:'Today · 8:00 AM',event:'In transit',location:'Regional hub',active:true},{time:'Yesterday · 4:00 PM',event:'Picked up',location:'Origin facility',done:true}];
+  }
+  renderResult(tn,{status:status,badgeClass:bc,eta:eta,events:events});
+  return false;
+}
+function renderResult(tn,data){
+  document.getElementById('loadingState').style.display='none';
+  document.getElementById('resultTrackingNumber').textContent=tn;
+  var b=document.getElementById('resultStatus');
+  b.textContent=data.status||'In Transit';
+  b.className='badge-status '+(data.badgeClass||'in-transit');
+  document.getElementById('resultETA').textContent=data.eta||'—';
+  var tl=document.getElementById('timeline');tl.innerHTML='';
+  (data.events||[]).forEach(function(ev){
+    var d=document.createElement('div');
+    d.className='tl-item'+(ev.active?' active':'')+(ev.done||ev.completed?' done':'');
+    d.innerHTML='<div class="time">'+(ev.time||'')+'</div><div class="event">'+(ev.event||'')+'</div><div class="loc">'+(ev.location||'')+'</div>';
+    tl.appendChild(d);
+  });
+  document.getElementById('trackingResult').classList.add('active');
+}
 </script>
 </body>
 </html>
