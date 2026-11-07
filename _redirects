@@ -1,26 +1,32 @@
-# Cloudflare Pages / Netlify-style redirects - CLEAN VERSION
-# No conflicting loops - REHABILITATED
+# Airpak Express - site-wide clean URL map (Cloudflare / static hosts)
+# 200 = rewrite (serve file, keep clean URL)
 
-# Clean URL rewrites (serve the HTML files with 200)
-/about-us               /aboutus.html   200
-/aboutus                /aboutus.html   200
-/contact                /contact.html   200
+# Core
+/                       /index.html  200
+/about-us               /aboutus.html  200
+/aboutus                /aboutus.html  200
+/contact                /contact.html  200
 /tracking               /tracking.html  200
-/careers                /careers.html   200
-/services/domestic      /service-domestic-worldwide-deliveries.html 200
-/services/warehousing   /service-warehousing.html 200
-/services/international /service-international-crossborder.html 200
-/services/freight       /service-worldwideforwarding.html 200
-/international-shipping /international-shipping.html 200
-/logistics-partner      /logistics-partner-singapore.html 200
-/media                  /media-listing.html 200
-/privacy-policy         /privacypolicy.html 200
-/terms-of-service       /termsofservice.html 200
-/standard-conditions    /standardconditionsofcarriage.html 200
-/fuel-surcharge         /fuelsurcharge.html 200
-/worldwide-domestic     /worldwide-domestic-courier-service.html 200
-/coming-soon            /comingsoon.html 200
-/enterprise-tools       /enterprise-tools.html 200
+/create-shipment        /create-shipment.html  200
+/careers                /careers.html  200
 
-# API proxy (keep if needed)
+# Services
+/services/domestic      /service-domestic-worldwide-deliveries.html  200
+/services/warehousing   /service-warehousing.html  200
+/services/international /service-international-crossborder.html  200
+/services/freight       /service-worldwideforwarding.html  200
+/international-shipping /international-shipping.html  200
+/worldwide-domestic     /worldwide-domestic-courier-service.html  200
+/logistics-partner      /logistics-partner-singapore.html  200
+
+# Content & legal
+/media                  /media-listing.html  200
+/privacy-policy         /privacypolicy.html  200
+/terms-of-service       /termsofservice.html  200
+/standard-conditions    /standardconditionsofcarriage.html  200
+/fuel-surcharge         /fuelsurcharge.html  200
+/enterprise-tools       /enterprise-tools.html  200
+/coming-soon            /comingsoon.html  200
+
+# API proxy to ShipNow portal
 /api/*  https://shipnow.airpak-express.site/api/:splat  200
