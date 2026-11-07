@@ -5,6 +5,7 @@
     { "source": "/aboutus", "destination": "/aboutus.html" },
     { "source": "/contact", "destination": "/contact.html" },
     { "source": "/tracking", "destination": "/tracking.html" },
+    { "source": "/create-shipment", "destination": "/create-shipment.html" },
     { "source": "/careers", "destination": "/careers.html" },
     { "source": "/services/domestic", "destination": "/service-domestic-worldwide-deliveries.html" },
     { "source": "/services/warehousing", "destination": "/service-warehousing.html" },
