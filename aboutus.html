@@ -17,13 +17,12 @@ body{font-family:Inter,sans-serif;color:#373F41;background:#fff;line-height:1.6}
 .site-header nav a{margin-left:18px;text-decoration:none;color:#373F41;font-weight:500;font-size:14px}
 .site-header nav a:hover{color:#CD2727}
 .site-header .btn{background:#CD2727;color:#fff!important;padding:8px 16px;border-radius:6px}
-/* Video Hero */
-.video-hero{position:relative;min-height:380px;display:flex;align-items:center;justify-content:center;overflow:hidden;color:#fff;text-align:center}
-.video-hero video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0}
-.video-hero .overlay{position:absolute;inset:0;background:linear-gradient(135deg,rgba(15,23,42,.75) 0%,rgba(205,39,39,.45) 100%);z-index:1}
-.video-hero .content{position:relative;z-index:2;padding:60px 20px;max-width:720px}
-.video-hero h1{font-family:Poppins,sans-serif;font-size:clamp(1.8rem,4vw,2.6rem);font-weight:700;margin-bottom:12px;text-shadow:0 2px 12px rgba(0,0,0,.3)}
-.video-hero p{font-size:1.1rem;opacity:.95;max-width:560px;margin:0 auto}
+/* PHOTO HERO */
+.photo-hero{position:relative;min-height:360px;display:flex;align-items:center;justify-content:center;background:url('apps/airpak/img/aboutus/banner1.png') center/cover no-repeat,#1a1a2e;color:#fff;text-align:center}
+.photo-hero .overlay{position:absolute;inset:0;background:linear-gradient(135deg,rgba(15,23,42,.72) 0%,rgba(205,39,39,.35) 100%)}
+.photo-hero .content{position:relative;z-index:2;padding:56px 20px;max-width:700px}
+.photo-hero h1{font-family:Poppins,sans-serif;font-size:clamp(1.8rem,4vw,2.5rem);font-weight:700;margin-bottom:12px;text-shadow:0 2px 12px rgba(0,0,0,.3)}
+.photo-hero p{font-size:1.1rem;opacity:.95;max-width:560px;margin:0 auto}
 .section{max-width:900px;margin:0 auto;padding:48px 20px}
 .section h2{font-family:Poppins,sans-serif;font-size:1.35rem;margin-bottom:14px;color:#373F41}
 .section p{margin-bottom:14px;color:#555}
@@ -50,10 +49,7 @@ body{font-family:Inter,sans-serif;color:#373F41;background:#fff;line-height:1.6}
 </nav>
 </div></header>
 
-<section class="video-hero">
-<video autoplay muted loop playsinline poster="apps/airpak/img/home/banner.png">
-<source src="apps/airpak/img/homepage_small.mp4" type="video/mp4">
-</video>
+<section class="photo-hero">
 <div class="overlay"></div>
 <div class="content">
 <h1>About Airpak Express</h1>
@@ -68,16 +64,13 @@ body{font-family:Inter,sans-serif;color:#373F41;background:#fff;line-height:1.6}
 <div class="stat"><strong>Global</strong><span>Network Coverage</span></div>
 <div class="stat"><strong>24/7</strong><span>Operations Support</span></div>
 </div>
-
 <h2>Who We Are</h2>
 <p>Airpak Express has grown into a global logistics leader with branches and partners across major markets worldwide. We offer international freight, express, inventory management, warehousing, last-mile delivery, and more.</p>
 <p>Our reliable network covers major cities and trade lanes worldwide. We have supported valued clients for over 30 years through our vast global network.</p>
-
 <h2>Global Headquarters</h2>
 <p><strong>United States</strong> — Global Headquarters & Business Operations Hub<br>
 <strong>United Kingdom</strong> — European Headquarters & Operations Centre</p>
 <p>Regional operations across Singapore, Malaysia, Hong Kong, China, Middle East, Australia, Canada, India, Japan and more.</p>
-
 <h2>What We Deliver</h2>
 <ul>
 <li>Worldwide Express & Domestic Express</li>
@@ -85,10 +78,8 @@ body{font-family:Inter,sans-serif;color:#373F41;background:#fff;line-height:1.6}
 <li>Warehousing & eCommerce Fulfillment</li>
 <li>Cross-border and customs solutions</li>
 </ul>
-
 <p><a href="/contact" style="color:#CD2727;font-weight:600">Contact our global team →</a> &nbsp;·&nbsp; <a href="/create-shipment" style="color:#CD2727;font-weight:600">Create a shipment →</a></p>
 </section>
-
 <footer class="footer">
 © 2026 Airpak Express · <a href="/">Home</a> · <a href="/tracking">Track</a> · <a href="/create-shipment">Create Shipment</a> · <a href="/contact">Contact</a>
 </footer>
