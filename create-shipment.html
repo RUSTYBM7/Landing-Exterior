@@ -1,1 +1,226 @@
-FILE_TOO_LARGE_USE_PARALLEL
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Create Shipment | Airpak Express</title>
+<meta name="description" content="Create a new Airpak Express shipment online. Sender, receiver, parcel and service details." />
+<link rel="shortcut icon" type="image/x-icon" href="apps/airpak/images/icon.png" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="apps/airpak/assets/css/font-awesome.min.css" />
+<style>
+:root{--brand:#c8102e;--brand-dark:#a30d24;--ink:#1f2937;--ink-soft:#4b5563;--line:#e5e7eb;--bg:#f6f8fb;--card:#fff}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Inter,sans-serif;background:var(--bg);color:var(--ink);min-height:100vh}
+a{color:inherit;text-decoration:none}
+.topbar{background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:50}
+.topbar-inner{max-width:1100px;margin:0 auto;padding:14px 20px;display:flex;align-items:center;justify-content:space-between}
+.topbar-brand{display:flex;align-items:center;gap:10px;font-family:Poppins,sans-serif;font-weight:700}
+.topbar-brand img{height:38px}
+.topbar-actions a{padding:8px 14px;border-radius:8px;font-weight:600;font-size:14px;margin-left:8px}
+.btn-ghost{border:1px solid var(--line)}
+.btn-primary{background:var(--brand);color:#fff!important}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 18px;border-radius:10px;border:0;cursor:pointer;font-weight:600;font-size:14px;font-family:inherit}
+.btn:hover{opacity:.92}
+.photo-hero{position:relative;min-height:260px;display:flex;align-items:center;justify-content:center;background:url('apps/airpak/img/services/banner1.png') center/cover no-repeat,#1a1a2e;color:#fff;text-align:center}
+.photo-hero .overlay{position:absolute;inset:0;background:linear-gradient(135deg,rgba(15,23,42,.78),rgba(200,16,46,.4))}
+.photo-hero .content{position:relative;z-index:2;padding:44px 20px;max-width:640px}
+.photo-hero h1{font-family:Poppins,sans-serif;font-size:clamp(1.5rem,4vw,2.1rem);font-weight:700;margin-bottom:8px;text-shadow:0 2px 12px rgba(0,0,0,.3)}
+.photo-hero p{font-size:1rem;opacity:.95}
+.wrap{max-width:960px;margin:0 auto;padding:28px 20px 70px}
+.stepper{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
+.step-pill{padding:8px 14px;border-radius:999px;background:#fff;border:1px solid var(--line);font-size:12px;font-weight:600;color:var(--ink-soft)}
+.step-pill.active{background:var(--brand);color:#fff;border-color:var(--brand)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px;margin-bottom:16px}
+.card h2{font-family:Poppins,sans-serif;font-size:17px;margin-bottom:4px;display:flex;align-items:center;gap:10px}
+.card h2 .num{width:26px;height:26px;border-radius:50%;background:var(--brand);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:13px}
+.card .sub{color:var(--ink-soft);font-size:13px;margin-bottom:16px}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:640px){.row{grid-template-columns:1fr}}
+.field{display:flex;flex-direction:column;gap:6px;margin-bottom:4px}
+.field label{font-size:13px;font-weight:600;color:var(--ink-soft)}
+.field label .req{color:#dc2626}
+.field input,.field select,.field textarea{border:1px solid var(--line);border-radius:10px;padding:12px 14px;font:inherit;background:#fff;outline:none}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--brand);box-shadow:0 0 0 3px rgba(200,16,46,.12)}
+.field textarea{min-height:80px;resize:vertical}
+.actions{display:flex;justify-content:space-between;gap:12px;margin-top:18px}
+.actions .btn-primary{flex:1}
+.summary-row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px dashed var(--line);font-size:13px}
+.summary-row .k{color:var(--ink-soft)}
+.summary-row .v{font-weight:600;text-align:right;max-width:60%}
+.confirm{background:#fff;border:1px solid var(--line);border-radius:16px;padding:36px;max-width:640px;margin:20px auto;text-align:center;display:none}
+.confirm.show{display:block}
+.confirm .check{width:64px;height:64px;border-radius:50%;background:#ecfdf5;color:#16a34a;display:inline-flex;align-items:center;justify-content:center;font-size:28px;margin-bottom:14px}
+.confirm h1{font-family:Poppins,sans-serif;font-size:24px;margin-bottom:6px}
+.track-id{display:inline-block;padding:12px 18px;border-radius:12px;background:#f9fafb;border:1px solid var(--line);font-family:Poppins,sans-serif;font-weight:700;font-size:18px;margin:12px 0}
+.footer{text-align:center;padding:24px;color:#999;font-size:13px}
+.footer a{color:var(--brand)}
+</style>
+</head>
+<body>
+<div class="topbar"><div class="topbar-inner">
+<a href="/" class="topbar-brand"><img src="apps/airpak/img/logosmall.png" alt="Airpak Express" onerror="this.style.display='none'" /><span>Airpak Express</span></a>
+<div class="topbar-actions">
+<a class="btn btn-ghost" href="/tracking">Track</a>
+<a class="btn btn-primary" href="/">Home</a>
+</div>
+</div></div>
+
+<section class="photo-hero">
+<div class="overlay"></div>
+<div class="content">
+<h1>Create Shipment</h1>
+<p>Professional online booking — sender, receiver, parcel and service in one guided form.</p>
+</div>
+</section>
+
+<div class="wrap" id="formView">
+<div class="stepper" id="stepper">
+<div class="step-pill active" data-s="1">1 Sender</div>
+<div class="step-pill" data-s="2">2 Receiver</div>
+<div class="step-pill" data-s="3">3 Parcel</div>
+<div class="step-pill" data-s="4">4 Service</div>
+<div class="step-pill" data-s="5">5 Review</div>
+</div>
+
+<form id="shipForm" onsubmit="return false;">
+<!-- 1 Sender -->
+<div class="card" data-step="1">
+<h2><span class="num">1</span> Sender Information</h2>
+<div class="sub">Who is sending the parcel?</div>
+<div class="row">
+<div class="field"><label>Full name <span class="req">*</span></label><input name="sender_name" required></div>
+<div class="field"><label>Company</label><input name="sender_company"></div>
+</div>
+<div class="row" style="margin-top:12px">
+<div class="field"><label>Email <span class="req">*</span></label><input type="email" name="sender_email" required></div>
+<div class="field"><label>Phone <span class="req">*</span></label><input type="tel" name="sender_phone" required></div>
+</div>
+<div class="field" style="margin-top:12px"><label>Street address <span class="req">*</span></label><input name="sender_address" required></div>
+<div class="row" style="margin-top:12px">
+<div class="field"><label>Country <span class="req">*</span></label>
+<select name="sender_country" required><option value="">Select…</option><option>United States</option><option>United Kingdom</option><option>Singapore</option><option>Malaysia</option><option>Australia</option><option>Hong Kong</option><option>China</option><option>India</option><option>UAE</option><option>Canada</option><option>Japan</option></select>
+</div>
+<div class="field"><label>City <span class="req">*</span></label><input name="sender_city" required></div>
+</div>
+<div class="field" style="margin-top:12px"><label>Postal code</label><input name="sender_postal"></div>
+<div class="actions"><span></span><button type="button" class="btn btn-primary" onclick="goStep(2)">Continue →</button></div>
+</div>
+
+<!-- 2 Receiver -->
+<div class="card" data-step="2" style="display:none">
+<h2><span class="num">2</span> Receiver Information</h2>
+<div class="sub">Where is the parcel going?</div>
+<div class="row">
+<div class="field"><label>Full name <span class="req">*</span></label><input name="receiver_name" required></div>
+<div class="field"><label>Company</label><input name="receiver_company"></div>
+</div>
+<div class="row" style="margin-top:12px">
+<div class="field"><label>Email</label><input type="email" name="receiver_email"></div>
+<div class="field"><label>Phone <span class="req">*</span></label><input type="tel" name="receiver_phone" required></div>
+</div>
+<div class="field" style="margin-top:12px"><label>Street address <span class="req">*</span></label><input name="receiver_address" required></div>
+<div class="row" style="margin-top:12px">
+<div class="field"><label>Country <span class="req">*</span></label>
+<select name="receiver_country" required><option value="">Select…</option><option>United States</option><option>United Kingdom</option><option>Singapore</option><option>Malaysia</option><option>Australia</option><option>Hong Kong</option><option>China</option><option>India</option><option>UAE</option><option>Canada</option><option>Japan</option></select>
+</div>
+<div class="field"><label>City <span class="req">*</span></label><input name="receiver_city" required></div>
+</div>
+<div class="field" style="margin-top:12px"><label>Postal code</label><input name="receiver_postal"></div>
+<div class="actions"><button type="button" class="btn btn-ghost" onclick="goStep(1)">← Back</button><button type="button" class="btn btn-primary" onclick="goStep(3)">Continue →</button></div>
+</div>
+
+<!-- 3 Parcel -->
+<div class="card" data-step="3" style="display:none">
+<h2><span class="num">3</span> Parcel Details</h2>
+<div class="sub">What are you shipping?</div>
+<div class="row">
+<div class="field"><label>Category <span class="req">*</span></label>
+<select name="category" required><option value="">Select…</option><option>Documents</option><option>Parcel</option><option>Electronics</option><option>Apparel</option><option>Fragile</option><option>Other</option></select>
+</div>
+<div class="field"><label>Weight (kg) <span class="req">*</span></label><input type="number" name="weight" min="0.1" step="0.1" required></div>
+</div>
+<div class="row" style="margin-top:12px">
+<div class="field"><label>Length (cm)</label><input type="number" name="length" min="0"></div>
+<div class="field"><label>Width (cm)</label><input type="number" name="width" min="0"></div>
+</div>
+<div class="row" style="margin-top:12px">
+<div class="field"><label>Height (cm)</label><input type="number" name="height" min="0"></div>
+<div class="field"><label>Pieces</label><input type="number" name="pieces" min="1" value="1"></div>
+</div>
+<div class="field" style="margin-top:12px"><label>Description</label><textarea name="description" placeholder="Brief description of contents"></textarea></div>
+<div class="actions"><button type="button" class="btn btn-ghost" onclick="goStep(2)">← Back</button><button type="button" class="btn btn-primary" onclick="goStep(4)">Continue →</button></div>
+</div>
+
+<!-- 4 Service -->
+<div class="card" data-step="4" style="display:none">
+<h2><span class="num">4</span> Service Level</h2>
+<div class="sub">Choose how fast you need delivery.</div>
+<div class="field"><label>Service <span class="req">*</span></label>
+<select name="service" required>
+<option value="express">Worldwide Express (1–3 days)</option>
+<option value="priority">Priority (2–5 days)</option>
+<option value="economy">Economy (5–10 days)</option>
+<option value="freight">Freight (quote on request)</option>
+</select>
+</div>
+<div class="field" style="margin-top:12px"><label>Pickup date</label><input type="date" name="pickup_date"></div>
+<div class="field" style="margin-top:12px"><label>Special instructions</label><textarea name="instructions" placeholder="Access codes, preferred time window, etc."></textarea></div>
+<div class="actions"><button type="button" class="btn btn-ghost" onclick="goStep(3)">← Back</button><button type="button" class="btn btn-primary" onclick="goStep(5)">Review →</button></div>
+</div>
+
+<!-- 5 Review -->
+<div class="card" data-step="5" style="display:none">
+<h2><span class="num">5</span> Review & Submit</h2>
+<div class="sub">Confirm details before creating your shipment.</div>
+<div id="reviewBox"></div>
+<div class="actions"><button type="button" class="btn btn-ghost" onclick="goStep(4)">← Back</button><button type="button" class="btn btn-primary" onclick="submitShip()">Create Shipment</button></div>
+</div>
+</form>
+</div>
+
+<div class="confirm" id="confirmView">
+<div class="check">✓</div>
+<h1>Shipment created</h1>
+<p style="color:#4b5563;margin-bottom:8px">Your tracking number is ready.</p>
+<div class="track-id" id="trackIdOut">—</div>
+<p style="margin-top:16px">
+<a class="btn btn-primary" href="#" id="trackLink">Track shipment</a>
+<a class="btn btn-ghost" href="/create-shipment" style="margin-left:8px">Create another</a>
+</p>
+</div>
+
+<footer class="footer">© 2026 Airpak Express · <a href="/">Home</a> · <a href="/tracking">Track</a> · <a href="/contact">Contact</a></footer>
+
+<script>
+function goStep(n){
+  document.querySelectorAll('[data-step]').forEach(function(el){el.style.display = el.getAttribute('data-step')==String(n)?'block':'none'});
+  document.querySelectorAll('.step-pill').forEach(function(p){
+    var s=parseInt(p.getAttribute('data-s'),10);
+    p.classList.toggle('active', s===n);
+  });
+  if(n===5) buildReview();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function val(name){var el=document.querySelector('[name="'+name+'"]');return el?el.value.trim():''}
+function buildReview(){
+  var rows=[
+    ['Sender', val('sender_name')+' · '+val('sender_city')+', '+val('sender_country')],
+    ['Receiver', val('receiver_name')+' · '+val('receiver_city')+', '+val('receiver_country')],
+    ['Category / Weight', val('category')+' · '+val('weight')+' kg'],
+    ['Service', document.querySelector('[name="service"]').selectedOptions[0].text],
+    ['Pickup', val('pickup_date')||'As soon as possible']
+  ];
+  document.getElementById('reviewBox').innerHTML=rows.map(function(r){return '<div class="summary-row"><span class="k">'+r[0]+'</span><span class="v">'+r[1]+'</span></div>'}).join('');
+}
+function submitShip(){
+  var id='APK'+Date.now().toString().slice(-10);
+  document.getElementById('formView').style.display='none';
+  document.getElementById('confirmView').classList.add('show');
+  document.getElementById('trackIdOut').textContent=id;
+  document.getElementById('trackLink').href='/tracking?tracking='+encodeURIComponent(id);
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+</script>
+</body>
+</html>
