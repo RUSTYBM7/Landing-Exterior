@@ -1,187 +1,118 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Track Your Shipment | Airpak Express</title>
-    <meta name="description" content="Track your Airpak Express shipment in real-time. Enter your tracking number to get instant updates on your delivery status." />
-    <link rel="shortcut icon" type="image/x-icon" href="apps/airpak/images/icon.png" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="apps/airpak/assets/css/font-awesome.min.css" />
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Inter', sans-serif; background: linear-gradient(135deg, #f5f7fa 0%, #e4e8ec 100%); min-height: 100vh; }
-        .tracking-container { max-width: 900px; margin: 0 auto; padding: 40px 20px; }
-        .tracking-header { text-align: center; margin-bottom: 40px; }
-        .tracking-header h1 { font-family: 'Poppins', sans-serif; font-size: 2.5rem; font-weight: 600; color: #373F41; margin-bottom: 10px; }
-        .tracking-header p { color: #737B7D; font-size: 1.1rem; }
-        .tracking-form { background: #fff; border-radius: 16px; padding: 30px; box-shadow: 0 10px 40px rgba(0,0,0,0.08); margin-bottom: 30px; }
-        .form-group { display: flex; gap: 15px; flex-wrap: wrap; }
-        .form-group input { flex: 1; min-width: 250px; padding: 16px 20px; border: 2px solid #e0e0e0; border-radius: 10px; font-size: 1rem; transition: all 0.3s ease; }
-        .form-group input:focus { outline: none; border-color: #CD2727; box-shadow: 0 0 0 4px rgba(205, 39, 39, 0.1); }
-        .btn-track { background: #CD2727; color: #fff; border: none; padding: 16px 40px; border-radius: 10px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease; white-space: nowrap; }
-        .btn-track:hover { background: #b01f1f; transform: translateY(-2px); box-shadow: 0 8px 20px rgba(205, 39, 39, 0.3); }
-        .tracking-result { background: #fff; border-radius: 16px; padding: 30px; box-shadow: 0 10px 40px rgba(0,0,0,0.08); display: none; }
-        .tracking-result.active { display: block; }
-        .shipment-info { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 20px; margin-bottom: 30px; padding-bottom: 20px; border-bottom: 1px solid #eee; }
-        .info-item .label { font-size: 0.8rem; color: #737B7D; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
-        .info-item .value { font-weight: 600; color: #373F41; font-size: 1.05rem; }
-        .status-badge { display: inline-block; padding: 6px 14px; border-radius: 50px; font-size: 0.85rem; font-weight: 600; }
-        .status-badge.in-transit { background: #DBEAFE; color: #1E40AF; }
-        .status-badge.out-for-delivery { background: #FEF3C7; color: #92400E; }
-        .status-badge.delivered { background: #D1FAE5; color: #065F46; }
-        .status-badge.pending { background: #F3F4F6; color: #6B7280; }
-        .timeline { position: relative; padding-left: 30px; }
-        .timeline::before { content: ''; position: absolute; left: 8px; top: 8px; bottom: 8px; width: 2px; background: #e0e0e0; }
-        .timeline-item { position: relative; padding-bottom: 24px; }
-        .timeline-item:last-child { padding-bottom: 0; }
-        .timeline-item::before { content: ''; position: absolute; left: -26px; top: 4px; width: 14px; height: 14px; border-radius: 50%; background: #fff; border: 3px solid #c6c6c6; }
-        .timeline-item.completed::before { background: #10B981; border-color: #10B981; }
-        .timeline-item.active::before { background: #CD2727; border-color: #CD2727; box-shadow: 0 0 0 4px rgba(205,39,39,0.15); }
-        .timeline-item .time { font-size: 0.8rem; color: #737B7D; margin-bottom: 2px; }
-        .timeline-item .event { font-weight: 600; color: #373F41; }
-        .timeline-item .location { font-size: 0.85rem; color: #737B7D; }
-        .loading { text-align: center; padding: 40px; color: #737B7D; }
-        .loading i { font-size: 2rem; color: #CD2727; }
-        .back-link { display: inline-block; margin-bottom: 20px; color: #CD2727; font-weight: 500; text-decoration: none; }
-        .back-link:hover { text-decoration: underline; }
-        @media (max-width: 600px) {
-            .tracking-header h1 { font-size: 1.8rem; }
-            .form-group { flex-direction: column; }
-            .form-group input { min-width: 100%; }
-            .btn-track { width: 100%; }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Track Your Shipment | Airpak Express</title>
+<meta name="description" content="Track your Airpak Express shipment in real-time." />
+<link rel="shortcut icon" type="image/x-icon" href="apps/airpak/images/icon.png" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="apps/airpak/assets/css/font-awesome.min.css" />
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:Inter,sans-serif;background:#f5f7fa;min-height:100vh}
+.site-header{background:#fff;border-bottom:1px solid #eee;padding:12px 0;position:sticky;top:0;z-index:100}
+.site-header .inner{max-width:900px;margin:0 auto;padding:0 20px;display:flex;align-items:center;justify-content:space-between}
+.site-header img{height:40px}
+.site-header a{text-decoration:none;color:#373F41;font-weight:500;font-size:14px;margin-left:16px}
+.site-header a:hover{color:#CD2727}
+.site-header .btn{background:#CD2727;color:#fff!important;padding:8px 14px;border-radius:6px}
+/* VIDEO HERO - tracking only */
+.video-hero{position:relative;min-height:320px;display:flex;align-items:center;justify-content:center;overflow:hidden;color:#fff;text-align:center}
+.video-hero video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0}
+.video-hero .overlay{position:absolute;inset:0;background:linear-gradient(135deg,rgba(15,23,42,.8) 0%,rgba(205,39,39,.4) 100%);z-index:1}
+.video-hero .content{position:relative;z-index:2;padding:48px 20px;max-width:640px;width:100%}
+.video-hero h1{font-family:Poppins,sans-serif;font-size:clamp(1.7rem,4vw,2.4rem);font-weight:600;margin-bottom:8px;text-shadow:0 2px 12px rgba(0,0,0,.35)}
+.video-hero p{opacity:.95;margin-bottom:22px;font-size:1.05rem}
+.video-hero .search{display:flex;gap:0;max-width:520px;margin:0 auto;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 12px 40px rgba(0,0,0,.25)}
+.video-hero .search input{flex:1;border:none;padding:16px 18px;font-size:1rem;outline:none;color:#373F41;font-family:inherit}
+.video-hero .search button{background:#CD2727;color:#fff;border:none;padding:0 24px;font-weight:600;cursor:pointer;font-size:.95rem;white-space:nowrap}
+.video-hero .search button:hover{background:#b01f1f}
+.container{max-width:900px;margin:0 auto;padding:28px 20px 50px}
+.tracking-result{background:#fff;border-radius:16px;padding:28px;box-shadow:0 10px 40px rgba(0,0,0,.08);display:none;margin-top:8px}
+.tracking-result.active{display:block}
+.shipment-info{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:18px;margin-bottom:24px;padding-bottom:18px;border-bottom:1px solid #eee}
+.info-item .label{font-size:.75rem;color:#737B7D;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
+.info-item .value{font-weight:600;color:#373F41;font-size:1rem}
+.status-badge{display:inline-block;padding:5px 12px;border-radius:50px;font-size:.85rem;font-weight:600}
+.status-badge.in-transit{background:#DBEAFE;color:#1E40AF}
+.status-badge.out-for-delivery{background:#FEF3C7;color:#92400E}
+.status-badge.delivered{background:#D1FAE5;color:#065F46}
+.timeline{position:relative;padding-left:28px}
+.timeline::before{content:'';position:absolute;left:7px;top:8px;bottom:8px;width:2px;background:#e0e0e0}
+.timeline-item{position:relative;padding-bottom:20px}
+.timeline-item:last-child{padding-bottom:0}
+.timeline-item::before{content:'';position:absolute;left:-24px;top:4px;width:12px;height:12px;border-radius:50%;background:#fff;border:3px solid #c6c6c6}
+.timeline-item.completed::before{background:#10B981;border-color:#10B981}
+.timeline-item.active::before{background:#CD2727;border-color:#CD2727;box-shadow:0 0 0 4px rgba(205,39,39,.15)}
+.timeline-item .time{font-size:.78rem;color:#737B7D;margin-bottom:2px}
+.timeline-item .event{font-weight:600;color:#373F41}
+.timeline-item .location{font-size:.82rem;color:#737B7D}
+.loading{text-align:center;padding:32px;color:#737B7D}
+.loading i{font-size:1.8rem;color:#CD2727}
+.footer{text-align:center;padding:24px;color:#999;font-size:13px}
+.footer a{color:#CD2727;text-decoration:none}
+@media(max-width:600px){.video-hero .search{flex-direction:column}.video-hero .search button{padding:14px}}
+</style>
 </head>
 <body>
-    <div class="tracking-container">
-        <a href="/" class="back-link"><i class="fa fa-arrow-left"></i> Back to Home</a>
-        <div class="tracking-header">
-            <a href="/" style="display:inline-block;margin-bottom:20px;">
-                <img src="apps/airpak/img/logo.png" alt="Airpak Express" style="height:48px;max-width:220px;" onerror="this.style.display='none'">
-            </a>
-            <h1>Track Your Shipment</h1>
-            <p>Enter your tracking number to get real-time updates on your delivery</p>
-        </div>
-        <div class="tracking-form">
-            <form id="trackingForm" onsubmit="trackShipment(event)">
-                <div class="form-group">
-                    <input type="text" id="trackingNumber" placeholder="Enter your tracking number (e.g., AP123456789)" required />
-                    <button type="submit" class="btn-track">
-                        <i class="fa fa-search"></i> Track
-                    </button>
-                </div>
-            </form>
-        </div>
-        <div id="loadingState" class="loading" style="display: none;">
-            <i class="fa fa-spinner fa-spin"></i>
-            <p style="margin-top:12px;">Looking up your shipment...</p>
-        </div>
-        <div id="trackingResult" class="tracking-result">
-            <div class="shipment-info">
-                <div class="info-item">
-                    <div class="label">Tracking Number</div>
-                    <div class="value" id="resultTrackingNumber">-</div>
-                </div>
-                <div class="info-item">
-                    <div class="label">Status</div>
-                    <div class="value"><span class="status-badge" id="resultStatus">-</span></div>
-                </div>
-                <div class="info-item">
-                    <div class="label">Service</div>
-                    <div class="value" id="resultService">Worldwide Express</div>
-                </div>
-                <div class="info-item">
-                    <div class="label">Estimated Delivery</div>
-                    <div class="value" id="resultETA">-</div>
-                </div>
-            </div>
-            <h3 style="margin-bottom:20px;font-family:Poppins,sans-serif;color:#373F41;">Shipment Timeline</h3>
-            <div class="timeline" id="timeline">
-                <!-- populated by JS -->
-            </div>
-        </div>
-    </div>
-    <script>
-        (function() {
-            const params = new URLSearchParams(window.location.search);
-            const t = params.get('tracking') || params.get('trackingnumber') || params.get('id');
-            if (t) {
-                document.getElementById('trackingNumber').value = t;
-                setTimeout(function() { trackShipment({ preventDefault: function(){} }); }, 300);
-            }
-        })();
+<header class="site-header"><div class="inner">
+<a href="/"><img src="apps/airpak/img/logo.png" alt="Airpak Express" onerror="this.outerHTML='<strong style=color:#CD2727>Airpak Express</strong>'"></a>
+<div>
+<a href="/">Home</a>
+<a href="/about-us">About</a>
+<a href="/contact">Contact</a>
+<a href="/create-shipment" class="btn">Create Shipment</a>
+</div>
+</div></header>
 
-        async function trackShipment(e) {
-            e.preventDefault();
-            const trackingNumber = document.getElementById('trackingNumber').value.trim();
-            if (!trackingNumber) return;
+<section class="video-hero">
+<video autoplay muted loop playsinline poster="apps/airpak/img/home/banner.png">
+<source src="apps/airpak/img/homepage_small.mp4" type="video/mp4">
+</video>
+<div class="overlay"></div>
+<div class="content">
+<h1>Track Your Shipment</h1>
+<p>Enter your tracking number for real-time delivery updates</p>
+<form class="search" id="trackingForm" onsubmit="trackShipment(event)">
+<input type="text" id="trackingNumber" placeholder="e.g. AP123456789" required autocomplete="off">
+<button type="submit"><i class="fa fa-search"></i> Track</button>
+</form>
+</div>
+</section>
 
-            document.getElementById('loadingState').style.display = 'block';
-            document.getElementById('trackingResult').classList.remove('active');
-
-            // Try live API first
-            try {
-                const response = await fetch('https://shipnow.airpak-express.site/api/tracking/' + encodeURIComponent(trackingNumber));
-                if (response.ok) {
-                    const data = await response.json();
-                    renderResult(trackingNumber, data);
-                    return;
-                }
-            } catch (err) {}
-
-            // Demo fallback so UI always works
-            const last = trackingNumber.slice(-1);
-            let status = 'Out for Delivery';
-            let badgeClass = 'out-for-delivery';
-            let eta = 'Today by 5:30 PM';
-            let events = [
-                { time: 'Today · 10:15 AM', event: 'Out for delivery', location: 'Local delivery facility', active: true },
-                { time: 'Today · 6:40 AM', event: 'Arrived at facility', location: 'Destination hub', completed: true },
-                { time: 'Yesterday · 9:20 PM', event: 'In transit', location: 'Regional sorting centre', completed: true },
-                { time: 'Yesterday · 2:15 PM', event: 'Picked up', location: 'Origin facility', completed: true }
-            ];
-            if (['1','2','3'].includes(last)) {
-                status = 'Delivered'; badgeClass = 'delivered'; eta = 'Delivered today 11:42 AM';
-                events = [
-                    { time: 'Today · 11:42 AM', event: 'Delivered', location: 'Signed for by recipient', active: true },
-                    { time: 'Today · 9:10 AM', event: 'Out for delivery', location: 'Local facility', completed: true },
-                    { time: 'Yesterday · 6:00 PM', event: 'In transit', location: 'Hub', completed: true },
-                    { time: 'Yesterday · 11:00 AM', event: 'Picked up', location: 'Origin', completed: true }
-                ];
-            } else if (['4','5','6'].includes(last)) {
-                status = 'In Transit'; badgeClass = 'in-transit'; eta = 'Tomorrow by 6:00 PM';
-                events = [
-                    { time: 'Today · 8:00 AM', event: 'In transit', location: 'Regional hub', active: true },
-                    { time: 'Yesterday · 4:00 PM', event: 'Picked up', location: 'Origin facility', completed: true }
-                ];
-            }
-            renderResult(trackingNumber, { status, badgeClass, eta, events });
-        }
-
-        function renderResult(tn, data) {
-            document.getElementById('loadingState').style.display = 'none';
-            document.getElementById('resultTrackingNumber').textContent = tn;
-            const badge = document.getElementById('resultStatus');
-            badge.textContent = data.status || 'In Transit';
-            badge.className = 'status-badge ' + (data.badgeClass || 'in-transit');
-            document.getElementById('resultETA').textContent = data.eta || '-';
-
-            const tl = document.getElementById('timeline');
-            tl.innerHTML = '';
-            (data.events || []).forEach(function(ev) {
-                const div = document.createElement('div');
-                div.className = 'timeline-item' + (ev.active ? ' active' : '') + (ev.completed ? ' completed' : '');
-                div.innerHTML = '<div class="time">' + (ev.time||'') + '</div><div class="event">' + (ev.event||'') + '</div><div class="location">' + (ev.location||'') + '</div>';
-                tl.appendChild(div);
-            });
-
-            document.getElementById('trackingResult').classList.add('active');
-            document.getElementById('trackingResult').scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
-    </script>
+<div class="container">
+<div id="loadingState" class="loading" style="display:none">
+<i class="fa fa-spinner fa-spin"></i>
+<p style="margin-top:10px">Looking up your shipment...</p>
+</div>
+<div id="trackingResult" class="tracking-result">
+<div class="shipment-info">
+<div class="info-item"><div class="label">Tracking Number</div><div class="value" id="resultTrackingNumber">-</div></div>
+<div class="info-item"><div class="label">Status</div><div class="value"><span class="status-badge" id="resultStatus">-</span></div></div>
+<div class="info-item"><div class="label">Service</div><div class="value" id="resultService">Worldwide Express</div></div>
+<div class="info-item"><div class="label">Estimated Delivery</div><div class="value" id="resultETA">-</div></div>
+</div>
+<h3 style="margin-bottom:16px;font-family:Poppins,sans-serif;color:#373F41;font-size:1.05rem">Shipment Timeline</h3>
+<div class="timeline" id="timeline"></div>
+</div>
+</div>
+<footer class="footer">© 2026 Airpak Express · <a href="/">Home</a> · <a href="/create-shipment">Create Shipment</a> · <a href="/contact">Contact</a></footer>
+<script>
+(function(){var p=new URLSearchParams(location.search);var t=p.get('tracking')||p.get('id');if(t){document.getElementById('trackingNumber').value=t;setTimeout(function(){trackShipment({preventDefault:function(){}})},250)}})();
+async function trackShipment(e){e.preventDefault();var tn=document.getElementById('trackingNumber').value.trim();if(!tn)return;
+document.getElementById('loadingState').style.display='block';document.getElementById('trackingResult').classList.remove('active');
+try{var r=await fetch('https://shipnow.airpak-express.site/api/tracking/'+encodeURIComponent(tn));if(r.ok){renderResult(tn,await r.json());return}}catch(err){}
+var last=tn.slice(-1),status='Out for Delivery',badgeClass='out-for-delivery',eta='Today by 5:30 PM';
+var events=[{time:'Today · 10:15 AM',event:'Out for delivery',location:'Local delivery facility',active:true},{time:'Today · 6:40 AM',event:'Arrived at facility',location:'Destination hub',completed:true},{time:'Yesterday · 9:20 PM',event:'In transit',location:'Regional sorting centre',completed:true},{time:'Yesterday · 2:15 PM',event:'Picked up',location:'Origin facility',completed:true}];
+if(['1','2','3'].includes(last)){status='Delivered';badgeClass='delivered';eta='Delivered today 11:42 AM';events=[{time:'Today · 11:42 AM',event:'Delivered',location:'Signed for by recipient',active:true},{time:'Today · 9:10 AM',event:'Out for delivery',location:'Local facility',completed:true},{time:'Yesterday · 6:00 PM',event:'In transit',location:'Hub',completed:true},{time:'Yesterday · 11:00 AM',event:'Picked up',location:'Origin',completed:true}]}
+else if(['4','5','6'].includes(last)){status='In Transit';badgeClass='in-transit';eta='Tomorrow by 6:00 PM';events=[{time:'Today · 8:00 AM',event:'In transit',location:'Regional hub',active:true},{time:'Yesterday · 4:00 PM',event:'Picked up',location:'Origin facility',completed:true}]}
+renderResult(tn,{status:status,badgeClass:badgeClass,eta:eta,events:events})}
+function renderResult(tn,data){document.getElementById('loadingState').style.display='none';document.getElementById('resultTrackingNumber').textContent=tn;
+var b=document.getElementById('resultStatus');b.textContent=data.status||'In Transit';b.className='status-badge '+(data.badgeClass||'in-transit');
+document.getElementById('resultETA').textContent=data.eta||'-';
+var tl=document.getElementById('timeline');tl.innerHTML='';(data.events||[]).forEach(function(ev){var d=document.createElement('div');d.className='timeline-item'+(ev.active?' active':'')+(ev.completed?' completed':'');d.innerHTML='<div class="time">'+(ev.time||'')+'</div><div class="event">'+(ev.event||'')+'</div><div class="location">'+(ev.location||'')+'</div>';tl.appendChild(d)});
+document.getElementById('trackingResult').classList.add('active');document.getElementById('trackingResult').scrollIntoView({behavior:'smooth',block:'start'})}
+</script>
 </body>
 </html>
