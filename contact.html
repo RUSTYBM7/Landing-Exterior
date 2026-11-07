@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Airpak Express - Contact Us</title>
-<meta name="description" content="Contact Airpak Express. Global headquarters in the United States and United Kingdom, with regional offices worldwide." />
+<meta name="description" content="Contact Airpak Express. Global headquarters in the United States and United Kingdom." />
 <link rel="shortcut icon" type="image/x-icon" href="apps/airpak/images/icon.png" />
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="apps/airpak/assets/css/font-awesome.min.css" />
@@ -17,15 +17,14 @@ body{font-family:Inter,sans-serif;color:#373F41;background:#fff;line-height:1.6}
 .site-header nav a{margin-left:18px;text-decoration:none;color:#373F41;font-weight:500;font-size:14px}
 .site-header nav a:hover{color:#CD2727}
 .site-header .btn{background:#CD2727;color:#fff!important;padding:8px 16px;border-radius:6px}
-.video-hero{position:relative;min-height:340px;display:flex;align-items:center;justify-content:center;overflow:hidden;color:#fff;text-align:center}
-.video-hero video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0}
-.video-hero .overlay{position:absolute;inset:0;background:linear-gradient(135deg,rgba(15,23,42,.78) 0%,rgba(205,39,39,.4) 100%);z-index:1}
-.video-hero .content{position:relative;z-index:2;padding:50px 20px;max-width:640px}
-.video-hero h1{font-family:Poppins,sans-serif;font-size:clamp(1.7rem,4vw,2.4rem);font-weight:700;margin-bottom:10px;text-shadow:0 2px 12px rgba(0,0,0,.3)}
-.video-hero p{font-size:1.05rem;opacity:.95}
+.photo-hero{position:relative;min-height:320px;display:flex;align-items:center;justify-content:center;background:url('apps/airpak/img/home/banner.png') center/cover no-repeat,#1a1a2e;color:#fff;text-align:center}
+.photo-hero .overlay{position:absolute;inset:0;background:linear-gradient(135deg,rgba(15,23,42,.75) 0%,rgba(205,39,39,.35) 100%)}
+.photo-hero .content{position:relative;z-index:2;padding:50px 20px;max-width:640px}
+.photo-hero h1{font-family:Poppins,sans-serif;font-size:clamp(1.7rem,4vw,2.3rem);font-weight:700;margin-bottom:10px;text-shadow:0 2px 12px rgba(0,0,0,.3)}
+.photo-hero p{font-size:1.05rem;opacity:.95}
 .section{max-width:900px;margin:0 auto;padding:40px 20px}
 .section h2{font-family:Poppins,sans-serif;font-size:1.25rem;margin:28px 0 14px;color:#373F41}
-.hq{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:8px}
+.hq{display:grid;grid-template-columns:1fr 1fr;gap:16px}
 @media(max-width:700px){.hq{grid-template-columns:1fr}}
 .hq-card{background:#f8f9fa;border-left:4px solid #CD2727;padding:18px 20px}
 .hq-card .label{color:#CD2727;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1px}
@@ -57,10 +56,7 @@ body{font-family:Inter,sans-serif;color:#373F41;background:#fff;line-height:1.6}
 </nav>
 </div></header>
 
-<section class="video-hero">
-<video autoplay muted loop playsinline poster="apps/airpak/img/home/banner.png">
-<source src="apps/airpak/img/homepage_small.mp4" type="video/mp4">
-</video>
+<section class="photo-hero">
 <div class="overlay"></div>
 <div class="content">
 <h1>Contact Us</h1>
